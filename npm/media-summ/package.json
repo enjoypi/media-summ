@@ -1,6 +1,6 @@
 {
   "name": "@enjoypi/media-summ",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Media subtitle downloader and summarizer",
   "bin": {
     "media-summ": "bin/media-summ"
@@ -9,9 +9,9 @@
     "bin/media-summ"
   ],
   "optionalDependencies": {
-    "@enjoypi/media-summ-linux-x64": "1.0.0",
-    "@enjoypi/media-summ-darwin-arm64": "1.0.0",
-    "@enjoypi/media-summ-win32-x64": "1.0.0"
+    "@enjoypi/media-summ-linux-x64": "1.0.1",
+    "@enjoypi/media-summ-darwin-arm64": "1.0.1",
+    "@enjoypi/media-summ-win32-x64": "1.0.1"
   },
   "repository": {
     "type": "git",

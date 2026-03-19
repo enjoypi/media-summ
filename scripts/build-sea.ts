@@ -61,6 +61,7 @@ function bundle(version: string): void {
     platform: 'node',
     target: 'node24',
     outfile: BUNDLE_OUT,
+    minify: true,
     define: { '__APP_VERSION__': JSON.stringify(version) },
   });
   console.log('[bundle] done');
