@@ -36,7 +36,10 @@ export class FileSystemCourseScanner implements CourseScanner {
       return { name, path: coursePath, type: 'specialization', subCourses };
     }
 
-    const weeks = this.scanWeeks(coursePath);
+    let weeks = this.scanWeeks(coursePath);
+    if (weeks.length === 0) {
+      weeks = this.scanFlatFiles(coursePath);
+    }
     if (weeks.length === 0) {
       throw new Error(`扫描失败: 课程 "${name}" 中未找到包含 VTT 文件的 Week 目录`);
     }
@@ -69,6 +72,27 @@ export class FileSystemCourseScanner implements CourseScanner {
         return { number: num, path: wPath, lessons: this.scanLessons(wPath) };
       })
       .filter((w) => w.lessons.length > 0)
+      .sort((a, b) => a.number - b.number);
+  }
+
+  private scanFlatFiles(coursePath: string): ScannedWeek[] {
+    const FLAT_FILE_PATTERN = /^(\d+)-\d+-.+/;
+    const files = readdirSync(coursePath)
+      .filter((f) => extname(f).toLowerCase() === this.subtitleExtension && !statSync(join(coursePath, f)).isDirectory())
+      .sort();
+
+    const weekMap = new Map<number, ScannedLesson[]>();
+    for (const f of files) {
+      const match = FLAT_FILE_PATTERN.exec(f);
+      if (!match) continue;
+      const weekNum = parseInt(match[1], 10);
+      const lessons = weekMap.get(weekNum) ?? [];
+      lessons.push({ title: basename(f, extname(f)), vttPath: join(coursePath, f) });
+      weekMap.set(weekNum, lessons);
+    }
+
+    return Array.from(weekMap.entries())
+      .map(([number, lessons]) => ({ number, path: coursePath, lessons }))
       .sort((a, b) => a.number - b.number);
   }
 

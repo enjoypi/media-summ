@@ -22,8 +22,9 @@ export function registerSummarize(program: Command): void {
       const config = container.config;
       const failures: string[] = [];
 
-      const systemPrompt = config.summarize.prompt;
-      const outputFilename = config.summarize.output_filename;
+      const { prompt: systemPrompt, output_filename: outputFilename,
+        chars_per_token: charsPerToken, merge_prompt: mergePrompt } = config.summarize;
+      const { context_window: contextWindow } = config.llm;
 
       for (const cp of coursePaths) {
         const absPath = resolve(cp);
@@ -49,6 +50,9 @@ export function registerSummarize(program: Command): void {
               outputDir: outDir ?? sc.path,
               systemPrompt,
               outputFilename,
+              contextWindow,
+              charsPerToken,
+              mergePrompt,
             });
           }
         } catch (err) {

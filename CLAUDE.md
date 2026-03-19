@@ -14,6 +14,7 @@
 ## Runtime
 - `download` 子命令：**不需要** LLM API key，只需要 `cookies.txt`
 - `summarize` 子命令：需要配置 `llm.api_key`
+- `summarize` 自动分块：估算 token 数超过 `llm.context_window` 时按 Week 分块总结后合并
 - 字幕下载到 `./subtitles/<website-domain>/<specialization>/<course>/`
 
 ## Environment
@@ -24,6 +25,7 @@
 
 ## Commands
 - `pnpm build` - 编译 TypeScript
+- 修改 zod schema 后需 `rm -rf dist && pnpm build`，旧 dist 产物会导致 config 测试失败
 - `pnpm start` - 运行 CLI（等效于 `node dist/frameworks/index.js`）
 - `pnpm start download <url>` - 下载字幕（推荐用法）
 - `pnpm start summarize <path>` - 总结课程（推荐用法）
@@ -41,7 +43,8 @@
   - Chrome 导出方法：安装 "Get cookies.txt LOCALLY" 扩展 → 访问 coursera.org → 点击扩展 → 复制 Netscape 格式内容保存为 cookies.txt
 
 ## Output Structure
-字幕下载到 `./subtitles/<website-domain>/<course-name>/`，所有名称经过 sanitize 处理（小写、特殊字符转连字符）：
+字幕下载到 `./subtitles/<website-domain>/<course-name>/`，所有名称经过 sanitize 处理（小写、特殊字符转连字符）。
+课程扫描器（`FsCourseScanner`）支持两种结构：Week 子目录（`Week 1/`）和平铺文件（从 `{week}-{index}-title.vtt` 前缀推断 week）。
 
 **单课程结构**：
 ```

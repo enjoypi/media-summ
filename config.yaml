@@ -112,14 +112,24 @@ rate_limit:
 llm:
   base_url: https://api.openai.com/v1  # 支持自定义 endpoint（如本地模型）
   api_key: ""                           # 建议通过 .env 或环境变量设置
-  model: gpt-5.2
+  model: gpt-5.4-mini
   reasoning_effort: low                  # none / low / medium / high / xhigh，留空不传
   max_completion_tokens: 0               # 最大输出 token 数，0 表示不限制（gpt-5.2 上限 128000）
+  context_window: 400000                 # 模型 context window 大小（token），超过此值走分块模式
   timeout: 600000                       # LLM 请求超时（毫秒），默认 10 分钟
 
 # 总结配置
 summarize:
   output_filename: summary.md       # 输出文件名
+  chars_per_token: 3                # token 估算系数（中文~1.5, 英文~4, 混合~3）
+  merge_prompt: |
+    请将以下多个章节的课程笔记合并为一份完整的学习笔记。
+    要求：
+    - 按主题和知识模块重新组织，消除重复内容
+    - 保持所有核心概念、数据和示例
+    - 保留专业术语的英文原文
+    - 使用中文输出
+    - 使用 Markdown 格式，层次分明
   # 自定义 Prompt（留空则使用内置默认 Prompt）
   # 示例：生成中文结构化学习笔记
   prompt: |
@@ -130,4 +140,5 @@ summarize:
     - 保留课程中提到的关键数据、案例和引用
     - 记录重要的方法论、框架和步骤
     - 保留专业术语的英文原文
+    - 使用中文输出
     - 使用 Markdown 格式，层次分明，适合后续复习

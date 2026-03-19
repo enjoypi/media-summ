@@ -6,12 +6,15 @@ export const llmSchema = z.object({
   model: z.string(),
   reasoning_effort: z.string(),
   max_completion_tokens: z.number(),
+  context_window: z.number(),
   timeout: z.number(),
 });
 
 export const summarizeSchema = z.object({
   prompt: z.string(),
   output_filename: z.string(),
+  chars_per_token: z.number(),
+  merge_prompt: z.string(),
 });
 
 export const rateLimiterSchema = z.object({
