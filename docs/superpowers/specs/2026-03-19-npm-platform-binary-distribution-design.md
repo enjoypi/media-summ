@@ -86,7 +86,7 @@ darwin-arm64 和 win32-x64 同理，替换 `name`/`os`/`cpu`。
 `npm/media-summ/bin/media-summ` 是一个 JS 脚本（`#!/usr/bin/env node`）：
 
 1. 根据 `process.platform` + `process.arch` 拼出平台包名
-2. `require.resolve('@enjoypi/media-summ-<platform>/package.json')` 定位包目录，再拼接 `../bin/<binary>` 得到二进制路径
+2. `path.dirname(require.resolve('@enjoypi/media-summ-<platform>/package.json'))` 定位包目录，再拼接 `bin/<binary>` 得到二进制路径
 3. `child_process.execFileSync` 执行，透传 `process.argv.slice(2)` 和 `stdio: "inherit"`
 4. try/catch 捕获异常，通过 `process.exitCode` 透传子进程退出码（避免暴露 Node.js 堆栈）
 5. 不支持的平台直接报错退出
