@@ -113,7 +113,7 @@ rate_limit:
 llm:
   base_url: https://api.openai.com/v1  # 支持自定义 endpoint（如本地模型）
   api_key: ""                           # 建议通过 .env 或环境变量设置
-  model: gpt-5.4-mini
+  model: gpt-5.4
   reasoning_effort: low                  # none / low / medium / high / xhigh，留空不传
   max_completion_tokens: 0               # 最大输出 token 数，0 表示不限制（gpt-5.2 上限 128000）
   context_window: 400000                 # 模型 context window 大小（token），超过此值走分块模式
