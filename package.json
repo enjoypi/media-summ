@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "build:bundle": "node --experimental-strip-types scripts/build-sea.ts bundle",
+    "build:sea": "node --experimental-strip-types scripts/build-sea.ts",
     "start": "node dist/frameworks/index.js",
     "test": "vitest run",
     "lint": "tsc --noEmit"

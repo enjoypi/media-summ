@@ -143,3 +143,4 @@ vite.config.ts.timestamp-*
 # This project files
 cookies.txt
 downloads/
+dist/bin/
