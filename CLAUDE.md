@@ -6,7 +6,8 @@
 
 ## Key Patterns
 - Container 使用懒加载 getter（如 `getSummarizeUseCase()`），避免强制初始化未使用的依赖
-- `ports.ts` 重新导出实体类型：`export { Foo } from '../entities/foo.js'`，不重复定义
+- `types.ts` 重新导出实体类型：`export { Foo } from '../entities/foo.js'`，不重复定义
+- `ports.ts` 只定义 Port 接口，不含实体类型重导出
 - TypeScript ESM 模块，构建输出到 `dist/`
 - Adapter 接收外部配置通过 options 对象（如 `{ baseUrl: config.base_url }`）
 - `sanitize` 必须处理所有特殊字符：`&@#$%^(){}[];',.!~\` 等

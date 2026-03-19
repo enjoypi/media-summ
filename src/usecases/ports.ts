@@ -8,24 +8,11 @@
  * - 只定义接口，不依赖任何外部实现
  * - Adapters 层实现这些接口
  * - CLI/Frameworks 层负责注入具体实现
+ * - 实体类型重导出见 ./types.ts
  */
 
 import type { Course, SubtitleMeta } from '../entities/course.js';
 import type { ScannedCourse } from '../entities/course-scan.js';
-
-// =============================================================================
-// Entity: 纯业务实体（重新导出，统一入口）
-// =============================================================================
-
-export type { Course, Week, Lesson, SubtitleMeta } from '../entities/course.js';
-export type { ScannedCourse, SubCourse, ScannedWeek, ScannedLesson } from '../entities/course-scan.js';
-export type { AppConfig, LlmConfig } from '../entities/config.js';
-export { DownloadStatus } from '../entities/download-result.js';
-export type { DownloadResult } from '../entities/download-result.js';
-
-// =============================================================================
-// Ports: 用例层定义的外部依赖接口
-// =============================================================================
 
 /**
  * 课程数据源 — 从外部 API/网页获取课程元数据
@@ -47,6 +34,7 @@ export interface SubtitleSource {
  */
 export interface SpecializationFetcher {
   fetchBySlug(slug: string): Promise<{ name: string; courses: Array<{ index: number; slug: string; name: string }> } | null>;
+  extractSlug(url: string): string | null;
 }
 
 /**
@@ -80,6 +68,7 @@ export interface FileSystem {
  */
 export interface PathBuilder {
   build(outputDir: string, courseName: string, weekNumber: number, lessonIndex: number, lessonTitle: string, format: string): string;
+  sanitizeName(name: string): string;
 }
 
 /**

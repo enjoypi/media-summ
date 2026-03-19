@@ -7,11 +7,8 @@
 import { join } from 'node:path';
 import { Command } from 'commander';
 import { createContainer } from './container.js';
-import { DownloadStatus } from '../usecases/ports.js';
-import type { DownloadResult } from '../usecases/ports.js';
-
-import { sanitize } from '../entities/sanitize.js';
-import { extractSpecSlug } from '../adapters/coursera/specialization-fetcher.js';
+import { DownloadStatus } from '../usecases/types.js';
+import type { DownloadResult } from '../usecases/types.js';
 
 function extractSiteName(url: string, stripPattern: string, defaultName: string): string {
   try {
@@ -44,7 +41,7 @@ export function registerDownload(program: Command): void {
       try {
         const siteName = extractSiteName(url, config.url_patterns.site_name_strip_www, config.url_patterns.site_name_default);
         const baseOutputDir = join(config.output_dir, siteName);
-        const specSlug = extractSpecSlug(url, config.url_patterns.specialization_slug);
+        const specSlug = container.specializationFetcher.extractSlug(url);
         if (specSlug) {
           await handleSpecialization(specSlug, container, baseOutputDir);
         } else {
@@ -93,8 +90,8 @@ async function handleSpecialization(
 
   for (const c of spec.courses) {
     const prefix = String(c.index).padStart(config.download.prefix_padding_width, config.path_builder.pad_char);
-    const safeSpecName = sanitize(spec.name, config.max_filename_length, config.sanitize);
-    const safeCourseName = sanitize(c.name, config.max_filename_length, config.sanitize);
+    const safeSpecName = container.pathBuilder.sanitizeName(spec.name);
+    const safeCourseName = container.pathBuilder.sanitizeName(c.name);
     const courseOutputDir = join(baseOutputDir, safeSpecName, `${prefix}${config.path_builder.separator}${safeCourseName}`);
     container.logger.info(`\n[${c.index}/${spec.courses.length}] ${c.name}`);
 

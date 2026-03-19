@@ -6,7 +6,8 @@
 
 import OpenAI from 'openai';
 import { ProxyAgent } from 'undici';
-import type { LlmClient, LlmConfig } from '../usecases/ports.js';
+import type { LlmClient } from '../usecases/ports.js';
+import type { LlmConfig } from '../usecases/types.js';
 
 export interface OpenAiLlmClientOptions {
   config: LlmConfig;

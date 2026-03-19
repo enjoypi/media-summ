@@ -5,8 +5,9 @@
  */
 
 import pLimit from 'p-limit';
-import type { Course, SubtitleMeta, DownloadResult, Logger, RetryPolicy, FileSystem, PathBuilder, HttpClient } from './ports.js';
-import { DownloadStatus } from './ports.js';
+import type { Course, SubtitleMeta, DownloadResult } from './types.js';
+import { DownloadStatus } from './types.js';
+import type { Logger, RetryPolicy, FileSystem, PathBuilder, HttpClient } from './ports.js';
 
 export interface DownloadSubtitlesInput {
   course: Course;

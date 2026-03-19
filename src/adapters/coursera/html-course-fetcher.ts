@@ -5,7 +5,8 @@
  */
 
 import * as cheerio from 'cheerio';
-import type { Course, Week, Lesson, CourseFetcher, HttpClient } from '../../usecases/ports.js';
+import type { CourseFetcher, HttpClient } from '../../usecases/ports.js';
+import type { Course, Week, Lesson } from '../../usecases/types.js';
 import type { CourseraConfig } from '../../entities/config.js';
 
 interface NextDataModule {

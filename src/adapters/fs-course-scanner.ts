@@ -6,7 +6,8 @@
 
 import { readdirSync, statSync } from 'node:fs';
 import { join, basename, extname } from 'node:path';
-import type { CourseScanner, ScannedCourse, ScannedLesson, ScannedWeek, SubCourse } from '../usecases/ports.js';
+import type { CourseScanner } from '../usecases/ports.js';
+import type { ScannedCourse, ScannedLesson, ScannedWeek, SubCourse } from '../usecases/types.js';
 
 export interface CourseScannerOptions {
   weekPattern: string;

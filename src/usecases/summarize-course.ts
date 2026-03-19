@@ -4,7 +4,8 @@
  * @layer Use Cases
  */
 
-import type { SubCourse, LlmClient, Logger, FileSystem, VttParser } from './ports.js';
+import type { SubCourse } from './types.js';
+import type { LlmClient, Logger, FileSystem, VttParser } from './ports.js';
 import { estimateTokens } from '../entities/token-estimator.js';
 
 export interface SummarizeCourseInput {

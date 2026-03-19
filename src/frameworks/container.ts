@@ -6,7 +6,7 @@
  * 这是唯一知道所有具体实现的地方，负责将 Adapter 注入到 Use Case
  */
 
-import type { AppConfig } from '../usecases/ports.js';
+import type { AppConfig } from '../usecases/types.js';
 import { ParseCourseUseCase } from '../usecases/parse-course.js';
 import { DownloadSubtitlesUseCase } from '../usecases/download-subtitles.js';
 import { SummarizeCourseUseCase } from '../usecases/summarize-course.js';
@@ -30,6 +30,7 @@ export interface Container {
   parseCourseUseCase: ParseCourseUseCase;
   downloadSubtitlesUseCase: DownloadSubtitlesUseCase;
   courseScanner: FileSystemCourseScanner;
+  pathBuilder: DefaultPathBuilder;
   specializationFetcher: CourseraSpecializationFetcher;
   httpClient: FetchHttpClient;
   config: AppConfig;
@@ -122,6 +123,7 @@ export function createContainer(explicitConfigPath?: string): Container {
     parseCourseUseCase,
     downloadSubtitlesUseCase,
     courseScanner,
+    pathBuilder,
     specializationFetcher,
     httpClient,
     config,

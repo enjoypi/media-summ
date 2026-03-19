@@ -25,6 +25,11 @@ export class CourseraSpecializationFetcher implements SpecializationFetcher {
     private options: SpecializationFetcherOptions,
   ) {}
 
+  extractSlug(url: string): string | null {
+    const match = url.match(new RegExp(this.options.specializationSlugPattern));
+    return match ? match[1] : null;
+  }
+
   async fetchBySlug(slug: string): Promise<{ name: string; courses: Array<{ index: number; slug: string; name: string }> } | null> {
     const specUrl = `${this.options.baseUrl}/api/onDemandSpecializations.v1?q=slug&slug=${slug}&fields=courseIds,name`;
     const specRes = await this.httpClient.get(specUrl);
@@ -66,7 +71,3 @@ export class CourseraSpecializationFetcher implements SpecializationFetcher {
   }
 }
 
-export function extractSpecSlug(url: string, pattern: string): string | null {
-  const match = url.match(new RegExp(pattern));
-  return match ? match[1] : null;
-}

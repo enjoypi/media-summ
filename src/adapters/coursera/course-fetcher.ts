@@ -4,7 +4,8 @@
  * @layer Adapters
  */
 
-import type { Course, Week, Lesson, CourseFetcher, HttpClient } from '../../usecases/ports.js';
+import type { CourseFetcher, HttpClient } from '../../usecases/ports.js';
+import type { Course, Week, Lesson } from '../../usecases/types.js';
 import type { CourseraConfig } from '../../entities/config.js';
 
 interface LinkedModule { id: string; name: string; }

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SummarizeCourseUseCase } from './summarize-course.js';
-import type { LlmClient, VttParser, FileSystem, Logger, SubCourse } from './ports.js';
+import type { LlmClient, VttParser, FileSystem, Logger } from './ports.js';
+import type { SubCourse } from './types.js';
 
 function createMocks() {
   const llmClient: LlmClient = { complete: vi.fn().mockResolvedValue('summary text') };

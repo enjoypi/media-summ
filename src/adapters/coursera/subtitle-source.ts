@@ -4,7 +4,8 @@
  * @layer Adapters
  */
 
-import type { SubtitleMeta, SubtitleSource, HttpClient } from '../../usecases/ports.js';
+import type { SubtitleSource, HttpClient } from '../../usecases/ports.js';
+import type { SubtitleMeta } from '../../usecases/types.js';
 
 interface VideoResponse {
   elements: unknown[];

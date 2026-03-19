@@ -18,6 +18,10 @@ export interface PathBuilderOptions {
 export class DefaultPathBuilder implements PathBuilder {
   constructor(private options: PathBuilderOptions) {}
 
+  sanitizeName(name: string): string {
+    return sanitize(name, this.options.maxFilenameLength, this.options.sanitizeConfig);
+  }
+
   build(
     outputDir: string,
     courseName: string,
