@@ -1,0 +1,1581 @@
+WEBVTT
+
+1
+00:00:02.910 --> 00:00:08.300
+Dr. Keith Devlin is a very big guy in the world of math education,
+
+2
+00:00:08.300 --> 00:00:10.880
+not to mention the world of math research.
+
+3
+00:00:10.880 --> 00:00:13.720
+I'm introducing you to him here because I love
+
+4
+00:00:13.720 --> 00:00:16.510
+how he thinks about learning in the world of mathematics,
+
+5
+00:00:16.510 --> 00:00:19.690
+and how his ideas about learning relate to learning in
+
+6
+00:00:19.690 --> 00:00:23.140
+all sorts of topics way outside of mathematics.
+
+7
+00:00:23.140 --> 00:00:24.990
+Among many other duties,
+
+8
+00:00:24.990 --> 00:00:27.640
+Keith is a Co-founder and executive director of
+
+9
+00:00:27.640 --> 00:00:32.555
+Stanford's human sciences and technologies advanced research institute.
+
+10
+00:00:32.555 --> 00:00:37.040
+A co-founder and president of an educational technology company,
+
+11
+00:00:37.040 --> 00:00:41.120
+Brain Quake, that creates mathematical learning video games.
+
+12
+00:00:41.120 --> 00:00:44.550
+He's also a World Economic Forum fellow,
+
+13
+00:00:44.550 --> 00:00:48.890
+a fellow of the American Association for the Advancement of Science,
+
+14
+00:00:48.890 --> 00:00:52.325
+and a fellow of the American Mathematical Society.
+
+15
+00:00:52.325 --> 00:00:54.825
+Last but definitely not least,
+
+16
+00:00:54.825 --> 00:00:58.640
+he is ''The Math Guy'' on national public radio.
+
+17
+00:00:58.640 --> 00:01:00.770
+Welcome Doctor Devlin.
+
+18
+00:01:00.770 --> 00:01:03.855
+Thanks for being with us here today Dr. Devlin,
+
+19
+00:01:03.855 --> 00:01:05.540
+let's just dive right in.
+
+20
+00:01:05.540 --> 00:01:09.620
+What's the biggest tip you can share with our viewers about how to
+
+21
+00:01:09.620 --> 00:01:14.305
+most effectively approach a math problem that they might be stuck on?
+
+22
+00:01:14.305 --> 00:01:16.580
+Well, the first thing of course is don't panic.
+
+23
+00:01:16.580 --> 00:01:21.120
+Not-so-famous Douglas Adams motto from The Hitchhiker's Guide to the Galaxy,
+
+24
+00:01:21.120 --> 00:01:24.930
+and it holds just as much for mathematics as it did for for the Hitchhiker's Guide.
+
+25
+00:01:24.930 --> 00:01:27.840
+You have to begin by understanding what the problem is about,
+
+26
+00:01:27.840 --> 00:01:29.225
+what are you trying to do?
+
+27
+00:01:29.225 --> 00:01:30.480
+What do you want to achieve?
+
+28
+00:01:30.480 --> 00:01:32.170
+And what information do you have?
+
+29
+00:01:32.170 --> 00:01:35.770
+You've really got to avoid the thing that actually teachers try to
+
+30
+00:01:35.770 --> 00:01:39.520
+impress on you of trying to see if you can match it to some template,
+
+31
+00:01:39.520 --> 00:01:41.020
+and to act quickly.
+
+32
+00:01:41.020 --> 00:01:44.470
+One of the worst things that I think happens in the school system is
+
+33
+00:01:44.470 --> 00:01:46.030
+people come away thinking that solving
+
+34
+00:01:46.030 --> 00:01:47.970
+math problems is something that has to be done at speed.
+
+35
+00:01:47.970 --> 00:01:49.220
+It absolutely is not.
+
+36
+00:01:49.220 --> 00:01:50.490
+So, you have to sit back,
+
+37
+00:01:50.490 --> 00:01:53.545
+take a deep breath, begin by understanding the problem.
+
+38
+00:01:53.545 --> 00:01:55.530
+If the problem involves numbers,
+
+39
+00:01:55.530 --> 00:01:58.030
+put in a few simple numbers threes and fours,
+
+40
+00:01:58.030 --> 00:01:59.840
+and just play with it to get a sense of it.
+
+41
+00:01:59.840 --> 00:02:01.440
+If it is geometric problem,
+
+42
+00:02:01.440 --> 00:02:02.819
+do some little diagrams,
+
+43
+00:02:02.819 --> 00:02:07.710
+I often end up writing simple little graph diagrams with dots and lines connecting them,
+
+44
+00:02:07.710 --> 00:02:10.640
+just something to give me a sense of what that problem's about.
+
+45
+00:02:10.640 --> 00:02:13.300
+At that point, you can ask yourself,
+
+46
+00:02:13.300 --> 00:02:17.000
+''do I know any techniques that look as though they would work with this problem?''
+
+47
+00:02:17.000 --> 00:02:19.510
+If they do and you mean look, the problem is solved.
+
+48
+00:02:19.510 --> 00:02:21.270
+Actually that's usually very unsatisfying
+
+49
+00:02:21.270 --> 00:02:23.490
+because you've just applied somebody else's thinking.
+
+50
+00:02:23.490 --> 00:02:26.490
+Mathematics gets interesting when you have to force
+
+51
+00:02:26.490 --> 00:02:29.605
+yourself to find out when a new method or some new approach.
+
+52
+00:02:29.605 --> 00:02:32.355
+So, let's assume that none of the techniques you know work.
+
+53
+00:02:32.355 --> 00:02:35.840
+The next thing is, ''can I adapt an existing technique?''
+
+54
+00:02:35.840 --> 00:02:37.790
+Maybe you can maybe you can't.
+
+55
+00:02:37.790 --> 00:02:41.475
+If you can usually leaves you with a nice feeling because you've done something yourself.
+
+56
+00:02:41.475 --> 00:02:45.365
+The really challenging ones and the ones where it gets actually exciting and fun,
+
+57
+00:02:45.365 --> 00:02:47.590
+is where it becomes clear,
+
+58
+00:02:47.590 --> 00:02:50.520
+at least you think that nothing you know is going to help you with that.
+
+59
+00:02:50.520 --> 00:02:52.860
+At that point, what you do is,
+
+60
+00:02:52.860 --> 00:02:58.315
+you bash away at it several times with just naive approaches.
+
+61
+00:02:58.315 --> 00:02:59.800
+Almost certainly they won't work,
+
+62
+00:02:59.800 --> 00:03:01.270
+you just try this, you try that.
+
+63
+00:03:01.270 --> 00:03:04.360
+You you come up with ideas based on what the problem is asking you to do,
+
+64
+00:03:04.360 --> 00:03:06.470
+because solving a problem is a journey.
+
+65
+00:03:06.470 --> 00:03:08.855
+You begin with the information you've got.
+
+66
+00:03:08.855 --> 00:03:10.915
+Either the information you're given with the problem,
+
+67
+00:03:10.915 --> 00:03:12.810
+or information you already know.
+
+68
+00:03:12.810 --> 00:03:14.950
+You may have to add some extra information,
+
+69
+00:03:14.950 --> 00:03:17.520
+you may do a Google search find some extra information about it.
+
+70
+00:03:17.520 --> 00:03:19.870
+At that point, the journey
+
+71
+00:03:19.870 --> 00:03:23.365
+takes place in that you have to get to the goal and solve the problem.
+
+72
+00:03:23.365 --> 00:03:26.695
+If none of the methods you try for the first half hour,
+
+73
+00:03:26.695 --> 00:03:27.870
+maybe I'm depending on the problem.
+
+74
+00:03:27.870 --> 00:03:29.415
+It could be half hour, couple of hours,
+
+75
+00:03:29.415 --> 00:03:31.150
+sometimes it's a day or a few weeks.
+
+76
+00:03:31.150 --> 00:03:32.815
+But if nothing happens,
+
+77
+00:03:32.815 --> 00:03:36.395
+then the best thing to do is walk away from the problem.
+
+78
+00:03:36.395 --> 00:03:37.810
+Go and do something else.
+
+79
+00:03:37.810 --> 00:03:39.790
+In my case, for most of my career,
+
+80
+00:03:39.790 --> 00:03:41.365
+I was a long-distance runner.
+
+81
+00:03:41.365 --> 00:03:43.265
+If I verily came up against it,
+
+82
+00:03:43.265 --> 00:03:45.350
+I would put on my running gear, whatever the whether,
+
+83
+00:03:45.350 --> 00:03:46.890
+and I'd go out for three or four of hour run,
+
+84
+00:03:46.890 --> 00:03:49.655
+and when I came back, I felt good,
+
+85
+00:03:49.655 --> 00:03:52.510
+I felt relaxed, and quite often on the course of that ride,
+
+86
+00:03:52.510 --> 00:03:55.225
+on that mono, when I got back,
+
+87
+00:03:55.225 --> 00:03:56.850
+the problem seemed different,
+
+88
+00:03:56.850 --> 00:03:58.670
+and I had some new ideas.
+
+89
+00:03:58.670 --> 00:04:02.730
+As I got older, my knees gave away from 25 years of heavy duty running.
+
+90
+00:04:02.730 --> 00:04:04.230
+These days I've added bicycle.
+
+91
+00:04:04.230 --> 00:04:08.825
+But I go on my bike, and I go for three or four hour bike ride, and I come back.
+
+92
+00:04:08.825 --> 00:04:12.330
+First of all, I can approach the problem with a fresh eye.
+
+93
+00:04:12.330 --> 00:04:14.475
+Secondly, in some cases,
+
+94
+00:04:14.475 --> 00:04:17.820
+what seemed to be an impossible problem has melted away.
+
+95
+00:04:17.820 --> 00:04:19.885
+I look at it and think, ''oh, gee,
+
+96
+00:04:19.885 --> 00:04:22.240
+that was obvious, why didn't I see it before?''
+
+97
+00:04:22.240 --> 00:04:23.900
+Well, I don't quite think that,
+
+98
+00:04:23.900 --> 00:04:27.370
+because I know that the feeling you have when you solve a problem is always,
+
+99
+00:04:27.370 --> 00:04:31.050
+''Ooh, dah, why didn't I think of that before?''
+
+100
+00:04:31.050 --> 00:04:34.180
+If that doesn't work, you start the cycle again.
+
+101
+00:04:34.180 --> 00:04:36.875
+You bash away to it again, make no progress,
+
+102
+00:04:36.875 --> 00:04:38.850
+and then you got to have another bike ride,
+
+103
+00:04:38.850 --> 00:04:42.025
+or another swim, or whatever it is you'd like to do, a nice long walk.
+
+104
+00:04:42.025 --> 00:04:47.940
+But it's important to keep oscillating between bashing away at it,
+
+105
+00:04:47.940 --> 00:04:53.115
+and then backing off and doing something else to let the brain do it's own thing.
+
+106
+00:04:53.115 --> 00:04:56.050
+I think that was one of the hardest things for me to
+
+107
+00:04:56.050 --> 00:04:59.840
+realize was how important it is to back away.
+
+108
+00:04:59.840 --> 00:05:02.380
+Sometimes, especially when it's something difficult,
+
+109
+00:05:02.380 --> 00:05:05.710
+it is important to be able to focus on it,
+
+110
+00:05:05.710 --> 00:05:09.070
+as it is to be able to back away from it and then come
+
+111
+00:05:09.070 --> 00:05:12.725
+back later with a fresh perspective and a fresh mind.
+
+112
+00:05:12.725 --> 00:05:15.245
+Oh yeah. For difficult problems,
+
+113
+00:05:15.245 --> 00:05:18.100
+I have never ever solved a difficult problem
+
+114
+00:05:18.100 --> 00:05:21.810
+sitting at a desk or even sitting in my chair thinking about the problem.
+
+115
+00:05:21.810 --> 00:05:24.620
+I've never done that, and I'm not sure it's possible to do that,
+
+116
+00:05:24.620 --> 00:05:29.535
+because if a problem solution requires something new,
+
+117
+00:05:29.535 --> 00:05:34.270
+applying all of your conscious thinking by definition can't solve it,
+
+118
+00:05:34.270 --> 00:05:35.680
+because you're looking for something new.
+
+119
+00:05:35.680 --> 00:05:38.770
+The weird thing about the brain is when you've done
+
+120
+00:05:38.770 --> 00:05:42.640
+that preparation of bashing away without success,
+
+121
+00:05:42.640 --> 00:05:44.605
+and you go and do something else.
+
+122
+00:05:44.605 --> 00:05:47.700
+I've mentioned physical activity because I'm a physical active guy,
+
+123
+00:05:47.700 --> 00:05:50.185
+although the biggest result in my PhD,
+
+124
+00:05:50.185 --> 00:05:52.660
+was actually when I was getting out of the bath.
+
+125
+00:05:52.660 --> 00:05:54.320
+I'd taken a long bath,
+
+126
+00:05:54.320 --> 00:05:56.070
+you don't have to exert lots of energy.
+
+127
+00:05:56.070 --> 00:05:58.270
+You have to do something different. Having a bath is
+
+128
+00:05:58.270 --> 00:06:01.215
+a famous one amongst mathematicians for solving problems.
+
+129
+00:06:01.215 --> 00:06:04.650
+But somehow, weird stuff happens inside the brain.
+
+130
+00:06:04.650 --> 00:06:06.410
+When you're doing something else,
+
+131
+00:06:06.410 --> 00:06:10.380
+and what three hours ago seemed like an impossible problem,
+
+132
+00:06:10.380 --> 00:06:13.230
+just melts away and everything just falls into place.
+
+133
+00:06:13.230 --> 00:06:17.865
+The brain sorts it out when it's left alone to do it.
+
+134
+00:06:17.865 --> 00:06:23.160
+That's exactly the kinds of ideas that we're talking about in in our course.
+
+135
+00:06:23.160 --> 00:06:25.870
+But it is important to do that initial work.
+
+136
+00:06:25.870 --> 00:06:27.630
+It's no good just going out for a bike ride,
+
+137
+00:06:27.630 --> 00:06:30.060
+you've got to have gone through that process of
+
+138
+00:06:30.060 --> 00:06:32.940
+really coming up against it and seeing everything that doesn't work,
+
+139
+00:06:32.940 --> 00:06:36.510
+because that seems to set up the mind in
+
+140
+00:06:36.510 --> 00:06:40.280
+order to do this mysterious stuff it does when you're engaged in something else,
+
+141
+00:06:40.280 --> 00:06:42.470
+when your conscious mind is engaged in something else.
+
+142
+00:06:42.470 --> 00:06:45.050
+Absolutely, that's so important.
+
+143
+00:06:45.050 --> 00:06:50.260
+One thing that you've described is that in higher mathematics,
+
+144
+00:06:50.260 --> 00:06:53.760
+there should be a lot less doing and a lot more thinking.
+
+145
+00:06:53.760 --> 00:06:56.790
+Can you tell our viewers what you mean by that,
+
+146
+00:06:56.790 --> 00:07:01.235
+and how does that relate to areas of learning that are outside mathematics?
+
+147
+00:07:01.235 --> 00:07:03.525
+Yeah. This is really where you've got to
+
+148
+00:07:03.525 --> 00:07:05.990
+unlearn lots of the things that you're taught at school.
+
+149
+00:07:05.990 --> 00:07:08.700
+Actually, teachers do that for very good reasons because
+
+150
+00:07:08.700 --> 00:07:11.440
+of the way we especially in the United States and parts of Europe,
+
+151
+00:07:11.440 --> 00:07:16.110
+the way we subject people to endless test-taking with timed tests.
+
+152
+00:07:16.110 --> 00:07:22.039
+The way to get through the school system is to learn to act fast on the pressure of time,
+
+153
+00:07:22.039 --> 00:07:25.270
+and that's the last thing you can do when it comes to mathematics.
+
+154
+00:07:25.270 --> 00:07:28.755
+You've really got to let it take its course.
+
+155
+00:07:28.755 --> 00:07:30.220
+People have different speeds.
+
+156
+00:07:30.220 --> 00:07:33.140
+I've worked with some very fast mathematicians.
+
+157
+00:07:33.140 --> 00:07:37.235
+The young math professor from Stanford who won a Fields Medal recently,
+
+158
+00:07:37.235 --> 00:07:39.050
+she has gone on record as saying,
+
+159
+00:07:39.050 --> 00:07:41.650
+her teachers at school thought she wasn't good at mathematics,
+
+160
+00:07:41.650 --> 00:07:43.090
+because she was so slow.
+
+161
+00:07:43.090 --> 00:07:46.010
+Well, she may be slow but she now has the equivalent of
+
+162
+00:07:46.010 --> 00:07:49.970
+a Nobel Prize in mathematics and congratulations to her for doing that.
+
+163
+00:07:49.970 --> 00:07:52.440
+You really have to let it take its time.
+
+164
+00:07:52.440 --> 00:07:53.840
+It's a slow process.
+
+165
+00:07:53.840 --> 00:07:58.020
+You've got to remember that mathematics is relatively recent,
+
+166
+00:07:58.020 --> 00:07:59.450
+two or three thousand years.
+
+167
+00:07:59.450 --> 00:08:04.130
+So, you're bringing what's essentially a stone age brain to a domain,
+
+168
+00:08:04.130 --> 00:08:05.450
+there's a couple of thousand years old.
+
+169
+00:08:05.450 --> 00:08:08.260
+In fact most mathematics is only a few decades, or so.
+
+170
+00:08:08.260 --> 00:08:12.150
+How can you take this brain that evolved to survive in
+
+171
+00:08:12.150 --> 00:08:16.280
+the wild and then more recently to survive in social environments,
+
+172
+00:08:16.280 --> 00:08:21.135
+how can you take that brain and apply it to solve this abstract problem in mathematics?
+
+173
+00:08:21.135 --> 00:08:23.370
+Well, the answer is, we don't really know how we do that.
+
+174
+00:08:23.370 --> 00:08:26.700
+What we do know, is that if you familiarize yourself with
+
+175
+00:08:26.700 --> 00:08:31.800
+the problem to such an extent that that problem is like a member of your family,
+
+176
+00:08:31.800 --> 00:08:34.950
+then the act of solving that math problem is actually not
+
+177
+00:08:34.950 --> 00:08:37.780
+unlike solving a difficult problem you have at home.
+
+178
+00:08:37.780 --> 00:08:41.970
+We're very good at solving social problems and problems about our environment,
+
+179
+00:08:41.970 --> 00:08:44.120
+because evolutions set us up for that.
+
+180
+00:08:44.120 --> 00:08:47.460
+So, somehow we have to figure out how to
+
+181
+00:08:47.460 --> 00:08:50.930
+let that brain solve that abstract problem in mathematics.
+
+182
+00:08:50.930 --> 00:08:55.840
+The act of getting inside the problem and thinking about it for a long period of time,
+
+183
+00:08:55.840 --> 00:08:57.860
+so that it's so familiar.
+
+184
+00:08:57.860 --> 00:09:01.180
+Then the natural circuits in the brain that
+
+185
+00:09:01.180 --> 00:09:05.505
+serve us well all of the time actually come into play for a math problem.
+
+186
+00:09:05.505 --> 00:09:09.120
+There's no proof of that, but that's certainly my own experience of what goes on.
+
+187
+00:09:09.120 --> 00:09:15.290
+Yes, all I can say is three cheers for slow thinking and I love
+
+188
+00:09:15.290 --> 00:09:18.150
+the idea of thinking about math and
+
+189
+00:09:18.150 --> 00:09:22.440
+a difficult problem as being something that's a member of your family.
+
+190
+00:09:22.440 --> 00:09:25.230
+Yes, in many ways,
+
+191
+00:09:25.230 --> 00:09:26.740
+mathematic's problems are not
+
+192
+00:09:26.740 --> 00:09:30.040
+fundamentally different from other problems except in one respect,
+
+193
+00:09:30.040 --> 00:09:32.530
+they are about totally abstract things.
+
+194
+00:09:32.530 --> 00:09:34.740
+So someone solving a math problem has
+
+195
+00:09:34.740 --> 00:09:38.900
+an initial problem that someone doesn't have if they're solving a problem in real life,
+
+196
+00:09:38.900 --> 00:09:42.790
+or a coaching problem in sort of football.
+
+197
+00:09:42.790 --> 00:09:46.295
+Most of the time, and I used to spend a lot of time rock-climbing.
+
+198
+00:09:46.295 --> 00:09:48.375
+Rock-climbing is partly physical,
+
+199
+00:09:48.375 --> 00:09:50.145
+but it's also a lot of problem solving,
+
+200
+00:09:50.145 --> 00:09:51.800
+because you're having to look for these moves,
+
+201
+00:09:51.800 --> 00:09:53.810
+you're having to move your body in the right way.
+
+202
+00:09:53.810 --> 00:09:56.170
+So there's an awful lot of problem solving that we
+
+203
+00:09:56.170 --> 00:09:59.340
+do all of the time and that's what the brain evolved to do.
+
+204
+00:09:59.340 --> 00:10:01.860
+In the case of mathematics however,
+
+205
+00:10:01.860 --> 00:10:06.055
+the world in which you are solving those problems isn't one we're familiar with.
+
+206
+00:10:06.055 --> 00:10:09.625
+You initially have to create that world inside of you.
+
+207
+00:10:09.625 --> 00:10:14.375
+This I think, is why it's essential to knock away at the problem for 10-15 minutes,
+
+208
+00:10:14.375 --> 00:10:17.325
+a day, two days before you let the brain do it's own thing.
+
+209
+00:10:17.325 --> 00:10:21.100
+My guess and my perception of what's going on is that
+
+210
+00:10:21.100 --> 00:10:25.740
+that process is making my mind familiar with that domain,
+
+211
+00:10:25.740 --> 00:10:29.750
+with that problem, to such an extent that that problem is just like
+
+212
+00:10:29.750 --> 00:10:34.310
+a problem I'd have with my family or my workplace or whatever.
+
+213
+00:10:34.310 --> 00:10:39.010
+I've got all of this apparatus for solving real-world problems and social problems.
+
+214
+00:10:39.010 --> 00:10:42.390
+Once that math problem is inside my mind,
+
+215
+00:10:42.390 --> 00:10:44.495
+it's another problem just like that.
+
+216
+00:10:44.495 --> 00:10:48.450
+So, solving the math problem usually isn't the hard part.
+
+217
+00:10:48.450 --> 00:10:52.435
+The hard part is getting that problem familiar inside your mind.
+
+218
+00:10:52.435 --> 00:10:55.250
+The only way to do that is just keep living in the problem,
+
+219
+00:10:55.250 --> 00:10:56.515
+get inside the problem,
+
+220
+00:10:56.515 --> 00:10:59.800
+really live inside that problem for 10 minutes,
+
+221
+00:10:59.800 --> 00:11:02.480
+half an hour, maybe even a few days.
+
+222
+00:11:02.480 --> 00:11:04.070
+In the case of Andrew Wiles,
+
+223
+00:11:04.070 --> 00:11:06.515
+solving Fermat's last theorem, a few years ago,
+
+224
+00:11:06.515 --> 00:11:09.070
+it took him seven years to really get inside
+
+225
+00:11:09.070 --> 00:11:12.200
+that problem to the point where he could see the solution.
+
+226
+00:11:12.200 --> 00:11:17.180
+Well, part of what you do when you're spending a lot of time with a problem is you're in
+
+227
+00:11:17.180 --> 00:11:19.480
+some sense reifying and growing
+
+228
+00:11:19.480 --> 00:11:23.140
+the neural structures that are related to what you're trying to think about.
+
+229
+00:11:23.140 --> 00:11:28.400
+One of the things that Dr. Sejnowski and I emphasize quite strongly in
+
+230
+00:11:28.400 --> 00:11:35.515
+our course is how exercise helps actually build neural structures.
+
+231
+00:11:35.515 --> 00:11:37.160
+It allows you to learn better,
+
+232
+00:11:37.160 --> 00:11:39.705
+it allows you to remember better.
+
+233
+00:11:39.705 --> 00:11:45.750
+So how does exercise play a role in your own ability to do mathematics?
+
+234
+00:11:45.750 --> 00:11:47.710
+That's a good one,
+
+235
+00:11:47.710 --> 00:11:48.855
+but it certainly is the case for me.
+
+236
+00:11:48.855 --> 00:11:50.410
+In fact when I was a PhD student,
+
+237
+00:11:50.410 --> 00:11:54.800
+my closest colleague was a mathematician from the United States,
+
+238
+00:11:54.800 --> 00:11:57.200
+came over to England when I was a student back in Bristol.
+
+239
+00:11:57.200 --> 00:12:00.055
+He was a rock climber, in fact I learned to rock climb with him.
+
+240
+00:12:00.055 --> 00:12:03.190
+We used to go on these three or four hour rock climbs
+
+241
+00:12:03.190 --> 00:12:07.235
+and we would almost certainly by the time we got to the top of the climb,
+
+242
+00:12:07.235 --> 00:12:08.590
+we'd done some mathematics.
+
+243
+00:12:08.590 --> 00:12:10.990
+Because you do a climb and you get to
+
+244
+00:12:10.990 --> 00:12:13.800
+a ledge and you're tied up and then you chat for a while,
+
+245
+00:12:13.800 --> 00:12:15.795
+as you're sort of belayed onto the rock face.
+
+246
+00:12:15.795 --> 00:12:18.285
+We'd talk about mathematics and then we'd forget the mathematics,
+
+247
+00:12:18.285 --> 00:12:20.300
+we don' do the physical stuff of climbing.
+
+248
+00:12:20.300 --> 00:12:23.620
+When you're climbing, as when you're bicycling very fast,
+
+249
+00:12:23.620 --> 00:12:26.540
+your mind is totally focused on that physical activity.
+
+250
+00:12:26.540 --> 00:12:29.205
+So your entire world is physical,
+
+251
+00:12:29.205 --> 00:12:32.820
+so you're focused on the climbing or you're focused on riding your bike.
+
+252
+00:12:32.820 --> 00:12:35.230
+Stuff is going on in the background in your mind,
+
+253
+00:12:35.230 --> 00:12:37.510
+it's working on those things that you've talked about.
+
+254
+00:12:37.510 --> 00:12:40.775
+We'd finish a pitch, we'd put ourselves back on belay,
+
+255
+00:12:40.775 --> 00:12:44.105
+we'd talk about the problem and we've made progress on the problem.
+
+256
+00:12:44.105 --> 00:12:45.975
+So as a graduate student,
+
+257
+00:12:45.975 --> 00:12:49.790
+I discovered this method of thinking,
+
+258
+00:12:49.790 --> 00:12:52.955
+doing, thinking, doing, was incredibly powerful.
+
+259
+00:12:52.955 --> 00:12:56.680
+I can make conjectures and sort of self
+
+260
+00:12:56.680 --> 00:13:00.245
+reflect as to why the physical activity is important.
+
+261
+00:13:00.245 --> 00:13:06.820
+I mean aspects clearly are you're focusing on that activity, it's very refreshing.
+
+262
+00:13:06.820 --> 00:13:11.670
+We tend to think these days that the mind is separate from the body.
+
+263
+00:13:11.670 --> 00:13:14.810
+I don't buy that it certainly isn't the case for me.
+
+264
+00:13:14.810 --> 00:13:17.310
+I find that if my body's tired,
+
+265
+00:13:17.310 --> 00:13:20.485
+my mind is tired and vice versa they stimulate each other.
+
+266
+00:13:20.485 --> 00:13:25.060
+So the mind did evolve to help the body survive,
+
+267
+00:13:25.060 --> 00:13:28.620
+and I think it's a mistake to try and think of those as separate.
+
+268
+00:13:28.620 --> 00:13:30.510
+If you nurture the body,
+
+269
+00:13:30.510 --> 00:13:32.845
+the mind follows this goes back
+
+270
+00:13:32.845 --> 00:13:36.095
+to the ideas of having physical education in schools and so forth.
+
+271
+00:13:36.095 --> 00:13:37.290
+This is hardly original,
+
+272
+00:13:37.290 --> 00:13:39.255
+but I think we need to take it seriously.
+
+273
+00:13:39.255 --> 00:13:42.605
+I've never ever, well I have solved problems in the bath,
+
+274
+00:13:42.605 --> 00:13:45.160
+that's a somewhat more relaxing case.
+
+275
+00:13:45.160 --> 00:13:50.520
+But even in the bath, it's an artificial environment in which you're relaxed.
+
+276
+00:13:50.520 --> 00:13:54.930
+You're in water, you're doing things, you're freeing up the mind,
+
+277
+00:13:54.930 --> 00:13:58.050
+the mind is absolutely not thinking about that problem,
+
+278
+00:13:58.050 --> 00:13:59.605
+it's doing other things.
+
+279
+00:13:59.605 --> 00:14:03.515
+In my case definitely the bath example not withstanding,
+
+280
+00:14:03.515 --> 00:14:06.385
+physical activity plays a big role.
+
+281
+00:14:06.385 --> 00:14:08.910
+Exactly why? I don't know,
+
+282
+00:14:08.910 --> 00:14:10.425
+but I do know it works.
+
+283
+00:14:10.425 --> 00:14:13.000
+Well there is actually good research evidence.
+
+284
+00:14:13.000 --> 00:14:19.205
+They're uncovering the bio physiological mechanisms by which it does take an effect.
+
+285
+00:14:19.205 --> 00:14:21.510
+But I have to ask,
+
+286
+00:14:21.510 --> 00:14:23.420
+with everything that you do,
+
+287
+00:14:23.420 --> 00:14:25.645
+do you ever catch yourself,
+
+288
+00:14:25.645 --> 00:14:28.470
+it's hard to believe, but do you ever procrastinate?
+
+289
+00:14:28.470 --> 00:14:31.790
+If you do, what do you do to get yourself out of it?
+
+290
+00:14:31.790 --> 00:14:35.225
+Yeah, well first of all I do do many things,
+
+291
+00:14:35.225 --> 00:14:37.640
+I've got my own educational technology company,
+
+292
+00:14:37.640 --> 00:14:39.205
+I do lots of biking.
+
+293
+00:14:39.205 --> 00:14:41.365
+I run an institute at Stanford,
+
+294
+00:14:41.365 --> 00:14:42.954
+I do my teaching,
+
+295
+00:14:42.954 --> 00:14:44.510
+I'm actually on Twitter a lot.
+
+296
+00:14:44.510 --> 00:14:45.920
+I do a whole bunch of things.
+
+297
+00:14:45.920 --> 00:14:48.060
+You might think I'm a multi-tasker,
+
+298
+00:14:48.060 --> 00:14:50.084
+I absolutely do not multitask.
+
+299
+00:14:50.084 --> 00:14:53.280
+Not least because I know from the research that's been done here at Stanford,
+
+300
+00:14:53.280 --> 00:14:55.795
+a lot of it by my late colleague Cliff Nass.
+
+301
+00:14:55.795 --> 00:14:58.995
+That shows that a, human beings cannot multitask,
+
+302
+00:14:58.995 --> 00:15:03.020
+and b, the more you think you're good at multitasking the worse you are at doing it.
+
+303
+00:15:03.020 --> 00:15:07.270
+So, I absolutely don't try to use this serial processor to multitask.
+
+304
+00:15:07.270 --> 00:15:09.580
+What I do is I serial task,
+
+305
+00:15:09.580 --> 00:15:14.180
+I will work exclusively flat out for periods of time.
+
+306
+00:15:14.180 --> 00:15:15.950
+Now they may only be 10 minutes,
+
+307
+00:15:15.950 --> 00:15:18.505
+they may be half an hour or they may be.
+
+308
+00:15:18.505 --> 00:15:21.875
+I mean recently I had to develop a whole set of 75 puzzles,
+
+309
+00:15:21.875 --> 00:15:26.380
+a new set of puzzles for my educational video game that we launched last fall.
+
+310
+00:15:26.380 --> 00:15:27.965
+We wanted to bring out a different version.
+
+311
+00:15:27.965 --> 00:15:30.415
+I worked nonstop on that for four days.
+
+312
+00:15:30.415 --> 00:15:31.960
+I didn't do anything else other than eat,
+
+313
+00:15:31.960 --> 00:15:34.080
+sleep and bicycle ride and in
+
+314
+00:15:34.080 --> 00:15:38.350
+my entire focus everything else went to one side was to get that thing done.
+
+315
+00:15:38.350 --> 00:15:40.890
+Four days later I had the 75 puzzles
+
+316
+00:15:40.890 --> 00:15:43.925
+worked and tested and everything and then I moved to something else.
+
+317
+00:15:43.925 --> 00:15:46.660
+So what I do is I work very intensely,
+
+318
+00:15:46.660 --> 00:15:49.010
+and very focused for periods of time.
+
+319
+00:15:49.010 --> 00:15:54.000
+I mean it's amazing that friends and family are still by me,
+
+320
+00:15:54.000 --> 00:15:57.050
+because this is very focused and it excludes everything else.
+
+321
+00:15:57.050 --> 00:16:00.020
+I must have been really difficult to live with at those times.
+
+322
+00:16:00.020 --> 00:16:02.805
+But everything gets excluded, I focus on it,
+
+323
+00:16:02.805 --> 00:16:06.615
+and then comes an end either because I finished the job or I just get
+
+324
+00:16:06.615 --> 00:16:10.490
+tired and want to switch and I'm really getting frustrated with it,
+
+325
+00:16:10.490 --> 00:16:12.800
+then I'll switch and do something else.
+
+326
+00:16:12.800 --> 00:16:16.560
+What I've learned to do very efficiently is switch from one to the other,
+
+327
+00:16:16.560 --> 00:16:18.430
+it doesn't take me more than a few minutes,
+
+328
+00:16:18.430 --> 00:16:20.965
+at most, to switch from one to the other.
+
+329
+00:16:20.965 --> 00:16:26.165
+Procrastination comes from recognizing that I need to make that switch.
+
+330
+00:16:26.165 --> 00:16:27.955
+I'll keep going and keep going I think
+
+331
+00:16:27.955 --> 00:16:30.295
+I want to do this other thing, I want to do this other thing.
+
+332
+00:16:30.295 --> 00:16:34.165
+I do find myself doing lots of other little things I'll go and start off
+
+333
+00:16:34.165 --> 00:16:38.020
+read my Twitter feed and things for a while before making the switch.
+
+334
+00:16:38.020 --> 00:16:39.720
+So the one moment where I will
+
+335
+00:16:39.720 --> 00:16:43.450
+procrastinate is starting something new, for obvious reasons.
+
+336
+00:16:43.450 --> 00:16:44.680
+You've been in the groove,
+
+337
+00:16:44.680 --> 00:16:50.010
+you've been making progress and it's slowed down and you've got to get in another groove.
+
+338
+00:16:50.010 --> 00:16:53.030
+I know that that takes willpower and effort and
+
+339
+00:16:53.030 --> 00:16:55.910
+like everybody else I do have a procrastination streak.
+
+340
+00:16:55.910 --> 00:16:58.970
+But the only time it affects me is making that switch.
+
+341
+00:16:58.970 --> 00:17:02.580
+Once I've done it, I'm away in that domain until I've
+
+342
+00:17:02.580 --> 00:17:07.410
+either solved that issue or done it or completed it or got tired of it and need a break.
+
+343
+00:17:07.410 --> 00:17:09.760
+That I found works extremely well.
+
+344
+00:17:09.760 --> 00:17:13.130
+Yeah. That's actually something that we talk about in this course is
+
+345
+00:17:13.130 --> 00:17:17.340
+just that idea of you don't need to use willpower all the time,
+
+346
+00:17:17.340 --> 00:17:21.270
+you just need to put it one little place wherever you need,
+
+347
+00:17:21.270 --> 00:17:23.060
+where you're getting that cue,
+
+348
+00:17:23.060 --> 00:17:25.650
+that's where you need to be applying willpower.
+
+349
+00:17:25.650 --> 00:17:28.205
+That seems to be exactly what you do.
+
+350
+00:17:28.205 --> 00:17:32.545
+It is true that I'm fortunate to have been able to carve out a career for myself,
+
+351
+00:17:32.545 --> 00:17:35.650
+where most of the time I'm doing stuff I really want to do.
+
+352
+00:17:35.650 --> 00:17:39.420
+So even though I might not want to write that blog post,
+
+353
+00:17:39.420 --> 00:17:42.025
+I know at the back of my mind that
+
+354
+00:17:42.025 --> 00:17:44.935
+the moment I get into it and I've written the first sentences,
+
+355
+00:17:44.935 --> 00:17:47.430
+writing that blog post will be the most important,
+
+356
+00:17:47.430 --> 00:17:51.285
+and most wonderful and rewarding thing in the world until it's finished.
+
+357
+00:17:51.285 --> 00:17:54.300
+But then I have to sort of stop that and do something else,
+
+358
+00:17:54.300 --> 00:17:57.990
+and that's when there's these hiatus moments when I procrastinate.
+
+359
+00:17:57.990 --> 00:18:03.255
+It's the switching gears to something else that I find,
+
+360
+00:18:03.255 --> 00:18:06.240
+I won't say I find it difficult because I've been doing it all my life.
+
+361
+00:18:06.240 --> 00:18:08.005
+But you do need willpower to do that.
+
+362
+00:18:08.005 --> 00:18:10.455
+At least I find I need willpower to do that.
+
+363
+00:18:10.455 --> 00:18:16.345
+If I'm not careful it will just fritter away with social media or whatever.
+
+364
+00:18:16.345 --> 00:18:19.970
+I feel the same way in how I handle things.
+
+365
+00:18:19.970 --> 00:18:26.070
+One thing I like to do is I think of my life as like this enormous funnel where there's
+
+366
+00:18:26.070 --> 00:18:30.030
+all these things that are demanding to be done
+
+367
+00:18:30.030 --> 00:18:34.665
+but then only one thing can go through that funnel at a time.
+
+368
+00:18:34.665 --> 00:18:41.420
+So, you just got to give it up and realize one thing is all you can be focusing on.
+
+369
+00:18:41.420 --> 00:18:44.130
+If you have that approach it makes it a
+
+370
+00:18:44.130 --> 00:18:47.510
+little easier to realize that you just can't do everything,
+
+371
+00:18:47.510 --> 00:18:50.930
+you just do as much as you reasonably can.
+
+372
+00:18:50.930 --> 00:18:54.080
+Yeah. I mean one thing I do do is when I actually
+
+373
+00:18:54.080 --> 00:18:57.070
+just upgraded my computer system to a to a new Macintosh.
+
+374
+00:18:57.070 --> 00:18:58.530
+The first thing I did was went into
+
+375
+00:18:58.530 --> 00:19:03.180
+the system controls and switched off every single alert.
+
+376
+00:19:03.180 --> 00:19:04.630
+I don't want visual alerts,
+
+377
+00:19:04.630 --> 00:19:05.660
+I don't want noise alerts.
+
+378
+00:19:05.660 --> 00:19:06.910
+So I don't want to know if an email has come,
+
+379
+00:19:06.910 --> 00:19:08.615
+I don't want to know if something is going on.
+
+380
+00:19:08.615 --> 00:19:13.940
+I literally switch off all the alerts because I do not want things pushed to me,
+
+381
+00:19:13.940 --> 00:19:15.855
+I want to go and find out things when I need them.
+
+382
+00:19:15.855 --> 00:19:19.945
+Because the last thing I want if I'm in the middle of working on an article say
+
+383
+00:19:19.945 --> 00:19:24.695
+is to have some little beep going off to tell me some emails has arrived.
+
+384
+00:19:24.695 --> 00:19:25.895
+I don't want to know that,
+
+385
+00:19:25.895 --> 00:19:29.480
+because that's a distraction I want to be in the world of writing that article.
+
+386
+00:19:29.480 --> 00:19:33.105
+Because if you take the human brain and you put it into a problem,
+
+387
+00:19:33.105 --> 00:19:35.770
+into a domain and you set it free,
+
+388
+00:19:35.770 --> 00:19:37.240
+it loves what it's doing,
+
+389
+00:19:37.240 --> 00:19:40.490
+it doesn't want to give up and that sure doesn't want to be distracted.
+
+390
+00:19:40.490 --> 00:19:43.690
+So, I don't distract it I just let it do what it does.
+
+391
+00:19:43.690 --> 00:19:50.680
+Well, I thank you so much Dr. Devlin for sharing your wisdom with us here today.
+
+392
+00:19:50.680 --> 00:19:54.565
+It's just been a great pleasure talking with you and I
+
+393
+00:19:54.565 --> 00:19:58.950
+know our viewers will really learn a lot from what you had to say.
+
+394
+00:19:58.950 --> 00:20:01.550
+Okay the pleasure is been all mine, absolutely.
+
+395
+00:20:01.550 --> 00:20:03.700
+Thanks so much.
