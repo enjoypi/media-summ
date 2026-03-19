@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+
+"use strict";
+
+const { execFileSync } = require("child_process");
+const os = require("os");
+const path = require("path");
+
+const PLATFORMS = {
+  "linux-x64": "@enjoypi/media-summ-linux-x64",
+  "darwin-arm64": "@enjoypi/media-summ-darwin-arm64",
+  "win32-x64": "@enjoypi/media-summ-win32-x64",
+};
+
+const platformKey = `${process.platform}-${os.arch()}`;
+const pkg = PLATFORMS[platformKey];
+
+if (!pkg) {
+  console.error(
+    `@enjoypi/media-summ: unsupported platform ${platformKey}.\n` +
+    `Supported: ${Object.keys(PLATFORMS).join(", ")}`
+  );
+  process.exit(1);
+}
+
+const binName = process.platform === "win32" ? "media-summ.exe" : "media-summ";
+
+let binPath;
+try {
+  const pkgDir = path.dirname(require.resolve(`${pkg}/package.json`));
+  binPath = path.join(pkgDir, "bin", binName);
+} catch {
+  console.error(
+    `@enjoypi/media-summ: could not find ${pkg}.\n` +
+    `Try reinstalling: npm install -g @enjoypi/media-summ`
+  );
+  process.exit(1);
+}
+
+try {
+  execFileSync(binPath, process.argv.slice(2), { stdio: "inherit" });
+} catch (err) {
+  if (err && typeof err === "object" && "status" in err && err.status !== null) {
+    process.exitCode = err.status;
+  } else {
+    process.exitCode = 1;
+  }
+}
