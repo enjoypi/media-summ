@@ -71,7 +71,11 @@ export function createContainer(explicitConfigPath?: string): Container {
 
   const courseraOpts = { baseUrl: config.base_url, coursera: config.coursera };
   const courseFetcher = new CourseraCourseFetcher(httpClient, courseraOpts);
-  const subtitleSource = new CourseraSubtitleSource(httpClient, { baseUrl: config.base_url });
+  const subtitleSource = new CourseraSubtitleSource(httpClient, {
+    baseUrl: config.base_url,
+    formatVtt: config.coursera.format_vtt,
+    formatSrt: config.coursera.format_srt,
+  });
   const fileSystem = new NodeFileSystem();
   const pathBuilder = new DefaultPathBuilder({
     maxFilenameLength: config.max_filename_length,
@@ -82,6 +86,7 @@ export function createContainer(explicitConfigPath?: string): Container {
     weekPattern: config.course_scanner.week_pattern,
     subCoursePattern: config.course_scanner.sub_course_pattern,
     subtitleExtension: config.course_scanner.subtitle_extension,
+    flatFilePattern: config.course_scanner.flat_file_pattern,
   });
   const vttParser = new LibVttParser({ emptyPlaceholder: config.empty_subtitle_placeholder });
   const specializationFetcher = new CourseraSpecializationFetcher(httpClient, { baseUrl: config.base_url, specializationSlugPattern: config.url_patterns.specialization_slug });

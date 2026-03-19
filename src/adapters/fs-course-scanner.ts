@@ -12,17 +12,20 @@ export interface CourseScannerOptions {
   weekPattern: string;
   subCoursePattern: string;
   subtitleExtension: string;
+  flatFilePattern: string;
 }
 
 export class FileSystemCourseScanner implements CourseScanner {
   private weekPatternRegex: RegExp;
   private subCoursePatternRegex: RegExp;
   private subtitleExtension: string;
+  private flatFilePatternRegex: RegExp;
 
   constructor(options: CourseScannerOptions) {
     this.weekPatternRegex = new RegExp(options.weekPattern, 'i');
     this.subCoursePatternRegex = new RegExp(options.subCoursePattern);
     this.subtitleExtension = options.subtitleExtension;
+    this.flatFilePatternRegex = new RegExp(options.flatFilePattern);
   }
 
   scan(coursePath: string): ScannedCourse {
@@ -76,14 +79,13 @@ export class FileSystemCourseScanner implements CourseScanner {
   }
 
   private scanFlatFiles(coursePath: string): ScannedWeek[] {
-    const FLAT_FILE_PATTERN = /^(\d+)-\d+-.+/;
     const files = readdirSync(coursePath)
       .filter((f) => extname(f).toLowerCase() === this.subtitleExtension && !statSync(join(coursePath, f)).isDirectory())
       .sort();
 
     const weekMap = new Map<number, ScannedLesson[]>();
     for (const f of files) {
-      const match = FLAT_FILE_PATTERN.exec(f);
+      const match = this.flatFilePatternRegex.exec(f);
       if (!match) continue;
       const weekNum = parseInt(match[1], 10);
       const lessons = weekMap.get(weekNum) ?? [];

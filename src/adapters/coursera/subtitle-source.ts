@@ -18,6 +18,8 @@ interface VideoResponse {
 
 export interface SubtitleSourceOptions {
   baseUrl: string;
+  formatVtt: string;
+  formatSrt: string;
 }
 
 export class CourseraSubtitleSource implements SubtitleSource {
@@ -47,9 +49,9 @@ export class CourseraSubtitleSource implements SubtitleSource {
 
     for (const lang of new Set([...Object.keys(srtSubs), ...Object.keys(vttSubs)])) {
       if (vttSubs[lang]) {
-        result.push({ lang, format: 'vtt', url: this.toAbsoluteUrl(vttSubs[lang]) });
+        result.push({ lang, format: this.options.formatVtt, url: this.toAbsoluteUrl(vttSubs[lang]) });
       } else if (srtSubs[lang]) {
-        result.push({ lang, format: 'srt', url: this.toAbsoluteUrl(srtSubs[lang]) });
+        result.push({ lang, format: this.options.formatSrt, url: this.toAbsoluteUrl(srtSubs[lang]) });
       }
     }
 

@@ -34,6 +34,7 @@ export const courseScannerSchema = z.object({
   week_pattern: z.string(),
   sub_course_pattern: z.string(),
   subtitle_extension: z.string(),
+  flat_file_pattern: z.string(),
 });
 
 export const sanitizeSchema = z.object({

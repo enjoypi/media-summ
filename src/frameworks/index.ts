@@ -43,7 +43,7 @@ if (firstNonOptionIdx >= 0 && urlDetectPattern.test(args[firstNonOptionIdx])) {
 program.on('command:*', (operands: string[]) => {
   console.error(`错误: 未知子命令 '${operands[0]}'`);
   console.error(`可用子命令: ${program.commands.map((c) => c.name()).join(', ')}`);
-  process.exit(1);
+  process.exit(config.exit_codes.general_error);
 });
 
 // 无参数时显示帮助

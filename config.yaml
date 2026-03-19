@@ -31,6 +31,7 @@ course_scanner:
   week_pattern: '^Week\s+(\d+)$'   # Week 目录匹配正则
   sub_course_pattern: '^(\d+)\s*-\s*'  # 子课程目录匹配正则
   subtitle_extension: '.vtt'       # 字幕文件扩展名
+  flat_file_pattern: '^(\d+)-\d+-.+'  # 平铺文件名匹配正则（从前缀推断 week）
 
 # 文件名清理配置
 sanitize:
