@@ -1,8 +1,14 @@
 {
   "name": "@enjoypi/media-summ-linux-x64",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Platform-specific binary for @enjoypi/media-summ (linux-x64)",
-  "os": ["linux"],
-  "cpu": ["x64"],
-  "files": ["bin"]
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "bin"
+  ]
 }
