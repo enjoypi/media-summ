@@ -114,7 +114,11 @@ async function ensureNodeBinary(platform: Platform): Promise<string> {
 
   console.log(`[extract] ${archiveFile}`);
   if (isWin) {
-    execSync(`unzip -o "${archiveFile}" -d "${CACHE_DIR}"`, { stdio: 'inherit' });
+    try {
+      execSync(`unzip -o "${archiveFile}" -d "${CACHE_DIR}"`, { stdio: 'inherit' });
+    } catch {
+      execSync(`python3 -c "import zipfile; zipfile.ZipFile('${archiveFile}').extractall('${CACHE_DIR}')"`, { stdio: 'inherit' });
+    }
   } else {
     execSync(`tar -xzf "${archiveFile}" -C "${CACHE_DIR}"`, { stdio: 'inherit' });
   }
@@ -131,9 +135,13 @@ function injectBlob(nodeBinPath: string, platform: Platform): string {
     chmodSync(outputPath, 0o755);
   }
 
-  if (platform.postSign) {
+  const onMacOS = process.platform === 'darwin';
+
+  if (platform.postSign && onMacOS) {
     console.log(`[sign] ${platform.postSign} ${outputPath}`);
     execSync(`${platform.postSign} "${outputPath}"`, { stdio: 'inherit' });
+  } else if (platform.postSign) {
+    console.log(`[sign] skipped (not on macOS): ${platform.postSign}`);
   }
 
   const extra = platform.postjectExtra?.join(' ') ?? '';
@@ -141,9 +149,11 @@ function injectBlob(nodeBinPath: string, platform: Platform): string {
   console.log(`[inject] ${cmd}`);
   execSync(cmd, { cwd: ROOT, stdio: 'inherit' });
 
-  if (platform.name.startsWith('darwin')) {
+  if (platform.name.startsWith('darwin') && onMacOS) {
     console.log(`[sign] codesign --sign - ${outputPath}`);
     execSync(`codesign --sign - "${outputPath}"`, { stdio: 'inherit' });
+  } else if (platform.name.startsWith('darwin')) {
+    console.log(`[sign] skipped (not on macOS): codesign --sign -`);
   }
 
   console.log(`[done] ${outputPath}`);
