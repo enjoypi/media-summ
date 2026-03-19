@@ -25,6 +25,9 @@
 
 ## Commands
 - `pnpm build` - 编译 TypeScript
+- `pnpm build:sea -- --all` - 构建所有平台 SEA 二进制
+- `pnpm publish-packages` - 发布到 npm（含 dry-run 验证）
+- `pnpm publish-packages --yes` - 跳过 dry-run 直接发布
 - 修改 zod schema 后需 `rm -rf dist && pnpm build`，旧 dist 产物会导致 config 测试失败
 - `pnpm start` - 运行 CLI（等效于 `node dist/frameworks/index.js`）
 - `pnpm start download <url>` - 下载字幕（推荐用法）
@@ -76,6 +79,11 @@ subtitles/
 ## Common Patterns
 - Adapters 常注入 `logger` 但未使用，优化时需检查实际调用
 - 测试文件与源码同目录：`src/**/*.test.ts`
+
+## Publishing
+- npm 包发布到 `@enjoypi` scope，需要有 write 权限的 token
+- 平台二进制包在 `npm/` 目录，`bin/.gitignore` 排除二进制文件；必须保留 `bin/.npmignore`（空文件）否则 npm 会遵守 `.gitignore` 导致 tarball 不含二进制
+- 发布顺序：3 个平台包先发，主包 `@enjoypi/media-summ` 最后发
 
 ## Dependencies
 - HTTP: `undici` (ProxyAgent)
