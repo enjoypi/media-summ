@@ -8,7 +8,8 @@
     "build:sea": "node --experimental-strip-types scripts/build-sea.ts",
     "start": "node dist/frameworks/index.js",
     "test": "vitest run",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "publish-packages": "node --experimental-strip-types scripts/publish.ts"
   },
   "license": "ISC",
   "packageManager": "pnpm@10.28.1",
