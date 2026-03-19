@@ -35,7 +35,9 @@ postject 注入 blob
 - `target`: `'node24'`
 - `outfile`: `'dist/bundle.cjs'`
 - `define`: `{ '__APP_VERSION__': JSON.stringify(version) }`（从 package.json 读取，构建时内联）
-- `banner.js`: `createRequire` polyfill（处理某些 node_modules 的 CJS require）
+- `external`: 无。所有生产依赖（cheerio、commander、openai、undici@7、p-limit、tough-cookie、yaml、zod）均为纯 JS，可完整内联
+
+注意：esbuild 输出 CJS 格式时 `require` 已原生可用，无需 `createRequire` polyfill banner。
 
 ### sea-config.json
 
@@ -48,7 +50,7 @@ postject 注入 blob
 }
 ```
 
-`useCodeCache` 设为 false，因为 openai SDK 内部可能有动态 `import()`。
+`useCodeCache` 设为 false，因为 V8 code cache 与目标 CPU 架构绑定。跨平台构建时，本机生成的 cache 无法用于其他平台。设为 false 后，同一个 blob 可注入到所有平台的 node 二进制中。
 
 ## 代码改动
 
@@ -70,6 +72,10 @@ program.version(__APP_VERSION__);
 
 移除不再需要的导入：`readFileSync`、`fileURLToPath`、`dirname`、`join`（如果其他地方未使用）。
 
+### import.meta.url 注意事项
+
+SEA 环境中 `import.meta.url` 不再指向文件系统路径。经确认，当前代码库中仅 `index.ts` 一处使用了 `import.meta.url`（用于读取 package.json），该处已在上述改动中移除。如果未来有新代码使用 `import.meta.url` 解析路径，在 SEA 模式下会静默失败。
+
 ### 无需改动的文件
 
 - `config-loader.ts`：使用 `process.cwd()` 和 `homedir()` 查找 config.yaml，SEA 模式下正常工作
@@ -88,6 +94,10 @@ program.version(__APP_VERSION__);
 ### Node 二进制获取
 
 从 `https://nodejs.org/dist/` 下载对应平台的 node 二进制，缓存到 `.cache/node-bins/` 避免重复下载。
+
+### Blob 跨平台策略
+
+由于 `useCodeCache: false`，生成的 `sea-prep.blob` 仅包含 JS 源码，与平台无关。因此只需生成一次 blob，即可注入到所有平台的 node 二进制中。
 
 ### 平台特殊处理
 
@@ -129,7 +139,21 @@ pnpm build:sea -- --all     # 构建全部三平台
 }
 ```
 
+`build:bundle` 仅执行 esbuild 打包步骤，用于调试 bundle 产物（检查依赖是否正确内联、产物体积等）。
+
 `postject` 通过 `pnpm dlx postject` 调用，无需安装为依赖。
+
+## 产物体积预估
+
+- Node 二进制：~70-90MB（每平台）
+- esbuild bundle：~2-5MB（所有依赖内联后）
+- 最终可执行文件：~70-95MB（每平台）
+
+## .gitignore 更新
+
+新增忽略项：
+- `dist/bin/`
+- `.cache/`
 
 ## 产物结构
 
