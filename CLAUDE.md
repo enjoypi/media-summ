@@ -10,6 +10,7 @@
 - `ports.ts` 只定义 Port 接口，不含实体类型重导出
 - TypeScript ESM 模块，构建输出到 `dist/`
 - Adapter 接收外部配置通过 options 对象（如 `{ baseUrl: config.base_url }`）
+- 只 export 被其他文件引用的符号；内部 Options/Input 接口不 export
 - `sanitize` 必须处理所有特殊字符：`&@#$%^(){}[];',.!~\` 等
 
 ## Runtime
@@ -39,7 +40,7 @@
 ## Configuration
 - 本地配置：`./config.yaml`
 - 全局配置：`~/.media-summ/config.yaml`
-- 可配置项：`base_url`, `empty_subtitle_placeholder`, `rate_limit.*`, `llm.*`, `summarize.*`
+- 可配置项：`base_url`, `empty_subtitle_placeholder`, `rate_limit.*`, `llm.*`, `summarize.*`, `coursera.api_endpoints.*`, `coursera.api_linked_keys.*`
 - 流控配置：`rate_limit.default_concurrency`, `rate_limit.domain_concurrency`, `rate_limit.default_requests_per_minute`, `rate_limit.domain_requests_per_minute`
 
 ## Prerequisites
@@ -85,6 +86,7 @@ subtitles/
 ## Common Patterns
 - Adapters 常注入 `logger` 但未使用，优化时需检查实际调用
 - 测试文件与源码同目录：`src/**/*.test.ts`
+- OpenAI SDK `stream` 参数必须用 `true as const` / `false as const` 分支，`boolean` 类型无法推断返回类型
 
 ## Publishing
 - npm 包发布到 `@enjoypi` scope，需要有 write 权限的 token
