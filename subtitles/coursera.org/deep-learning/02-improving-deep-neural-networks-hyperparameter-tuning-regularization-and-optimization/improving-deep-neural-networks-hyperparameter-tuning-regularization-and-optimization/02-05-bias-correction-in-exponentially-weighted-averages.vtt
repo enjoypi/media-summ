@@ -1,0 +1,409 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.725
+You've learned how to implement
+
+2
+00:00:01.725 --> 00:00:03.465
+exponentially weighted averages.
+
+3
+00:00:03.465 --> 00:00:06.810
+There's one technical detail
+called bias correction that
+
+4
+00:00:06.810 --> 00:00:08.130
+can make your computation of
+
+5
+00:00:08.130 --> 00:00:10.200
+these averages more accurate.
+
+6
+00:00:10.200 --> 00:00:11.590
+Let's see how that works.
+
+7
+00:00:11.590 --> 00:00:12.930
+In the previous video,
+
+8
+00:00:12.930 --> 00:00:15.975
+you saw this figure
+for Beta equals 0.9,
+
+9
+00:00:15.975 --> 00:00:19.365
+this figure for a
+Beta equals 0.98.
+
+10
+00:00:19.365 --> 00:00:20.910
+But it turns out that if you
+
+11
+00:00:20.910 --> 00:00:23.880
+implement the formula
+as written here,
+
+12
+00:00:23.880 --> 00:00:25.320
+you won't actually get
+
+13
+00:00:25.320 --> 00:00:29.370
+the green curve when
+Beta equals 0.98,
+
+14
+00:00:29.370 --> 00:00:32.265
+you actually get the
+purple curve here.
+
+15
+00:00:32.265 --> 00:00:36.070
+You notice that the purple
+curve starts off really low.
+
+16
+00:00:36.070 --> 00:00:38.090
+Let's see how to fix that.
+
+17
+00:00:38.090 --> 00:00:40.055
+When implementing
+a moving average,
+
+18
+00:00:40.055 --> 00:00:42.860
+you initialize it
+with V_0 equals 0,
+
+19
+00:00:42.860 --> 00:00:50.480
+and then V_1 is equal to
+0.98 V_0 plus 0.02 Theta 1.
+
+20
+00:00:50.480 --> 00:00:52.280
+But V_0 is equal to 0,
+
+21
+00:00:52.280 --> 00:00:53.990
+so that term just goes away.
+
+22
+00:00:53.990 --> 00:00:57.600
+So V_1 is just 0.02
+times Theta 1.
+
+23
+00:00:57.600 --> 00:01:01.085
+That's why if the first
+day's temperature is,
+
+24
+00:01:01.085 --> 00:01:03.365
+say, 40 degrees Fahrenheit,
+
+25
+00:01:03.365 --> 00:01:07.130
+then V_1 will be 0.02 times 40,
+
+26
+00:01:07.130 --> 00:01:11.190
+which is 0.8, so you get a
+much lower value down here.
+
+27
+00:01:11.190 --> 00:01:12.590
+That's not a very good estimate
+
+28
+00:01:12.590 --> 00:01:14.230
+of the first day's temperature.
+
+29
+00:01:14.230 --> 00:01:21.465
+V_2 will be 0.98 times V_1
+plus 0.02 times Theta 2.
+
+30
+00:01:21.465 --> 00:01:23.895
+If you plug in V_1,
+
+31
+00:01:23.895 --> 00:01:26.240
+which is this down here,
+
+32
+00:01:26.240 --> 00:01:27.500
+and multiply it out,
+
+33
+00:01:27.500 --> 00:01:30.080
+then you find that V_2
+is actually equal to
+
+34
+00:01:30.080 --> 00:01:35.090
+0.98 times 0.02
+times Theta 1 plus
+
+35
+00:01:35.090 --> 00:01:38.930
+0.02 times Theta 2 and that's
+
+36
+00:01:38.930 --> 00:01:46.210
+0.0196 Theta 1
+plus 0.02 Theta 2.
+
+37
+00:01:46.210 --> 00:01:49.560
+Assuming Theta 1 and Theta
+2 are positive numbers.
+
+38
+00:01:49.560 --> 00:01:51.435
+When you compute this,
+
+39
+00:01:51.435 --> 00:01:54.465
+V_2 will be much less
+than Theta 1 or Theta 2,
+
+40
+00:01:54.465 --> 00:01:56.540
+so V_2 isn't a
+very good estimate
+
+41
+00:01:56.540 --> 00:01:59.410
+of the first two days
+temperature of the year.
+
+42
+00:01:59.410 --> 00:02:01.250
+It turns out that
+there's a way to
+
+43
+00:02:01.250 --> 00:02:03.660
+modify this estimate that
+makes it much better,
+
+44
+00:02:03.660 --> 00:02:04.850
+that makes it more accurate,
+
+45
+00:02:04.850 --> 00:02:08.975
+especially during this initial
+phase of your estimate.
+
+46
+00:02:08.975 --> 00:02:12.230
+Instead of taking
+V_t, take V_t divided
+
+47
+00:02:12.230 --> 00:02:16.400
+by 1 minus Beta to
+the power of t,
+
+48
+00:02:16.400 --> 00:02:19.160
+where t is the current
+day that you're on.
+
+49
+00:02:19.160 --> 00:02:21.080
+Let's take a concrete example.
+
+50
+00:02:21.080 --> 00:02:22.715
+When t is equal to 2,
+
+51
+00:02:22.715 --> 00:02:31.170
+1 minus Beta to the power of
+t is 1 minus 0.98 squared.
+
+52
+00:02:31.170 --> 00:02:37.740
+It turns out that is 0.0396.
+
+53
+00:02:37.740 --> 00:02:41.405
+Your estimate of the
+temperature on day 2
+
+54
+00:02:41.405 --> 00:02:46.735
+becomes V_2 divided by 0.0396,
+
+55
+00:02:46.735 --> 00:02:50.000
+and this is going to be 0.0196
+
+56
+00:02:50.000 --> 00:02:53.900
+times Theta 1 plus 0.02 Theta 2.
+
+57
+00:02:53.900 --> 00:02:55.975
+You notice that these two things
+
+58
+00:02:55.975 --> 00:02:59.425
+act as denominator, 0.0396.
+
+59
+00:02:59.425 --> 00:03:02.360
+This becomes a weighted
+average of Theta 1 and
+
+60
+00:03:02.360 --> 00:03:05.420
+Theta 2 and this
+removes this bias.
+
+61
+00:03:05.420 --> 00:03:08.765
+You notice that as
+t becomes large,
+
+62
+00:03:08.765 --> 00:03:13.220
+Beta to the t will approach 0,
+
+63
+00:03:13.220 --> 00:03:14.900
+which is why when
+t is large enough,
+
+64
+00:03:14.900 --> 00:03:17.300
+the bias correction makes
+almost no difference.
+
+65
+00:03:17.300 --> 00:03:18.995
+This is why when t is large,
+
+66
+00:03:18.995 --> 00:03:22.085
+the purple line and the green
+line pretty much overlap.
+
+67
+00:03:22.085 --> 00:03:24.470
+But during this initial
+phase of learning,
+
+68
+00:03:24.470 --> 00:03:28.024
+when you're still warming
+up your estimates,
+
+69
+00:03:28.024 --> 00:03:29.825
+bias correction can help you
+
+70
+00:03:29.825 --> 00:03:31.850
+obtain a better estimate
+of the temperature.
+
+71
+00:03:31.850 --> 00:03:33.830
+This is bias correction
+that helps you
+
+72
+00:03:33.830 --> 00:03:36.990
+go from the purple line
+to the green line.
+
+73
+00:03:36.990 --> 00:03:39.740
+In machine learning, for
+most implementations
+
+74
+00:03:39.740 --> 00:03:41.945
+of the exponentially
+weighted average,
+
+75
+00:03:41.945 --> 00:03:44.480
+people don't often
+bother to implement
+
+76
+00:03:44.480 --> 00:03:46.730
+bias corrections because
+most people would
+
+77
+00:03:46.730 --> 00:03:48.920
+rather just weigh
+that initial period
+
+78
+00:03:48.920 --> 00:03:49.970
+and have a slightly more biased
+
+79
+00:03:49.970 --> 00:03:51.305
+assessment and then
+go from there.
+
+80
+00:03:51.305 --> 00:03:52.640
+But we are concerned about
+
+81
+00:03:52.640 --> 00:03:54.520
+the bias during
+this initial phase,
+
+82
+00:03:54.520 --> 00:03:56.880
+while your exponentially
+weighted moving average
+
+83
+00:03:56.880 --> 00:03:58.185
+is warming up,
+
+84
+00:03:58.185 --> 00:04:00.010
+then bias correction can help
+
+85
+00:04:00.010 --> 00:04:02.720
+you get a better
+estimate early on.
+
+86
+00:04:02.720 --> 00:04:04.460
+With that, you now know how to
+
+87
+00:04:04.460 --> 00:04:07.160
+implement exponentially
+weighted moving averages.
+
+88
+00:04:07.160 --> 00:04:09.335
+Let's go on and
+use this to build
+
+89
+00:04:09.335 --> 00:04:12.569
+some better optimization
+algorithms.

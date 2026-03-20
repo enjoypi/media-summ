@@ -1,0 +1,973 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.470
+When designing a layer for
+
+2
+00:00:01.470 --> 00:00:03.400
+a conv layer, you
+might have to pick.
+
+3
+00:00:03.400 --> 00:00:05.500
+Do you want a
+one-by-three filter
+
+4
+00:00:05.500 --> 00:00:07.390
+or three-by-three
+or five-by-five,
+
+5
+00:00:07.390 --> 00:00:09.160
+or do you want a polling layer?
+
+6
+00:00:09.160 --> 00:00:10.980
+What the exception network
+
+7
+00:00:10.980 --> 00:00:13.260
+does is it says, why
+don't you do them all?
+
+8
+00:00:13.260 --> 00:00:16.240
+This makes the network
+architecture more complicated,
+
+9
+00:00:16.240 --> 00:00:18.360
+but it also works
+remarkably well.
+
+10
+00:00:18.360 --> 00:00:19.760
+Let's see how this works.
+
+11
+00:00:19.760 --> 00:00:22.655
+Let's say for the second
+example that you have
+
+12
+00:00:22.655 --> 00:00:27.280
+input a 28 by 28 by
+192-dimensional volume.
+
+13
+00:00:27.280 --> 00:00:30.120
+What the inception network
+
+14
+00:00:30.120 --> 00:00:32.500
+or what an inception
+layer says is,
+
+15
+00:00:32.500 --> 00:00:34.820
+instead of choosing
+what filter size
+
+16
+00:00:34.820 --> 00:00:36.700
+you want in a conv layer
+
+17
+00:00:36.700 --> 00:00:38.160
+or even do you want
+
+18
+00:00:38.160 --> 00:00:39.380
+a convolutional layer or
+
+19
+00:00:39.380 --> 00:00:41.770
+polling layer,
+let's do them all.
+
+20
+00:00:41.770 --> 00:00:46.860
+What if you can use a
+one-by-one convolution,
+
+21
+00:00:46.860 --> 00:00:50.745
+and that will output a
+28 by 28 by something,
+
+22
+00:00:50.745 --> 00:00:56.160
+let's say, 28 by
+28 by 64 output,
+
+23
+00:00:56.160 --> 00:00:58.455
+and you just have
+a volume there?
+
+24
+00:00:58.455 --> 00:01:01.700
+But maybe you also want
+to try a three by three,
+
+25
+00:01:01.700 --> 00:01:06.545
+and that might output
+a 20 by 28 by 128.
+
+26
+00:01:06.545 --> 00:01:09.255
+Then what you do is just
+
+27
+00:01:09.255 --> 00:01:14.185
+stack up this second volume
+next to the first volume.
+
+28
+00:01:14.185 --> 00:01:16.450
+To make the dimensions match up,
+
+29
+00:01:16.450 --> 00:01:19.530
+let's make this
+same convolution,
+
+30
+00:01:19.530 --> 00:01:23.480
+so the output dimension
+is still 28 by 28,
+
+31
+00:01:23.480 --> 00:01:26.965
+same as the input dimension
+in terms of height and width,
+
+32
+00:01:26.965 --> 00:01:31.425
+but 28 by 28 but in
+this example 128.
+
+33
+00:01:31.425 --> 00:01:33.320
+Maybe you might say, well,
+
+34
+00:01:33.320 --> 00:01:34.540
+I want to hedge my bets.
+
+35
+00:01:34.540 --> 00:01:36.055
+Maybe a five-by-five filter
+
+36
+00:01:36.055 --> 00:01:38.140
+works better so
+let's do that too,
+
+37
+00:01:38.140 --> 00:01:44.850
+and have that output
+a 28 by 28 by 32.
+
+38
+00:01:44.850 --> 00:01:47.400
+Again, you use the
+same convolution
+
+39
+00:01:47.400 --> 00:01:49.590
+to keep the dimensions same.
+
+40
+00:01:49.590 --> 00:01:52.700
+Maybe you don't want
+convolutional layer.
+
+41
+00:01:52.700 --> 00:01:56.420
+Let's apply pulling, and
+that has some other output,
+
+42
+00:01:56.420 --> 00:01:58.895
+and let's stack that up as well.
+
+43
+00:01:58.895 --> 00:02:05.150
+Here, pulling outputs
+28 by 28 by 32.
+
+44
+00:02:05.150 --> 00:02:09.170
+Now, in order to make all
+the dimensions match,
+
+45
+00:02:09.170 --> 00:02:12.670
+you actually need to use
+padding for Max pooling.
+
+46
+00:02:12.670 --> 00:02:15.870
+This is an unusual form of
+polling because if you want
+
+47
+00:02:15.870 --> 00:02:17.770
+the input to have
+height and worth 28
+
+48
+00:02:17.770 --> 00:02:20.270
+by 28 and have the output,
+
+49
+00:02:20.270 --> 00:02:24.430
+match the dimension and
+everything else also by 28 by 28,
+
+50
+00:02:24.430 --> 00:02:25.990
+then you need to use
+
+51
+00:02:25.990 --> 00:02:31.205
+same padding as well as a
+stride of one for polling.
+
+52
+00:02:31.205 --> 00:02:34.210
+This detail might seem
+a bit funny to you now,
+
+53
+00:02:34.210 --> 00:02:36.465
+but let's keep going.
+
+54
+00:02:36.465 --> 00:02:39.410
+We'll make this all work later.
+
+55
+00:02:39.410 --> 00:02:43.030
+But with a inception
+module like this,
+
+56
+00:02:43.030 --> 00:02:45.190
+you can input some volume
+
+57
+00:02:45.190 --> 00:02:47.030
+and output, in this
+case, I guess,
+
+58
+00:02:47.030 --> 00:02:48.650
+if you add up all these numbers,
+
+59
+00:02:48.650 --> 00:02:55.150
+32 plus 32 plus 128 plus
+64 that's equal to 256.
+
+60
+00:02:55.150 --> 00:03:01.550
+You will have one inception
+module input 28 by 28 by 192,
+
+61
+00:03:01.550 --> 00:03:06.420
+and output 28 by 28 by 256.
+
+62
+00:03:06.420 --> 00:03:10.670
+This is the heart of
+the inception network,
+
+63
+00:03:10.670 --> 00:03:12.970
+which is due to Cristian Zagoi,
+
+64
+00:03:12.970 --> 00:03:14.270
+We Lu Yantin Zia,
+
+65
+00:03:14.270 --> 00:03:16.410
+Pi, Scott Reed, Dragoma,
+
+66
+00:03:16.410 --> 00:03:20.830
+Anglov Dmitri Rhon Vincent
+VanKok, and Andrew Rabinovich.
+
+67
+00:03:20.830 --> 00:03:24.790
+The basic idea is that
+instead of you needing to
+
+68
+00:03:24.790 --> 00:03:27.270
+pick one of these filter sizes
+
+69
+00:03:27.270 --> 00:03:29.890
+or pulling you want and
+committing to that,
+
+70
+00:03:29.890 --> 00:03:32.010
+you can do them all
+and just contact
+
+71
+00:03:32.010 --> 00:03:34.690
+all the outputs and
+let the network learn
+
+72
+00:03:34.690 --> 00:03:36.330
+whatever parameters
+it wants to use
+
+73
+00:03:36.330 --> 00:03:40.005
+whatever combinations of
+these filter sizes it wants.
+
+74
+00:03:40.005 --> 00:03:41.880
+Now, it turns out that there's
+
+75
+00:03:41.880 --> 00:03:43.440
+a problem with the
+inception there,
+
+76
+00:03:43.440 --> 00:03:44.800
+as we've described it here,
+
+77
+00:03:44.800 --> 00:03:46.800
+which is computational cost.
+
+78
+00:03:46.800 --> 00:03:48.680
+On the next slide, let's figure
+
+79
+00:03:48.680 --> 00:03:50.880
+out what's the
+computational cost of
+
+80
+00:03:50.880 --> 00:03:54.460
+this five-by-five
+filter resulting
+
+81
+00:03:54.460 --> 00:03:56.880
+in this block over here.
+
+82
+00:03:56.880 --> 00:04:00.700
+Just focusing on the
+five by five part
+
+83
+00:04:00.700 --> 00:04:02.720
+on the previous slide,
+
+84
+00:04:02.720 --> 00:04:06.980
+we had this input a 288
+by 28 by 192 block,
+
+85
+00:04:06.980 --> 00:04:10.100
+and you implement a five
+by five same convolution
+
+86
+00:04:10.100 --> 00:04:14.655
+with 32 filters output
+28 by 28 by 32.
+
+87
+00:04:14.655 --> 00:04:16.510
+On the previous slide,
+
+88
+00:04:16.510 --> 00:04:18.750
+I had drawn this as
+a thin purple slide,
+
+89
+00:04:18.750 --> 00:04:20.010
+but I'm just I draw this as
+
+90
+00:04:20.010 --> 00:04:23.350
+a more normal-looking
+blue block here.
+
+91
+00:04:23.350 --> 00:04:26.470
+Let's look at the
+computational cost
+
+92
+00:04:26.470 --> 00:04:31.070
+of outputting this
+20 by 20 by 32.
+
+93
+00:04:31.070 --> 00:04:37.990
+You have 32 filters because
+the output has 32 channels,
+
+94
+00:04:37.990 --> 00:04:44.460
+and each filter is going
+to be five by five by 192.
+
+95
+00:04:44.460 --> 00:04:48.370
+The output size is
+20 by 20 by 32,
+
+96
+00:04:48.370 --> 00:04:53.530
+and so you need to compute
+28 by 28 by 32 numbers,
+
+97
+00:04:53.530 --> 00:04:54.930
+and for each of them,
+
+98
+00:04:54.930 --> 00:04:58.130
+you need to do this
+many multiplications,
+
+99
+00:04:58.130 --> 00:05:01.310
+five by five by 192.
+
+100
+00:05:01.310 --> 00:05:03.650
+The total number of
+multipliers you need
+
+101
+00:05:03.650 --> 00:05:06.050
+is the number of
+multipliers you need
+
+102
+00:05:06.050 --> 00:05:08.630
+to compute each of
+the output values
+
+103
+00:05:08.630 --> 00:05:12.690
+times the number of output
+values you need to compute.
+
+104
+00:05:12.690 --> 00:05:15.250
+If you multiply out
+all these numbers,
+
+105
+00:05:15.250 --> 00:05:19.430
+this is equal to 120 million.
+
+106
+00:05:19.870 --> 00:05:22.870
+While you can do 120 million
+
+107
+00:05:22.870 --> 00:05:24.670
+multipliers on a
+modern computer,
+
+108
+00:05:24.670 --> 00:05:27.370
+this is still a pretty
+expensive operation.
+
+109
+00:05:27.370 --> 00:05:29.430
+On the next slide, you see how
+
+110
+00:05:29.430 --> 00:05:32.290
+using the idea of
+one-by-one convolutions,
+
+111
+00:05:32.290 --> 00:05:34.250
+which you learned about
+in the previous video,
+
+112
+00:05:34.250 --> 00:05:36.870
+you'll be able to reduce
+the computational cost
+
+113
+00:05:36.870 --> 00:05:38.870
+by about a factor of 10 to
+
+114
+00:05:38.870 --> 00:05:41.910
+go from about 120
+million multipliers
+
+115
+00:05:41.910 --> 00:05:44.565
+to about one tenth of that.
+
+116
+00:05:44.565 --> 00:05:47.450
+Please remember the number 120,
+
+117
+00:05:47.450 --> 00:05:49.230
+so you can compare it with what
+
+118
+00:05:49.230 --> 00:05:52.130
+you see on the next slide, 128.
+
+119
+00:05:52.130 --> 00:05:55.370
+Here's an alternative
+architecture
+
+120
+00:05:55.370 --> 00:05:57.720
+for inputting
+twenty-eight by 20 by
+
+121
+00:05:57.720 --> 00:06:03.070
+192 and outputting 28 by 20
+by 32 which is following.
+
+122
+00:06:03.070 --> 00:06:05.170
+You're going to
+input the volume,
+
+123
+00:06:05.170 --> 00:06:07.790
+use a one-by-one convolution,
+
+124
+00:06:07.790 --> 00:06:10.170
+to reduce the volume to
+
+125
+00:06:10.170 --> 00:06:14.570
+a 16 channels instead
+of 192 channels,
+
+126
+00:06:14.570 --> 00:06:17.390
+and then on this
+much smaller volume,
+
+127
+00:06:17.390 --> 00:06:19.550
+run your five-by-five
+convolution
+
+128
+00:06:19.550 --> 00:06:22.050
+to give you your final output.
+
+129
+00:06:22.050 --> 00:06:23.430
+Notice, the input and output
+
+130
+00:06:23.430 --> 00:06:24.750
+dimensions are still the same.
+
+131
+00:06:24.750 --> 00:06:31.210
+You input 28 by 20 by 182
+and output 28 by 28 by two,
+
+132
+00:06:31.210 --> 00:06:33.345
+same as the previous line.
+
+133
+00:06:33.345 --> 00:06:35.220
+But what we've done
+is we've taken
+
+134
+00:06:35.220 --> 00:06:37.360
+this huge volume we
+had on the left,
+
+135
+00:06:37.360 --> 00:06:38.900
+and we've shrunk it to
+
+136
+00:06:38.900 --> 00:06:42.180
+this much smaller
+intermediate volume,
+
+137
+00:06:42.180 --> 00:06:46.680
+which is only has 16
+instead of 192 channels.
+
+138
+00:06:46.680 --> 00:06:52.060
+Sometimes this is called
+a bottleneck layer.
+
+139
+00:06:54.560 --> 00:06:57.980
+I guess because a bottleneck
+
+140
+00:06:57.980 --> 00:06:59.890
+is usually the smallest
+part of something.
+
+141
+00:06:59.890 --> 00:07:04.670
+I guess if you have a glass
+bottle that looks like this,
+
+142
+00:07:04.670 --> 00:07:08.960
+then this is I guess
+where the core goes.
+
+143
+00:07:08.960 --> 00:07:13.750
+Then the bottleneck is the
+smallest part of this bottle.
+
+144
+00:07:13.750 --> 00:07:16.150
+In the same way, the
+bottleneck layer
+
+145
+00:07:16.150 --> 00:07:18.010
+is the smallest part
+of this network,
+
+146
+00:07:18.010 --> 00:07:19.450
+where you strength
+the representation
+
+147
+00:07:19.450 --> 00:07:22.660
+before increasing
+the size again.
+
+148
+00:07:22.660 --> 00:07:26.950
+Now, let's look at the
+computational costs involved.
+
+149
+00:07:26.950 --> 00:07:30.330
+To apply this
+one-by-one convolution,
+
+150
+00:07:30.330 --> 00:07:32.410
+we have 16 filters.
+
+151
+00:07:32.410 --> 00:07:34.490
+Each of the filters
+is going to be
+
+152
+00:07:34.490 --> 00:07:37.170
+of dimension one by one by 192.
+
+153
+00:07:37.170 --> 00:07:40.410
+This 192 matches that 192.
+
+154
+00:07:40.410 --> 00:07:42.790
+The cost of computing this 28
+
+155
+00:07:42.790 --> 00:07:45.290
+by 28 by 16 volume
+is going to be,
+
+156
+00:07:45.290 --> 00:07:48.205
+well, you need
+this many outputs.
+
+157
+00:07:48.205 --> 00:07:54.900
+For each of them, you need
+to do 192 multiplications.
+
+158
+00:07:54.900 --> 00:07:59.460
+I could have written one
+times one times 192, is this?
+
+159
+00:07:59.460 --> 00:08:00.920
+If you multiply this out,
+
+160
+00:08:00.920 --> 00:08:02.660
+this is 2.4 million.
+
+161
+00:08:02.660 --> 00:08:04.360
+It is about 2.4 million.
+
+162
+00:08:04.360 --> 00:08:06.780
+How about the second?
+That's the cost
+
+163
+00:08:06.780 --> 00:08:11.440
+of this first
+convolutional layer.
+
+164
+00:08:11.440 --> 00:08:15.200
+The cost of this second
+convolutional layer will be that.
+
+165
+00:08:15.200 --> 00:08:17.340
+Well, you have
+this many outputs,
+
+166
+00:08:17.340 --> 00:08:20.395
+28 by 28 by two.
+
+167
+00:08:20.395 --> 00:08:22.920
+Then for each of the outputs,
+
+168
+00:08:22.920 --> 00:08:24.565
+you have to apply a
+
+169
+00:08:24.565 --> 00:08:28.460
+five-by-five by
+16-dimensional filter.
+
+170
+00:08:28.460 --> 00:08:31.280
+Five by five by 16,
+
+171
+00:08:31.280 --> 00:08:36.695
+and if we multiply that
+out is equal to 10.0.
+
+172
+00:08:36.695 --> 00:08:38.880
+The total number of
+multiplications you
+
+173
+00:08:38.880 --> 00:08:41.020
+need to do is the sum of those,
+
+174
+00:08:41.020 --> 00:08:45.090
+which is 12.4 million
+multiplications.
+
+175
+00:08:45.090 --> 00:08:46.400
+If you compare this with what
+
+176
+00:08:46.400 --> 00:08:47.940
+we had on the previous slide,
+
+177
+00:08:47.940 --> 00:08:49.840
+you reduce the
+computational cost
+
+178
+00:08:49.840 --> 00:08:53.100
+from about 120
+million multipliers
+
+179
+00:08:53.100 --> 00:08:55.620
+down to about one-tenth of that
+
+180
+00:08:55.620 --> 00:08:59.430
+to 12.4 million multiplications.
+
+181
+00:08:59.430 --> 00:09:02.340
+The number of additions
+you need to do is
+
+182
+00:09:02.340 --> 00:09:04.380
+about very similar to
+
+183
+00:09:04.380 --> 00:09:06.300
+the number of multiplications
+you need to do,
+
+184
+00:09:06.300 --> 00:09:07.980
+so that's why I'm just counting
+
+185
+00:09:07.980 --> 00:09:10.360
+the number of multiplications.
+
+186
+00:09:10.360 --> 00:09:13.540
+To summarize, if you're
+building a layer of
+
+187
+00:09:13.540 --> 00:09:16.160
+a neural network and you
+don't want to have to decide,
+
+188
+00:09:16.160 --> 00:09:17.860
+do you want a one by one or
+
+189
+00:09:17.860 --> 00:09:20.140
+three by three or five by
+five, or pulling layer,
+
+190
+00:09:20.140 --> 00:09:22.320
+the inception module
+lets you say,
+
+191
+00:09:22.320 --> 00:09:25.700
+let's do them all and
+let's concate the results.
+
+192
+00:09:25.700 --> 00:09:27.420
+Then we ran to the problem
+
+193
+00:09:27.420 --> 00:09:29.080
+of computational
+cost and which you
+
+194
+00:09:29.080 --> 00:09:32.480
+saw here was how using a
+one-by-one convolution,
+
+195
+00:09:32.480 --> 00:09:34.660
+you can create this
+bottleneck layer
+
+196
+00:09:34.660 --> 00:09:38.100
+thereby reducing the
+computational cost significantly.
+
+197
+00:09:38.100 --> 00:09:39.740
+Now, you might be wondering,
+
+198
+00:09:39.740 --> 00:09:41.200
+does shrinking down
+
+199
+00:09:41.200 --> 00:09:43.380
+the representation
+size so dramatically,
+
+200
+00:09:43.380 --> 00:09:46.740
+does it hurt the performance
+of your neural network?
+
+201
+00:09:46.740 --> 00:09:48.900
+It turns out that so long as you
+
+202
+00:09:48.900 --> 00:09:52.460
+implement this bottleneck
+layer so that within reason,
+
+203
+00:09:52.460 --> 00:09:54.200
+you can shrink down
+
+204
+00:09:54.200 --> 00:09:56.440
+the representation
+size significantly,
+
+205
+00:09:56.440 --> 00:09:59.160
+and it doesn't seem to
+hurt the performance,
+
+206
+00:09:59.160 --> 00:10:01.740
+but saves you a lot
+of computation.
+
+207
+00:10:01.740 --> 00:10:04.880
+So this is the key of these
+
+208
+00:10:04.880 --> 00:10:07.880
+are the key ideas of
+the inception module.
+
+209
+00:10:07.880 --> 00:10:10.920
+Let's put them together
+and in the next video show
+
+210
+00:10:10.920 --> 00:10:15.370
+you what the full inception
+network looks like.

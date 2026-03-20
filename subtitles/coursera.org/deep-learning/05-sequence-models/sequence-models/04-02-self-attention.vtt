@@ -1,0 +1,1032 @@
+WEBVTT
+
+1
+00:00:02.810 --> 00:00:05.610
+Let's jump in to talk about
+
+2
+00:00:05.610 --> 00:00:09.105
+the self-attention
+mechanism of transformers.
+
+3
+00:00:09.105 --> 00:00:12.030
+If you can get the main
+idea behind this video,
+
+4
+00:00:12.030 --> 00:00:15.705
+you'll understand the
+most important core idea
+
+5
+00:00:15.705 --> 00:00:17.790
+behind what makes
+transformer networks
+
+6
+00:00:17.790 --> 00:00:19.440
+work. Let's jump in.
+
+7
+00:00:19.440 --> 00:00:21.410
+You've seen how
+attention is used with
+
+8
+00:00:21.410 --> 00:00:24.140
+sequential neural
+networks such as RNNs.
+
+9
+00:00:24.140 --> 00:00:28.295
+To use attention with a
+style more late CNNs,
+
+10
+00:00:28.295 --> 00:00:30.890
+you need to calculate
+self-attention,
+
+11
+00:00:30.890 --> 00:00:33.860
+where you create
+attention-based representations
+
+12
+00:00:33.860 --> 00:00:36.625
+for each of the words
+in your input sentence.
+
+13
+00:00:36.625 --> 00:00:39.254
+Let's use our running example,
+
+14
+00:00:39.254 --> 00:00:41.980
+Jane, visite, l'Afrique,
+en, septembre,
+
+15
+00:00:41.980 --> 00:00:45.590
+our goal will be for each word to
+
+16
+00:00:45.590 --> 00:00:51.745
+compute an attention-based
+representation like this.
+
+17
+00:00:51.745 --> 00:00:55.295
+So we'll end up
+with five of these,
+
+18
+00:00:55.295 --> 00:00:58.070
+since our sentence
+has five words.
+
+19
+00:00:58.070 --> 00:01:00.020
+When we've computed them we'll
+
+20
+00:01:00.020 --> 00:01:02.150
+call the five
+representations with
+
+21
+00:01:02.150 --> 00:01:07.365
+these five words A1through A5.
+
+22
+00:01:07.365 --> 00:01:09.740
+I know you're starting
+to see a bunch
+
+23
+00:01:09.740 --> 00:01:12.250
+of symbols Q, K, and V,
+
+24
+00:01:12.250 --> 00:01:15.035
+we'll explain what
+these symbols mean
+
+25
+00:01:15.035 --> 00:01:17.905
+in a later slide so don't
+worry about them for now.
+
+26
+00:01:17.905 --> 00:01:20.525
+The running example
+I'm going to use
+
+27
+00:01:20.525 --> 00:01:24.890
+is take the word l'Afrique
+in this sentence.
+
+28
+00:01:24.890 --> 00:01:27.830
+We'll step through on
+the next slide how
+
+29
+00:01:27.830 --> 00:01:31.519
+the transformer network's
+self-attention mechanism
+
+30
+00:01:31.519 --> 00:01:36.590
+allows you to compute
+A3 for this word,
+
+31
+00:01:36.590 --> 00:01:38.000
+and then you do
+the same thing for
+
+32
+00:01:38.000 --> 00:01:39.965
+the other words in
+the sentence as well.
+
+33
+00:01:39.965 --> 00:01:43.150
+Now you learn previously
+about word embeddings.
+
+34
+00:01:43.150 --> 00:01:45.870
+One way to represent
+l'Afrique would be to just
+
+35
+00:01:45.870 --> 00:01:49.005
+look up the word
+embedding for l'Afrique.
+
+36
+00:01:49.005 --> 00:01:51.830
+But depending on the context,
+
+37
+00:01:51.830 --> 00:01:55.940
+are we thinking of l'Afrique
+or Africa as a site of
+
+38
+00:01:55.940 --> 00:02:00.710
+historical interests or
+as a holiday destination,
+
+39
+00:02:00.710 --> 00:02:04.325
+or as the world's second
+largest continent.
+
+40
+00:02:04.325 --> 00:02:07.160
+Depending on how you're
+thinking of l'Afrique,
+
+41
+00:02:07.160 --> 00:02:10.720
+you may choose to
+represent it differently,
+
+42
+00:02:10.720 --> 00:02:13.940
+and that's what this
+representation A(3) will do.
+
+43
+00:02:13.940 --> 00:02:16.340
+It will look at the
+surrounding words
+
+44
+00:02:16.340 --> 00:02:18.080
+to try to figure out what's
+
+45
+00:02:18.080 --> 00:02:20.180
+actually going on in how
+
+46
+00:02:20.180 --> 00:02:22.610
+we're talking about
+Africa in this sentence,
+
+47
+00:02:22.610 --> 00:02:26.480
+and find the most appropriate
+representation for this.
+
+48
+00:02:26.480 --> 00:02:29.225
+In terms of the
+actual calculation,
+
+49
+00:02:29.225 --> 00:02:31.510
+it won't be too different from
+
+50
+00:02:31.510 --> 00:02:33.470
+the attention mechanism you saw
+
+51
+00:02:33.470 --> 00:02:36.455
+previously as applied
+in the context of RNNs,
+
+52
+00:02:36.455 --> 00:02:39.140
+except we'll compute
+these representations
+
+53
+00:02:39.140 --> 00:02:42.190
+in parallel for all five
+words in a sentence.
+
+54
+00:02:42.190 --> 00:02:45.620
+When we're building
+attention on top of RNNs,
+
+55
+00:02:45.620 --> 00:02:48.230
+this was the equation we used.
+
+56
+00:02:48.230 --> 00:02:50.885
+With the self-attention
+mechanism,
+
+57
+00:02:50.885 --> 00:02:53.060
+the attention equation is
+
+58
+00:02:53.060 --> 00:02:55.495
+instead going to look like this.
+
+59
+00:02:55.495 --> 00:02:59.015
+You can see the equations
+have some similarity.
+
+60
+00:02:59.015 --> 00:03:03.710
+The inner term here also
+involves a softmax,
+
+61
+00:03:03.710 --> 00:03:06.470
+just like this term
+over here on the left,
+
+62
+00:03:06.470 --> 00:03:07.730
+and you can think of
+
+63
+00:03:07.730 --> 00:03:14.280
+the exponent terms as being
+akin to attention values.
+
+64
+00:03:14.280 --> 00:03:16.650
+Exactly how these
+terms are worked
+
+65
+00:03:16.650 --> 00:03:19.065
+out you'll see in the next slide.
+
+66
+00:03:19.065 --> 00:03:22.210
+So again, don't worry about
+the details just yet.
+
+67
+00:03:22.210 --> 00:03:24.380
+But the main
+difference is that for
+
+68
+00:03:24.380 --> 00:03:27.349
+every word, say for l'Afrique,
+
+69
+00:03:27.349 --> 00:03:36.090
+you have three values called
+the query, key, and value.
+
+70
+00:03:36.090 --> 00:03:39.740
+These vectors are
+the key inputs to
+
+71
+00:03:39.740 --> 00:03:45.005
+computing the attention
+value for each words.
+
+72
+00:03:45.005 --> 00:03:48.020
+Now, let's step through the steps
+
+73
+00:03:48.020 --> 00:03:52.225
+needed to actually calculate A3.
+
+74
+00:03:52.225 --> 00:03:54.240
+On this slide, let's step through
+
+75
+00:03:54.240 --> 00:03:57.270
+the computations you need
+to go from the words
+
+76
+00:03:57.270 --> 00:04:02.250
+l'Afrique to the self-attention
+representation A3.
+
+77
+00:04:02.250 --> 00:04:04.820
+For reference, I've
+also printed up here on
+
+78
+00:04:04.820 --> 00:04:07.085
+the upper-right that softmax-like
+
+79
+00:04:07.085 --> 00:04:09.060
+equation from the previous slide.
+
+80
+00:04:09.060 --> 00:04:13.385
+First, we're going to associate
+each of the words with
+
+81
+00:04:13.385 --> 00:04:18.365
+three values called the
+query key and value pairs.
+
+82
+00:04:18.365 --> 00:04:24.525
+If X3 is the word
+embedding for l'Afrique,
+
+83
+00:04:24.525 --> 00:04:32.165
+the way that's Q3 is computed
+is as a learned matrix,
+
+84
+00:04:32.165 --> 00:04:38.790
+which I'm going to
+write as WQ times X3,
+
+85
+00:04:38.790 --> 00:04:41.510
+and similarly for the
+key and value pairs,
+
+86
+00:04:41.510 --> 00:04:47.659
+so K3 is WK times
+
+87
+00:04:47.659 --> 00:04:56.880
+X3 and V3 is WV times X3.
+
+88
+00:04:56.880 --> 00:05:01.510
+These matrices, WQ, WK, and WV,
+
+89
+00:05:01.510 --> 00:05:04.710
+are parameters of this
+learning algorithm,
+
+90
+00:05:04.710 --> 00:05:07.140
+and they allow you to
+pull off these query,
+
+91
+00:05:07.140 --> 00:05:10.745
+key, and value vectors
+for each word.
+
+92
+00:05:10.745 --> 00:05:12.590
+So what are these query key
+
+93
+00:05:12.590 --> 00:05:14.495
+and value vectors supposed to do?
+
+94
+00:05:14.495 --> 00:05:17.450
+They were named using a loose
+analogy to a concept in
+
+95
+00:05:17.450 --> 00:05:19.670
+databases where you can have
+
+96
+00:05:19.670 --> 00:05:22.640
+queries and also key-value pairs.
+
+97
+00:05:22.640 --> 00:05:25.340
+If you're familiar with
+those types of databases,
+
+98
+00:05:25.340 --> 00:05:27.035
+the analogy may
+make sense to you,
+
+99
+00:05:27.035 --> 00:05:28.160
+but if you're not familiar with
+
+100
+00:05:28.160 --> 00:05:31.220
+that database concept,
+don't worry about it.
+
+101
+00:05:31.220 --> 00:05:33.770
+Let me give one intuition
+
+102
+00:05:33.770 --> 00:05:36.500
+behind the intent of these query,
+
+103
+00:05:36.500 --> 00:05:39.355
+key, and value of vectors.
+
+104
+00:05:39.355 --> 00:05:45.485
+Q3 is a question that you
+get to ask about l'Afrique.
+
+105
+00:05:45.485 --> 00:05:51.690
+Q3 may represent a question
+like, what's happening there?
+
+106
+00:05:52.500 --> 00:05:55.765
+Africa, l'Afrique
+is a destination.
+
+107
+00:05:55.765 --> 00:05:57.700
+You might want to know when
+
+108
+00:05:57.700 --> 00:06:01.420
+computing A^3, what's
+happening there.
+
+109
+00:06:01.420 --> 00:06:05.125
+What we're going to do is compute
+
+110
+00:06:05.125 --> 00:06:09.640
+the inner product
+between q^3 and k^1,
+
+111
+00:06:09.640 --> 00:06:12.100
+between Query 3 and Key 1,
+
+112
+00:06:12.100 --> 00:06:15.654
+and this will tell us
+how good is an answer
+
+113
+00:06:15.654 --> 00:06:17.260
+where it's one to
+
+114
+00:06:17.260 --> 00:06:19.885
+the question of what's
+happening in Africa.
+
+115
+00:06:19.885 --> 00:06:22.960
+Then we compute the
+inner product between
+
+116
+00:06:22.960 --> 00:06:26.200
+q^3 and k^2 and this
+is intended to tell
+
+117
+00:06:26.200 --> 00:06:31.360
+us how good is visite an
+answer to the question of
+
+118
+00:06:31.360 --> 00:06:33.820
+what's happening in Africa and so
+
+119
+00:06:33.820 --> 00:06:36.955
+on for the other words
+in the sequence.
+
+120
+00:06:36.955 --> 00:06:39.670
+The goal of this operation is to
+
+121
+00:06:39.670 --> 00:06:42.595
+pull up the most
+information that's needed
+
+122
+00:06:42.595 --> 00:06:44.500
+to help us compute
+
+123
+00:06:44.500 --> 00:06:49.370
+the most useful
+representation A^3 up here.
+
+124
+00:06:49.560 --> 00:06:52.735
+Again, just for
+intuition building
+
+125
+00:06:52.735 --> 00:06:57.055
+if k^1 represents that
+this word is a person,
+
+126
+00:06:57.055 --> 00:06:58.570
+because Jane is a person,
+
+127
+00:06:58.570 --> 00:07:01.975
+and k^2 represents
+that the second word,
+
+128
+00:07:01.975 --> 00:07:04.315
+visite, is an action,
+
+129
+00:07:04.315 --> 00:07:07.090
+then you may find that
+q^3 inter producted
+
+130
+00:07:07.090 --> 00:07:10.330
+with k^2 has the largest value,
+
+131
+00:07:10.330 --> 00:07:13.135
+and this may be
+intuitive example,
+
+132
+00:07:13.135 --> 00:07:15.399
+might suggest that visite,
+
+133
+00:07:15.399 --> 00:07:17.200
+gives you the most
+relevant contexts
+
+134
+00:07:17.200 --> 00:07:18.625
+for what's happening in Africa.
+
+135
+00:07:18.625 --> 00:07:22.855
+Which is that, it's viewed as
+a destination for a visit.
+
+136
+00:07:22.855 --> 00:07:25.960
+What we will do is take
+
+137
+00:07:25.960 --> 00:07:28.390
+these five values in
+
+138
+00:07:28.390 --> 00:07:32.245
+this row and compute
+a Softmax over them.
+
+139
+00:07:32.245 --> 00:07:36.250
+There's actually this
+Softmax over here,
+
+140
+00:07:36.250 --> 00:07:39.820
+and in the example that
+we've been talking about,
+
+141
+00:07:39.820 --> 00:07:42.910
+q^3 times k^2 corresponding
+
+142
+00:07:42.910 --> 00:07:46.090
+to word visite maybe
+has the largest value.
+
+143
+00:07:46.090 --> 00:07:48.535
+I'm going to shade
+that blue over here.
+
+144
+00:07:48.535 --> 00:07:50.590
+Then finally, we're going to take
+
+145
+00:07:50.590 --> 00:07:54.895
+these Softmax values and
+multiply them with v^1,
+
+146
+00:07:54.895 --> 00:07:56.920
+which is the value for word 1,
+
+147
+00:07:56.920 --> 00:08:00.160
+the value for word 2, and so on,
+
+148
+00:08:00.160 --> 00:08:08.365
+and so these values correspond
+to that value up there.
+
+149
+00:08:08.365 --> 00:08:11.140
+Finally, we sum it all up.
+
+150
+00:08:11.140 --> 00:08:13.765
+This summation corresponds to
+
+151
+00:08:13.765 --> 00:08:16.945
+this summation operator
+and so adding up
+
+152
+00:08:16.945 --> 00:08:20.815
+all of these values
+gives you A^3,
+
+153
+00:08:20.815 --> 00:08:23.890
+which is just equal
+to this value here.
+
+154
+00:08:23.890 --> 00:08:28.300
+Another way to write
+A^3 is really as A,
+
+155
+00:08:28.300 --> 00:08:33.385
+this A up here of q^3,
+
+156
+00:08:33.385 --> 00:08:36.880
+k, v. But sometimes it will be
+
+157
+00:08:36.880 --> 00:08:40.970
+more convenient to just
+write A^3 like that.
+
+158
+00:08:41.070 --> 00:08:45.520
+The key advantage of
+this representation is
+
+159
+00:08:45.520 --> 00:08:50.335
+the word of l'Afrique isn't
+some fixed word embedding.
+
+160
+00:08:50.335 --> 00:08:54.219
+Instead, it lets the
+self-attention mechanism
+
+161
+00:08:54.219 --> 00:08:58.540
+realize that l'Afrique is
+the destination of a visite,
+
+162
+00:08:58.540 --> 00:09:01.705
+of a visit, and thus
+compute a richer,
+
+163
+00:09:01.705 --> 00:09:05.305
+more useful representation
+for this word.
+
+164
+00:09:05.305 --> 00:09:07.720
+Now, I've been using
+the third word,
+
+165
+00:09:07.720 --> 00:09:09.940
+l'Afrique as a running example
+
+166
+00:09:09.940 --> 00:09:12.670
+but you could use this
+process for all five
+
+167
+00:09:12.670 --> 00:09:14.860
+words in your sequence to get
+
+168
+00:09:14.860 --> 00:09:17.665
+similarly rich
+representations for Jane,
+
+169
+00:09:17.665 --> 00:09:22.285
+visite, l'Afrique, en, septembre.
+
+170
+00:09:22.285 --> 00:09:27.310
+If you put all of these
+five computations together,
+
+171
+00:09:27.310 --> 00:09:32.125
+denotation used in
+literature looks like this,
+
+172
+00:09:32.125 --> 00:09:33.910
+where you can summarize all
+
+173
+00:09:33.910 --> 00:09:35.590
+of these computations
+that we just talked
+
+174
+00:09:35.590 --> 00:09:36.820
+about for all the words in
+
+175
+00:09:36.820 --> 00:09:39.850
+the sequence by
+writing Attention(Q,
+
+176
+00:09:39.850 --> 00:09:42.280
+K, V) where Q, K,
+
+177
+00:09:42.280 --> 00:09:46.165
+V matrices with all
+of these values,
+
+178
+00:09:46.165 --> 00:09:47.845
+and this is just
+
+179
+00:09:47.845 --> 00:09:51.580
+a compressed or
+vectorized representation
+
+180
+00:09:51.580 --> 00:09:54.445
+of this equation up here.
+
+181
+00:09:54.445 --> 00:09:57.100
+The term in the denominator
+
+182
+00:09:57.100 --> 00:09:59.019
+is just to scale the dot-product,
+
+183
+00:09:59.019 --> 00:10:00.385
+so it doesn't explode.
+
+184
+00:10:00.385 --> 00:10:02.620
+You don't really need
+to worry about it.
+
+185
+00:10:02.620 --> 00:10:05.620
+But another name for
+this type of attention
+
+186
+00:10:05.620 --> 00:10:09.055
+is the scaled
+dot-product attention.
+
+187
+00:10:09.055 --> 00:10:11.290
+This is the one represented in
+
+188
+00:10:11.290 --> 00:10:13.915
+the original transformer
+architecture paper,
+
+189
+00:10:13.915 --> 00:10:16.615
+Attention Is All
+You Need As Well.
+
+190
+00:10:16.615 --> 00:10:19.600
+That's the
+self-attention mechanism
+
+191
+00:10:19.600 --> 00:10:21.460
+of the transformer network.
+
+192
+00:10:21.460 --> 00:10:24.070
+To recap, associated with each of
+
+193
+00:10:24.070 --> 00:10:27.954
+the five words you
+end up with a query,
+
+194
+00:10:27.954 --> 00:10:29.935
+a key, and a value.
+
+195
+00:10:29.935 --> 00:10:33.175
+The query lets you ask a
+question about that word,
+
+196
+00:10:33.175 --> 00:10:35.350
+such as what's
+happening in Africa.
+
+197
+00:10:35.350 --> 00:10:38.515
+The key looks at all
+of the other words,
+
+198
+00:10:38.515 --> 00:10:41.065
+and by the similarity
+to the query,
+
+199
+00:10:41.065 --> 00:10:43.510
+helps you figure out
+which words gives
+
+200
+00:10:43.510 --> 00:10:46.480
+the most relevant answer
+to that question.
+
+201
+00:10:46.480 --> 00:10:48.610
+In this case, visite is what's
+
+202
+00:10:48.610 --> 00:10:51.655
+happening in Africa,
+someone's visiting Africa.
+
+203
+00:10:51.655 --> 00:10:56.080
+Then finally, the value
+allows the representation to
+
+204
+00:10:56.080 --> 00:11:00.700
+plug in how visite should
+be represented within A^3,
+
+205
+00:11:00.700 --> 00:11:03.730
+within the representation
+of Africa.
+
+206
+00:11:03.730 --> 00:11:05.500
+This allows you to come up with
+
+207
+00:11:05.500 --> 00:11:06.910
+a representation for the word
+
+208
+00:11:06.910 --> 00:11:09.040
+Africa that says this is
+
+209
+00:11:09.040 --> 00:11:11.890
+Africa and someone
+is visiting Africa.
+
+210
+00:11:11.890 --> 00:11:13.480
+This is a much more nuanced,
+
+211
+00:11:13.480 --> 00:11:16.120
+much richer representation
+for the world than if you
+
+212
+00:11:16.120 --> 00:11:18.670
+just had to pull up the
+same fixed word embedding
+
+213
+00:11:18.670 --> 00:11:19.810
+for every single word
+
+214
+00:11:19.810 --> 00:11:22.030
+without being able
+to adapt it based
+
+215
+00:11:22.030 --> 00:11:23.800
+on what words are to
+
+216
+00:11:23.800 --> 00:11:25.615
+the left and to the
+right of that word.
+
+217
+00:11:25.615 --> 00:11:28.990
+We've all got to take into
+account and in the context.
+
+218
+00:11:28.990 --> 00:11:33.295
+Now, you have learned about
+the self-attention mechanism.
+
+219
+00:11:33.295 --> 00:11:34.990
+We're going to put
+a big for-loop
+
+220
+00:11:34.990 --> 00:11:36.490
+over this whole thing and that
+
+221
+00:11:36.490 --> 00:11:39.670
+will be the multi-headed
+attention mechanism.
+
+222
+00:11:39.670 --> 00:11:43.520
+Let's dive into the details
+of that in the next video.

@@ -1,0 +1,848 @@
+WEBVTT
+
+1
+00:00:00.620 --> 00:00:04.140
+Stride convolutions
+is another piece of
+
+2
+00:00:04.140 --> 00:00:05.850
+the basic building block of
+
+3
+00:00:05.850 --> 00:00:09.375
+convolutions as using
+convolution neural networks.
+
+4
+00:00:09.375 --> 00:00:11.010
+Let me show you an example.
+
+5
+00:00:11.010 --> 00:00:13.890
+Let's say you want to
+convolve this serves by
+
+6
+00:00:13.890 --> 00:00:16.740
+seven image with this
+three by three filter.
+
+7
+00:00:16.740 --> 00:00:19.245
+Except that instead of
+doing the usual way,
+
+8
+00:00:19.245 --> 00:00:23.325
+we're going to do it
+with a stride of two.
+
+9
+00:00:23.325 --> 00:00:28.080
+What that means, is you take
+the element wise product as
+
+10
+00:00:28.080 --> 00:00:29.880
+usual in this upper
+left three by
+
+11
+00:00:29.880 --> 00:00:32.805
+three region and then
+multiply and add,
+
+12
+00:00:32.805 --> 00:00:35.415
+and that gives you 91.
+
+13
+00:00:35.415 --> 00:00:37.140
+But then instead of stepping
+
+14
+00:00:37.140 --> 00:00:38.985
+the blue box over by one step,
+
+15
+00:00:38.985 --> 00:00:42.135
+we're going to step
+it over by two steps.
+
+16
+00:00:42.135 --> 00:00:46.220
+We're going to make it hop
+over two steps like so.
+
+17
+00:00:46.220 --> 00:00:48.620
+Notice how the upper
+left-hand corner has
+
+18
+00:00:48.620 --> 00:00:51.050
+gone from this start
+to this start,
+
+19
+00:00:51.050 --> 00:00:52.910
+jumping over one position.
+
+20
+00:00:52.910 --> 00:00:56.240
+Then you do the usual
+element-wise product and summing,
+
+21
+00:00:56.240 --> 00:00:59.115
+that gives you tones of 100.
+
+22
+00:00:59.115 --> 00:01:00.570
+Now we're going
+to do that again,
+
+23
+00:01:00.570 --> 00:01:04.180
+and make the blue box
+jump over by two steps.
+
+24
+00:01:04.180 --> 00:01:07.930
+You end up there and
+that gives you 83.
+
+25
+00:01:07.930 --> 00:01:11.135
+Now when you go to the next row,
+
+26
+00:01:11.135 --> 00:01:14.925
+you again actually take two
+steps instead of one step.
+
+27
+00:01:14.925 --> 00:01:17.870
+We're going to move the
+blue box over there.
+
+28
+00:01:17.870 --> 00:01:23.145
+Notice how we're skipping
+over one of the positions.
+
+29
+00:01:23.145 --> 00:01:25.065
+Then just gives you 69,
+
+30
+00:01:25.065 --> 00:01:27.675
+and now you gain
+step over two steps.
+
+31
+00:01:27.675 --> 00:01:30.525
+This gives you 91, and so on.
+
+32
+00:01:30.525 --> 00:01:31.695
+So 127.
+
+33
+00:01:31.695 --> 00:01:33.870
+Then for the final row,
+
+34
+00:01:33.870 --> 00:01:38.680
+44, 72, and 74.
+
+35
+00:01:39.140 --> 00:01:42.170
+In this example, we convolve
+
+36
+00:01:42.170 --> 00:01:44.240
+with a seven by
+seven matrix of a,
+
+37
+00:01:44.240 --> 00:01:45.605
+three by three matrix,
+
+38
+00:01:45.605 --> 00:01:49.225
+and we get a, three
+by three output.
+
+39
+00:01:49.225 --> 00:01:51.650
+The input and output
+dimensions turns
+
+40
+00:01:51.650 --> 00:01:53.975
+out to be governed by
+the following formula.
+
+41
+00:01:53.975 --> 00:01:57.020
+If you have an n by
+n image convolve
+
+42
+00:01:57.020 --> 00:02:00.170
+with an f by f filter.
+
+43
+00:02:00.170 --> 00:02:02.320
+If you use adding,
+
+44
+00:02:02.320 --> 00:02:09.810
+p and stride s. In this example,
+
+45
+00:02:09.810 --> 00:02:11.130
+s is equal to two.
+
+46
+00:02:11.130 --> 00:02:16.890
+Then you end up with an
+output that is n plus 2p,
+
+47
+00:02:16.890 --> 00:02:18.990
+minus f. Now because you're
+
+48
+00:02:18.990 --> 00:02:20.260
+stepping s steps at
+
+49
+00:02:20.260 --> 00:02:22.705
+a time this up just
+one step at a time,
+
+50
+00:02:22.705 --> 00:02:26.065
+you know divide by s plus 1,
+
+51
+00:02:26.065 --> 00:02:29.060
+and then by the same thing.
+
+52
+00:02:29.240 --> 00:02:33.070
+In our example we have,
+
+53
+00:02:35.010 --> 00:02:40.605
+7+0-3 divided by 2,
+
+54
+00:02:40.605 --> 00:02:45.300
+that's a stride plus
+one equals, let's see,
+
+55
+00:02:45.300 --> 00:02:49.710
+that's 4/2+1=3,
+
+56
+00:02:49.710 --> 00:02:53.200
+which is why we wind up with
+this three by three output.
+
+57
+00:02:54.080 --> 00:02:56.660
+Now, just one last detail,
+
+58
+00:02:56.660 --> 00:03:01.330
+which is one of this
+fraction is not an integer.
+
+59
+00:03:01.330 --> 00:03:05.540
+In that case, we're going
+to round this down.
+
+60
+00:03:05.540 --> 00:03:09.275
+This notation denotes
+the four or something.
+
+61
+00:03:09.275 --> 00:03:14.550
+This is also called
+the floor of z.
+
+62
+00:03:14.550 --> 00:03:15.840
+It means taking z,
+
+63
+00:03:15.840 --> 00:03:18.150
+and rounding down to
+the nearest integer.
+
+64
+00:03:18.150 --> 00:03:20.600
+If the way this
+is implemented is
+
+65
+00:03:20.600 --> 00:03:22.610
+that you take this type of
+
+66
+00:03:22.610 --> 00:03:25.430
+blue box multiplication only
+if the blue box is fully
+
+67
+00:03:25.430 --> 00:03:29.225
+contained within the image or
+the image plus the padding.
+
+68
+00:03:29.225 --> 00:03:31.265
+If any of this blue box,
+
+69
+00:03:31.265 --> 00:03:33.560
+part of it hangs
+outside then you
+
+70
+00:03:33.560 --> 00:03:35.915
+just do not do that computation.
+
+71
+00:03:35.915 --> 00:03:38.510
+Then it turns out that if
+
+72
+00:03:38.510 --> 00:03:40.940
+that's a convention
+that your feedback,
+
+73
+00:03:40.940 --> 00:03:44.450
+the filter must lie entirely
+within your image or
+
+74
+00:03:44.450 --> 00:03:46.445
+the image plus the
+padding region
+
+75
+00:03:46.445 --> 00:03:48.860
+before there's a corresponding
+output generator.
+
+76
+00:03:48.860 --> 00:03:53.530
+That's convention. Then
+the right thing to do,
+
+77
+00:03:53.530 --> 00:03:57.005
+to compute the output
+dimension is to round down,
+
+78
+00:03:57.005 --> 00:04:01.675
+in case this n+2p-f/s
+is not an integer.
+
+79
+00:04:01.675 --> 00:04:04.200
+Just to summarize
+the dimensions,
+
+80
+00:04:04.200 --> 00:04:07.100
+if you have an n by n
+matrix or n by n image,
+
+81
+00:04:07.100 --> 00:04:09.570
+that you convolve with an
+f by f matrix and if I
+
+82
+00:04:09.570 --> 00:04:12.270
+filter with padding
+p and stride s,
+
+83
+00:04:12.270 --> 00:04:13.620
+then the output size,
+
+84
+00:04:13.620 --> 00:04:16.120
+will have this dimension.
+
+85
+00:04:16.130 --> 00:04:19.570
+It is nice we can choose
+all of these numbers,
+
+86
+00:04:19.570 --> 00:04:21.010
+so that isn't integer,
+
+87
+00:04:21.010 --> 00:04:23.470
+although sometimes
+you don't have to do
+
+88
+00:04:23.470 --> 00:04:27.290
+that and rounding down
+this is just fine as well.
+
+89
+00:04:27.900 --> 00:04:30.610
+But please feel free
+to work through
+
+90
+00:04:30.610 --> 00:04:33.760
+a few examples of
+values of n, f, p,
+
+91
+00:04:33.760 --> 00:04:36.520
+and s for yourself to convince
+yourself if you want,
+
+92
+00:04:36.520 --> 00:04:41.265
+that this formula is correct
+for the output size.
+
+93
+00:04:41.265 --> 00:04:43.225
+Now, before moving on,
+
+94
+00:04:43.225 --> 00:04:45.550
+there is a technical
+comment I want to make
+
+95
+00:04:45.550 --> 00:04:48.660
+about cross-correlation
+verses convolutions.
+
+96
+00:04:48.660 --> 00:04:50.860
+This won't affect
+what you have to
+
+97
+00:04:50.860 --> 00:04:53.740
+do to implement convolution
+neural networks.
+
+98
+00:04:53.740 --> 00:04:56.505
+But depending on the DVD,
+
+99
+00:04:56.505 --> 00:04:59.765
+different math textbook or
+signal processing textbook,
+
+100
+00:04:59.765 --> 00:05:01.730
+there is one other
+
+101
+00:05:01.730 --> 00:05:04.910
+possible inconsistency
+in the notation.
+
+102
+00:05:04.910 --> 00:05:06.220
+Which is that if you look at
+
+103
+00:05:06.220 --> 00:05:08.120
+a typical math textbook the way
+
+104
+00:05:08.120 --> 00:05:10.130
+that the convolution is defined,
+
+105
+00:05:10.130 --> 00:05:13.520
+before doing the element-wise
+product and summing,
+
+106
+00:05:13.520 --> 00:05:15.005
+there's actually one other step
+
+107
+00:05:15.005 --> 00:05:16.115
+that you would first take,
+
+108
+00:05:16.115 --> 00:05:18.980
+which is to convolve
+this six by six matrix,
+
+109
+00:05:18.980 --> 00:05:20.435
+and this three by three filter,
+
+110
+00:05:20.435 --> 00:05:23.030
+you first take the
+three by three filter,
+
+111
+00:05:23.030 --> 00:05:25.520
+and flip it on the
+
+112
+00:05:25.520 --> 00:05:28.625
+horizontal as well as
+the vertical axis.
+
+113
+00:05:28.625 --> 00:05:32.000
+There's 3, 4, 5
+102 minus 197 will
+
+114
+00:05:32.000 --> 00:05:36.895
+become three goes here,
+
+115
+00:05:36.895 --> 00:05:41.565
+four goes there,
+five goes there.
+
+116
+00:05:41.565 --> 00:05:48.510
+Then the second
+row 201 minus 197.
+
+117
+00:05:48.510 --> 00:05:51.415
+But this is really taking
+the three by three filter,
+
+118
+00:05:51.415 --> 00:05:53.650
+and mirroring it both on
+
+119
+00:05:53.650 --> 00:05:57.080
+the vertical and the
+horizontal axis.
+
+120
+00:05:57.530 --> 00:06:00.970
+Then it was this flipped matrix
+
+121
+00:06:00.970 --> 00:06:03.310
+that you would then
+copy over here.
+
+122
+00:06:03.310 --> 00:06:05.365
+To compute the output,
+
+123
+00:06:05.365 --> 00:06:09.830
+you would take 2*7 and so on.
+
+124
+00:06:10.320 --> 00:06:14.080
+You actually multiply
+out the elements of
+
+125
+00:06:14.080 --> 00:06:15.760
+this filter matrix in order
+
+126
+00:06:15.760 --> 00:06:17.695
+to compute the upper left-hand,
+
+127
+00:06:17.695 --> 00:06:25.295
+most elements of the four
+by four output as follows.
+
+128
+00:06:25.295 --> 00:06:28.570
+Then you take those nine
+numbers and your shift them
+
+129
+00:06:28.570 --> 00:06:31.880
+over by one, and so on.
+
+130
+00:06:31.880 --> 00:06:33.505
+The way we've defined
+
+131
+00:06:33.505 --> 00:06:35.710
+the convolution operation
+in these videos
+
+132
+00:06:35.710 --> 00:06:39.400
+is that we've skipped
+this mirroring operation.
+
+133
+00:06:39.400 --> 00:06:42.085
+Technically what
+we're actually doing?
+
+134
+00:06:42.085 --> 00:06:43.510
+Really the operation we've
+
+135
+00:06:43.510 --> 00:06:45.670
+been using for the
+last few videos
+
+136
+00:06:45.670 --> 00:06:50.130
+is sometimes cross-correlation
+instead of convolution.
+
+137
+00:06:50.130 --> 00:06:52.645
+That in the deep
+learning literature,
+
+138
+00:06:52.645 --> 00:06:54.370
+by convention, we just call
+
+139
+00:06:54.370 --> 00:06:57.170
+this the convolution operation.
+
+140
+00:06:57.210 --> 00:07:00.940
+Just to summarize,
+by convention,
+
+141
+00:07:00.940 --> 00:07:03.160
+in machine learning,
+we usually do
+
+142
+00:07:03.160 --> 00:07:05.710
+not bother with this
+flipping operation.
+
+143
+00:07:05.710 --> 00:07:08.255
+Technically this operation is
+
+144
+00:07:08.255 --> 00:07:10.445
+maybe better called
+cross-correlation.
+
+145
+00:07:10.445 --> 00:07:12.620
+But most of the deep
+learning literature just
+
+146
+00:07:12.620 --> 00:07:15.610
+causes the convolution operator.
+
+147
+00:07:15.610 --> 00:07:18.020
+I'm going to use that convention
+
+148
+00:07:18.020 --> 00:07:19.400
+in these videos as well,
+
+149
+00:07:19.400 --> 00:07:24.185
+and if you read a lot of the
+machine learning literature,
+
+150
+00:07:24.185 --> 00:07:26.570
+you find most people
+would just call this,
+
+151
+00:07:26.570 --> 00:07:28.430
+the convolution operator without
+
+152
+00:07:28.430 --> 00:07:31.230
+bothering to use these flips.
+
+153
+00:07:31.490 --> 00:07:33.590
+It turns out that in
+
+154
+00:07:33.590 --> 00:07:36.995
+signal processing or in certain
+branches of mathematics,
+
+155
+00:07:36.995 --> 00:07:39.620
+doing the flipping
+in the definition of
+
+156
+00:07:39.620 --> 00:07:43.370
+convolution causes
+convolution operator,
+
+157
+00:07:43.370 --> 00:07:45.005
+to enjoy this property that
+
+158
+00:07:45.005 --> 00:07:47.475
+A convolve with B,
+convolve with C,
+
+159
+00:07:47.475 --> 00:07:49.935
+is equal to A convolve with B,
+
+160
+00:07:49.935 --> 00:07:51.890
+convolve with C. And this is
+
+161
+00:07:51.890 --> 00:07:54.560
+called associativity
+in mathematics.
+
+162
+00:07:54.560 --> 00:07:57.680
+This is nice for some signal
+processing applications.
+
+163
+00:07:57.680 --> 00:07:59.195
+But for deep neural networks,
+
+164
+00:07:59.195 --> 00:08:00.430
+it really doesn't matter,
+
+165
+00:08:00.430 --> 00:08:03.890
+and so omitting this
+double mirroring operation
+
+166
+00:08:03.890 --> 00:08:05.980
+just simplifies the code,
+
+167
+00:08:05.980 --> 00:08:10.060
+and mixing neural
+network just as well.
+
+168
+00:08:10.490 --> 00:08:14.690
+By convention, most of us
+just call this convolution.
+
+169
+00:08:14.690 --> 00:08:16.850
+Even though, the
+mathematicians prefer to
+
+170
+00:08:16.850 --> 00:08:19.800
+call this cross-correlation
+sometimes.
+
+171
+00:08:20.710 --> 00:08:24.140
+But this should not affect
+anything you have to
+
+172
+00:08:24.140 --> 00:08:26.930
+implement in their
+permanent exercises,
+
+173
+00:08:26.930 --> 00:08:29.390
+and should not
+affect your ability
+
+174
+00:08:29.390 --> 00:08:33.540
+to read and understand the
+deep learning literature.
+
+175
+00:08:33.580 --> 00:08:37.220
+You've now seen how to
+carry out convolutions,
+
+176
+00:08:37.220 --> 00:08:38.690
+and you've seen how to use
+
+177
+00:08:38.690 --> 00:08:41.615
+padding as well as
+strides for convolutions.
+
+178
+00:08:41.615 --> 00:08:44.375
+But so far all we've been
+using is convolutions
+
+179
+00:08:44.375 --> 00:08:47.525
+over matrices like over
+a six by six matrix.
+
+180
+00:08:47.525 --> 00:08:49.370
+In the next video,
+you'll see how to
+
+181
+00:08:49.370 --> 00:08:51.740
+carry out convolutions
+over volumes.
+
+182
+00:08:51.740 --> 00:08:53.210
+This will make why you can do
+
+183
+00:08:53.210 --> 00:08:55.880
+a convolution suddenly
+much more powerful.
+
+184
+00:08:55.880 --> 00:08:58.440
+Let's go on to the next video.

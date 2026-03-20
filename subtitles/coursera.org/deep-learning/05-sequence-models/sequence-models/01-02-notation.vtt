@@ -1,0 +1,497 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.980
+In the last video, you saw some of
+
+2
+00:00:01.980 --> 00:00:05.047
+the wide range of applications through which you can apply sequence models.
+
+3
+00:00:05.047 --> 00:00:10.470
+Let's start by defining a notation that we'll use to build up these sequence models.
+
+4
+00:00:10.470 --> 00:00:12.360
+As a motivating example,
+
+5
+00:00:12.360 --> 00:00:16.290
+let's say you want to build a sequence model to input a sentence like this,
+
+6
+00:00:16.290 --> 00:00:19.361
+Harry Potter and Hermione Granger invented a new spell.
+
+7
+00:00:19.361 --> 00:00:21.210
+And these are characters by the way,
+
+8
+00:00:21.210 --> 00:00:25.595
+from the Harry Potter sequence of novels by J. K. Rowling.
+
+9
+00:00:25.595 --> 00:00:29.220
+And let say you want a sequence model to automatically tell
+
+10
+00:00:29.220 --> 00:00:34.120
+you where are the peoples names in this sentence.
+
+11
+00:00:34.120 --> 00:00:36.760
+So, this is a problem called Named-entity
+
+12
+00:00:36.760 --> 00:00:40.125
+recognition and this is used by search engines for example,
+
+13
+00:00:40.125 --> 00:00:43.800
+to index all of say the last 24 hours news of
+
+14
+00:00:43.800 --> 00:00:49.245
+all the people mentioned in the news articles so that they can index them appropriately.
+
+15
+00:00:49.245 --> 00:00:52.050
+And name into the recognition systems can be
+
+16
+00:00:52.050 --> 00:00:54.765
+used to find people's names, companies names,
+
+17
+00:00:54.765 --> 00:00:57.210
+times, locations, countries names,
+
+18
+00:00:57.210 --> 00:01:01.370
+currency names, and so on in different types of text.
+
+19
+00:01:01.370 --> 00:01:04.650
+Now, given this input x let's say that you want a model to operate
+
+20
+00:01:04.650 --> 00:01:08.250
+y that has one outputs per input word
+
+21
+00:01:08.250 --> 00:01:11.355
+and the target output the design y
+
+22
+00:01:11.355 --> 00:01:17.130
+tells you for each of the input words is that part of a person's name. And technically
+
+23
+00:01:17.130 --> 00:01:21.030
+this maybe isn't the best output representation, there are some more sophisticated
+
+24
+00:01:21.030 --> 00:01:23.520
+output representations that tells you not just
+
+25
+00:01:23.520 --> 00:01:26.558
+is a word part of a person's name, but tells you
+
+26
+00:01:26.558 --> 00:01:30.775
+where are the start and ends of people's names their sentence, you want to know
+
+27
+00:01:30.775 --> 00:01:33.297
+Harry Potter starts here, and ends here,
+
+28
+00:01:33.297 --> 00:01:35.550
+starts here, and ends here. But for this
+
+29
+00:01:35.550 --> 00:01:37.990
+motivating example, I'm just going to stick with
+
+30
+00:01:37.990 --> 00:01:41.900
+this simpler output representation. Now, the input
+
+31
+00:01:41.900 --> 00:01:44.790
+is the sequence of nine words. So, eventually
+
+32
+00:01:44.790 --> 00:01:51.345
+we're going to have nine sets of features to represent these nine words, and index into
+
+33
+00:01:51.345 --> 00:01:53.858
+the positions and sequence, I'm going to use
+
+34
+00:01:53.858 --> 00:01:59.797
+X and then superscript angle brackets 1, 2, 3
+
+35
+00:01:59.797 --> 00:02:06.955
+and so on up to X angle brackets nine to index into the different positions. I'm going to use
+
+36
+00:02:06.955 --> 00:02:13.180
+X_t with the index t to index into positions, in the
+
+37
+00:02:13.180 --> 00:02:15.270
+middle of the sequence. And t
+
+38
+00:02:15.270 --> 00:02:17.400
+implies that these are temporal sequences
+
+39
+00:02:17.400 --> 00:02:21.735
+although whether the sequences are temporal one or not, I'm going
+
+40
+00:02:21.735 --> 00:02:27.805
+to use the index t to index into the positions in the sequence. And similarly
+
+41
+00:02:27.805 --> 00:02:29.895
+for the outputs, we're going
+
+42
+00:02:29.895 --> 00:02:34.040
+to refer to these outputs as y and go back at 1, 2,
+
+43
+00:02:34.040 --> 00:02:39.725
+3 and so on up to y nine. Let's also used
+
+44
+00:02:39.725 --> 00:02:44.553
+T sub of x to denote the length of the input sequence, so in this case there are
+
+45
+00:02:44.553 --> 00:02:46.540
+nine words. So T_x is
+
+46
+00:02:46.540 --> 00:02:53.025
+equal to 9 and we used T_y to denote the length of the output sequence. In this example
+
+47
+00:02:53.025 --> 00:02:56.130
+T_x is equal to T_y but you saw on the last video
+
+48
+00:02:56.130 --> 00:02:59.410
+T_x and T_y can be different. So,
+
+49
+00:02:59.410 --> 00:03:03.690
+you will remember that in the notation we've been using, we've been
+
+50
+00:03:03.690 --> 00:03:09.080
+writing X round brackets i to denote the i training example. So, to
+
+51
+00:03:09.080 --> 00:03:10.710
+refer to the TIF
+
+52
+00:03:10.710 --> 00:03:17.160
+element or the TIF element in the sequence of training example i will use this notation
+
+53
+00:03:17.160 --> 00:03:21.870
+and if Tx is the length of a sequence then
+
+54
+00:03:21.870 --> 00:03:26.700
+different examples in your training set can have different lengths. And so Tx_i
+
+55
+00:03:26.700 --> 00:03:33.368
+would be the input sequence length for training example i, and similarly
+
+56
+00:03:33.368 --> 00:03:40.930
+y i t means the TIF element in the output sequence of the i for an example and
+
+57
+00:03:40.930 --> 00:03:49.842
+Ty_i will be the length of the output sequence in the i training example. So into this
+
+58
+00:03:49.842 --> 00:03:51.570
+example,
+
+59
+00:03:51.570 --> 00:03:57.015
+Tx_i is equal to 9 would be the highly different training example with a sentence of 15 words and
+
+60
+00:03:57.015 --> 00:04:03.370
+Tx_i will be close to 15 for that different training example.
+
+61
+00:04:03.370 --> 00:04:09.345
+Now, this is our first serious foray into NLP or Natural Language Processing.
+
+62
+00:04:09.410 --> 00:04:15.915
+Let's next talk about how we would represent individual words in a sentence.
+
+63
+00:04:15.915 --> 00:04:18.470
+So, to represent a word in the sentence the first thing you
+
+64
+00:04:18.470 --> 00:04:22.195
+do is come up with a Vocabulary.
+
+65
+00:04:22.195 --> 00:04:25.330
+Sometimes also called a Dictionary and that means making
+
+66
+00:04:25.330 --> 00:04:30.580
+a list of the words that you will use in your representations.
+
+67
+00:04:30.580 --> 00:04:33.530
+So the first word in the vocabulary is a,
+
+68
+00:04:33.530 --> 00:04:35.075
+that will be the first word in the dictionary.
+
+69
+00:04:35.075 --> 00:04:40.090
+The second word is Aaron and then a little bit further down is the word and,
+
+70
+00:04:40.090 --> 00:04:47.740
+and then eventually you get to the words
+Harry then eventually the word Potter,
+
+71
+00:04:47.740 --> 00:04:55.160
+and then all the way down to maybe the
+last word in dictionary is Zulu.
+
+72
+00:04:58.160 --> 00:05:00.870
+And so, a will be word one,
+Aaron is word two,
+
+73
+00:05:00.970 --> 00:05:08.805
+and in my dictionary the
+word and appears in positional index 367.
+
+74
+00:05:12.805 --> 00:05:15.035
+Harry appears in position 4075,
+
+75
+00:05:15.035 --> 00:05:18.895
+Potter in position 6830,
+
+76
+00:05:18.895 --> 00:05:24.415
+and Zulu is the last word to the dictionary is maybe word 10,000.
+
+77
+00:05:24.415 --> 00:05:26.302
+So in this example,
+
+78
+00:05:26.302 --> 00:05:30.385
+I'm going to use a dictionary with size 10,000 words.
+
+79
+00:05:30.385 --> 00:05:35.925
+This is quite small by modern NLP applications.
+
+80
+00:05:35.925 --> 00:05:41.775
+For commercial applications, for visual size commercial applications,
+
+81
+00:05:41.775 --> 00:05:47.690
+dictionary sizes of 30 to 50,000 are more common and 100,000 is not uncommon.
+
+82
+00:05:47.690 --> 00:05:49.295
+And then some of the large Internet companies will use
+
+83
+00:05:49.295 --> 00:05:53.380
+dictionary sizes that are maybe a million words or even bigger than that.
+
+84
+00:05:53.380 --> 00:05:57.880
+But you see a lot of commercial applications used dictionary sizes
+
+85
+00:05:57.880 --> 00:06:01.460
+of maybe 30,000 or maybe 50,000 words.
+
+86
+00:06:01.460 --> 00:06:07.485
+But I'm going to use 10,000 for illustration since it's a nice round number.
+
+87
+00:06:07.485 --> 00:06:12.920
+So, if you have chosen a dictionary of 10,000 words and one way to build
+
+88
+00:06:12.920 --> 00:06:14.310
+this dictionary will be be to look through
+
+89
+00:06:14.310 --> 00:06:20.695
+your training sets and find the top 10,000 occurring words,
+
+90
+00:06:20.695 --> 00:06:23.660
+also look through some of the online dictionaries that
+
+91
+00:06:23.660 --> 00:06:28.790
+tells you what are the most common 10,000 words in the English Language saved
+
+92
+00:06:28.790 --> 00:06:34.520
+What you can do is then use one hot representations to represent each of these words.
+
+93
+00:06:34.520 --> 00:06:43.630
+For example, x-1 which represents the word Harry would be a vector with all zeros except
+
+94
+00:06:43.630 --> 00:06:51.115
+for a 1 in position 4075 because that was the position of Harry in the dictionary.
+
+95
+00:06:51.115 --> 00:06:57.940
+And then x_2 will be again similarly a vector of all zeros
+
+96
+00:06:57.940 --> 00:07:03.099
+except for a 1 in position 6830 and then zeros everywhere else.
+
+97
+00:07:03.099 --> 00:07:09.320
+The word and was represented as position 367 so x_3 would be
+
+98
+00:07:09.320 --> 00:07:17.960
+a vector with zeros of 1 in position 367 and then zeros everywhere else.
+
+99
+00:07:17.960 --> 00:07:21.080
+And each of these would be a 10,000
+
+100
+00:07:21.080 --> 00:07:25.110
+dimensional vector if your vocabulary has 10,000 words.
+
+101
+00:07:25.110 --> 00:07:30.757
+And this one A, I guess because A is the first whether the dictionary,
+
+102
+00:07:30.757 --> 00:07:34.620
+then x_7 which corresponds to word a,
+
+103
+00:07:34.620 --> 00:07:38.000
+that would be the vector 1.
+
+104
+00:07:38.000 --> 00:07:42.835
+This is the first element of the dictionary and then zero everywhere else.
+
+105
+00:07:42.835 --> 00:07:45.830
+So in this representation,
+
+106
+00:07:45.830 --> 00:07:52.570
+x_t for each of the values of t in a sentence will be a one-hot vector,
+
+107
+00:07:52.570 --> 00:07:56.258
+one-hot because there's exactly one one is on and zero everywhere
+
+108
+00:07:56.258 --> 00:08:01.625
+else and you will have nine of them to represent the nine words in this sentence.
+
+109
+00:08:01.625 --> 00:08:05.060
+And the goal is given this representation for X to learn
+
+110
+00:08:05.060 --> 00:08:11.760
+a mapping using a sequence model to then target output y,
+
+111
+00:08:11.760 --> 00:08:13.800
+I will do this as a supervised learning problem,
+
+112
+00:08:13.800 --> 00:08:17.760
+I'm sure given the table data with both x and y.
+
+113
+00:08:17.760 --> 00:08:19.075
+Then just one last detail,
+
+114
+00:08:19.075 --> 00:08:22.995
+which we'll talk more about in a later video is,
+
+115
+00:08:22.995 --> 00:08:26.325
+what if you encounter a word that is not in your vocabulary?
+
+116
+00:08:26.325 --> 00:08:32.875
+Well the answer is, you create a new token or a new fake word called Unknown Word which
+
+117
+00:08:32.875 --> 00:08:38.460
+under note as follows and go back as UNK to represent words not in your vocabulary,
+
+118
+00:08:38.460 --> 00:08:40.137
+we'll come more to talk more about this later.
+
+119
+00:08:40.137 --> 00:08:42.665
+So, to summarize in this video,
+
+120
+00:08:42.665 --> 00:08:45.545
+we described a notation for describing
+
+121
+00:08:45.545 --> 00:08:49.400
+your training set for both x and y for sequence data.
+
+122
+00:08:49.400 --> 00:08:51.391
+In the next video let's start to describe
+
+123
+00:08:51.391 --> 00:08:55.985
+a Recurrent Neural Networks for learning the mapping from X to Y.

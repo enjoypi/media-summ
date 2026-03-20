@@ -1,0 +1,733 @@
+WEBVTT
+
+1
+00:00:03.200 --> 00:00:05.715
+Hi and welcome back.
+
+2
+00:00:05.715 --> 00:00:09.195
+In this course, you've learned
+about object recognition,
+
+3
+00:00:09.195 --> 00:00:11.505
+where the goal is
+to input a picture
+
+4
+00:00:11.505 --> 00:00:14.010
+and figure out what
+is in the picture,
+
+5
+00:00:14.010 --> 00:00:15.930
+such as is this a cat or not.
+
+6
+00:00:15.930 --> 00:00:18.075
+You've learned about
+object detection,
+
+7
+00:00:18.075 --> 00:00:20.190
+where the goal is to further put
+
+8
+00:00:20.190 --> 00:00:23.160
+a bounding box around
+the object is found.
+
+9
+00:00:23.160 --> 00:00:26.460
+In this video, you
+learn about a set
+
+10
+00:00:26.460 --> 00:00:29.385
+of algorithms that's even
+one step more sophisticated,
+
+11
+00:00:29.385 --> 00:00:31.800
+which is semantic segmentation,
+
+12
+00:00:31.800 --> 00:00:33.495
+where the goal is to draw
+
+13
+00:00:33.495 --> 00:00:36.840
+a careful outline around
+the object that is
+
+14
+00:00:36.840 --> 00:00:39.570
+detected so that you
+know exactly which
+
+15
+00:00:39.570 --> 00:00:42.825
+pixels belong to the object
+and which pixels don't.
+
+16
+00:00:42.825 --> 00:00:44.420
+This type of algorithm,
+
+17
+00:00:44.420 --> 00:00:47.060
+semantic segmentation
+is useful for
+
+18
+00:00:47.060 --> 00:00:48.860
+many commercial
+applications as well
+
+19
+00:00:48.860 --> 00:00:51.390
+today. Let's dive in.
+
+20
+00:00:51.390 --> 00:00:53.880
+What is semantic segmentation?
+
+21
+00:00:53.880 --> 00:00:57.350
+Let's say you're building a
+self-driving car and you see
+
+22
+00:00:57.350 --> 00:00:59.660
+an input image like this and
+
+23
+00:00:59.660 --> 00:01:02.419
+you'd like to detect the
+position of the other cars.
+
+24
+00:01:02.419 --> 00:01:05.030
+If you use an object
+detection algorithm,
+
+25
+00:01:05.030 --> 00:01:06.620
+the goal may be to draw
+
+26
+00:01:06.620 --> 00:01:09.710
+bounding boxes like these
+around the other vehicles.
+
+27
+00:01:09.710 --> 00:01:12.070
+This might be good enough
+for self-driving car,
+
+28
+00:01:12.070 --> 00:01:14.990
+but if you want your
+learning algorithm to figure
+
+29
+00:01:14.990 --> 00:01:17.960
+out what is every single
+pixel in this image,
+
+30
+00:01:17.960 --> 00:01:19.160
+then you may use
+
+31
+00:01:19.160 --> 00:01:21.560
+a semantic segmentation algorithm
+
+32
+00:01:21.560 --> 00:01:24.449
+whose goal is to output this.
+
+33
+00:01:24.449 --> 00:01:27.730
+Where, for example,
+rather than detecting
+
+34
+00:01:27.730 --> 00:01:29.170
+the road and trying to draw
+
+35
+00:01:29.170 --> 00:01:31.195
+a bounding box around the roads,
+
+36
+00:01:31.195 --> 00:01:32.860
+which isn't going
+to be that useful,
+
+37
+00:01:32.860 --> 00:01:36.640
+with semantic segmentation
+the algorithm attempts to
+
+38
+00:01:36.640 --> 00:01:38.455
+label every single pixel
+
+39
+00:01:38.455 --> 00:01:41.245
+as is this drivable roads or not,
+
+40
+00:01:41.245 --> 00:01:43.850
+indicated by the
+dark green there.
+
+41
+00:01:43.850 --> 00:01:47.275
+One of the uses of
+semantic segmentation
+
+42
+00:01:47.275 --> 00:01:51.100
+is that it is used by some
+self-driving car teams to
+
+43
+00:01:51.100 --> 00:01:54.370
+figure out exactly
+which pixels are
+
+44
+00:01:54.370 --> 00:01:56.170
+safe to drive over because they
+
+45
+00:01:56.170 --> 00:01:58.600
+represent a drivable surface.
+
+46
+00:01:58.600 --> 00:02:00.965
+Let's look at some
+other applications.
+
+47
+00:02:00.965 --> 00:02:03.970
+These are a couple of images from
+
+48
+00:02:03.970 --> 00:02:08.310
+research papers by Novikov
+et al and by Dong et al.
+
+49
+00:02:08.310 --> 00:02:11.170
+In medical imaging,
+given a chest X-ray,
+
+50
+00:02:11.170 --> 00:02:12.620
+you may want to diagnose
+
+51
+00:02:12.620 --> 00:02:14.465
+if someone has a
+certain condition,
+
+52
+00:02:14.465 --> 00:02:17.135
+but what may be even
+more helpful to doctors,
+
+53
+00:02:17.135 --> 00:02:19.565
+is if you can segment
+out in the image,
+
+54
+00:02:19.565 --> 00:02:22.220
+exactly which pixels correspond
+
+55
+00:02:22.220 --> 00:02:25.310
+to certain parts of
+the patient's anatomy.
+
+56
+00:02:25.310 --> 00:02:27.650
+In the image on the left,
+
+57
+00:02:27.650 --> 00:02:29.720
+the lungs, the heart,
+
+58
+00:02:29.720 --> 00:02:31.480
+and the clavicle, so
+
+59
+00:02:31.480 --> 00:02:35.630
+the collarbones are segmented
+out using different colors.
+
+60
+00:02:35.630 --> 00:02:37.670
+This segmentation can make it
+
+61
+00:02:37.670 --> 00:02:40.820
+easier to spot
+irregularities and diagnose
+
+62
+00:02:40.820 --> 00:02:43.760
+serious diseases and also help
+
+63
+00:02:43.760 --> 00:02:47.105
+surgeons with planning
+out surgeries.
+
+64
+00:02:47.105 --> 00:02:49.295
+In this example,
+
+65
+00:02:49.295 --> 00:02:55.395
+a brain MRI scan is used
+for brain tumor detection.
+
+66
+00:02:55.395 --> 00:02:58.790
+Manually segmenting
+out this tumor
+
+67
+00:02:58.790 --> 00:03:01.730
+is very time-consuming
+and laborious,
+
+68
+00:03:01.730 --> 00:03:04.474
+but if a learning
+algorithm can segment
+
+69
+00:03:04.474 --> 00:03:07.310
+out the tumor automatically; this
+
+70
+00:03:07.310 --> 00:03:10.280
+saves radiologists a lot
+of time and this is
+
+71
+00:03:10.280 --> 00:03:13.530
+a useful input as well
+for surgical planning.
+
+72
+00:03:13.530 --> 00:03:15.050
+The algorithm used to generate
+
+73
+00:03:15.050 --> 00:03:18.170
+this result is an
+algorithm called unit,
+
+74
+00:03:18.170 --> 00:03:22.165
+which you'll learn about in
+the remainder of this video.
+
+75
+00:03:22.165 --> 00:03:26.420
+Let's dig into what semantic
+segmentation actually does.
+
+76
+00:03:26.420 --> 00:03:28.130
+For the sake of simplicity,
+
+77
+00:03:28.130 --> 00:03:30.365
+let's use the example of
+
+78
+00:03:30.365 --> 00:03:34.225
+segmenting out a car
+from some background.
+
+79
+00:03:34.225 --> 00:03:37.250
+Let's say for now that
+the only thing you care
+
+80
+00:03:37.250 --> 00:03:40.700
+about is segmenting out
+the car in this image.
+
+81
+00:03:40.700 --> 00:03:45.125
+In that case, you may decide
+to have two cause labels.
+
+82
+00:03:45.125 --> 00:03:50.045
+One for a car and
+zero for not car.
+
+83
+00:03:50.045 --> 00:03:52.085
+In this case, the job of
+
+84
+00:03:52.085 --> 00:03:53.900
+the segmentation algorithm of
+
+85
+00:03:53.900 --> 00:03:56.870
+the unit algorithm
+will be to output,
+
+86
+00:03:56.870 --> 00:04:00.979
+either one or zero for every
+single pixel in this image,
+
+87
+00:04:00.979 --> 00:04:03.140
+where a pixel should
+be labeled one,
+
+88
+00:04:03.140 --> 00:04:05.210
+if it is part of
+the car and label
+
+89
+00:04:05.210 --> 00:04:07.730
+zero if it's not part of the car.
+
+90
+00:04:07.730 --> 00:04:11.960
+Alternatively, if you want
+to segment this image,
+
+91
+00:04:11.960 --> 00:04:14.570
+looking more finely
+you may decide
+
+92
+00:04:14.570 --> 00:04:17.450
+that you want to
+label the car one.
+
+93
+00:04:17.450 --> 00:04:19.820
+Maybe you also want to know
+where the buildings are.
+
+94
+00:04:19.820 --> 00:04:22.195
+In which case you would
+have a second class,
+
+95
+00:04:22.195 --> 00:04:25.245
+class two the building and then
+
+96
+00:04:25.245 --> 00:04:28.305
+finally the ground or the roads,
+
+97
+00:04:28.305 --> 00:04:32.060
+class three, in which case the
+job the learning algorithm
+
+98
+00:04:32.060 --> 00:04:36.485
+would be to label every
+pixel as follows instead.
+
+99
+00:04:36.485 --> 00:04:40.640
+Taking the per-pixel labels
+and shifting it to the right,
+
+100
+00:04:40.640 --> 00:04:43.160
+this is the output
+
+101
+00:04:43.160 --> 00:04:47.170
+that we would like to train
+a unit table to give.
+
+102
+00:04:47.170 --> 00:04:49.580
+This is a lot of outputs,
+
+103
+00:04:49.580 --> 00:04:51.220
+instead of just giving
+
+104
+00:04:51.220 --> 00:04:55.105
+a single class label or
+maybe a class label and
+
+105
+00:04:55.105 --> 00:04:57.770
+coordinates needed to
+specify bounding box
+
+106
+00:04:57.770 --> 00:05:00.730
+the neural network
+unit in this case,
+
+107
+00:05:00.730 --> 00:05:03.855
+has to generate a whole
+matrix of labels.
+
+108
+00:05:03.855 --> 00:05:07.675
+What's the right neural network
+architecture to do that?
+
+109
+00:05:07.675 --> 00:05:11.440
+Let's start with the
+object recognition
+
+110
+00:05:11.440 --> 00:05:13.720
+neural network
+architecture that you're
+
+111
+00:05:13.720 --> 00:05:16.810
+familiar with and let's
+figure how to modify
+
+112
+00:05:16.810 --> 00:05:20.110
+this in order to make
+this new network output,
+
+113
+00:05:20.110 --> 00:05:22.535
+a whole matrix of class labels.
+
+114
+00:05:22.535 --> 00:05:24.270
+Here's a familiar
+
+115
+00:05:24.270 --> 00:05:27.040
+convolutional neural
+network architecture,
+
+116
+00:05:27.040 --> 00:05:31.090
+where you input an image
+which is fed forward
+
+117
+00:05:31.090 --> 00:05:32.890
+through multiple layers in order
+
+118
+00:05:32.890 --> 00:05:35.360
+to generate a class label y hat.
+
+119
+00:05:35.360 --> 00:05:38.355
+In order to change
+this architecture into
+
+120
+00:05:38.355 --> 00:05:41.545
+a semantic segmentation
+architecture,
+
+121
+00:05:41.545 --> 00:05:44.050
+let's get rid of the
+last few layers and
+
+122
+00:05:44.050 --> 00:05:48.010
+one key step of semantic
+segmentation is that,
+
+123
+00:05:48.010 --> 00:05:51.700
+whereas the dimensions
+of the image have
+
+124
+00:05:51.700 --> 00:05:53.905
+been generally getting smaller
+
+125
+00:05:53.905 --> 00:05:55.705
+as we go from left to right,
+
+126
+00:05:55.705 --> 00:05:58.870
+it now needs to get bigger
+so they can gradually
+
+127
+00:05:58.870 --> 00:06:02.230
+blow it back up to
+a full-size image,
+
+128
+00:06:02.230 --> 00:06:04.955
+which is a size you
+want for the output.
+
+129
+00:06:04.955 --> 00:06:06.530
+Specifically,
+
+130
+00:06:06.530 --> 00:06:09.310
+this is what a unit
+architecture looks like.
+
+131
+00:06:09.310 --> 00:06:11.835
+As we go deeper into the unit,
+
+132
+00:06:11.835 --> 00:06:14.540
+the height and width will go back
+
+133
+00:06:14.540 --> 00:06:17.720
+up while the number of
+channels will decrease
+
+134
+00:06:17.720 --> 00:06:21.200
+so the unit architecture
+looks like this until
+
+135
+00:06:21.200 --> 00:06:25.120
+eventually, you get your
+segmentation map of the cat.
+
+136
+00:06:25.120 --> 00:06:27.560
+One operation we have not yet
+
+137
+00:06:27.560 --> 00:06:30.365
+covered is what does
+this look like?
+
+138
+00:06:30.365 --> 00:06:32.780
+To make the image bigger.
+
+139
+00:06:32.780 --> 00:06:35.390
+To explain how that works,
+
+140
+00:06:35.390 --> 00:06:37.250
+you have to know how to
+
+141
+00:06:37.250 --> 00:06:40.210
+implement a transpose
+convolution.
+
+142
+00:06:40.210 --> 00:06:43.430
+That's semantic
+segmentation, a very
+
+143
+00:06:43.430 --> 00:06:46.595
+useful algorithm for many
+computer vision applications
+
+144
+00:06:46.595 --> 00:06:48.710
+where the key idea is you have to
+
+145
+00:06:48.710 --> 00:06:50.600
+take every single pixel and
+
+146
+00:06:50.600 --> 00:06:51.800
+label every single pixel
+
+147
+00:06:51.800 --> 00:06:54.725
+individually with the
+appropriate class label.
+
+148
+00:06:54.725 --> 00:06:56.570
+As you've seen in this video,
+
+149
+00:06:56.570 --> 00:06:59.750
+a key step to do that is
+to take a small set of
+
+150
+00:06:59.750 --> 00:07:01.490
+activations and to blow it
+
+151
+00:07:01.490 --> 00:07:04.205
+up to a bigger set
+of activations.
+
+152
+00:07:04.205 --> 00:07:05.555
+In order to do that,
+
+153
+00:07:05.555 --> 00:07:06.950
+you have to implement something
+
+154
+00:07:06.950 --> 00:07:09.050
+called the transpose convolution,
+
+155
+00:07:09.050 --> 00:07:11.360
+which is important
+operation that is used
+
+156
+00:07:11.360 --> 00:07:14.215
+multiple times in the
+unit architecture.
+
+157
+00:07:14.215 --> 00:07:16.790
+Let's go on to the next
+video where you learn
+
+158
+00:07:16.790 --> 00:07:19.205
+about the transpose convolution.
+
+159
+00:07:19.205 --> 00:07:21.540
+I'll see you in the next video.

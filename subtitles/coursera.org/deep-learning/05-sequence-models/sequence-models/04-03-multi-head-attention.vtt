@@ -1,0 +1,524 @@
+WEBVTT
+
+1
+00:00:03.370 --> 00:00:07.960
+Let's jump in and learn about
+the multi head attention mechanism.
+
+2
+00:00:07.960 --> 00:00:10.739
+The notation gets a little
+bit complicated, but
+
+3
+00:00:10.739 --> 00:00:14.667
+the thing to keep in mind is basically
+just a big for-loop over the self
+
+4
+00:00:14.667 --> 00:00:18.300
+attention mechanism that you
+learned about in the last video.
+
+5
+00:00:18.300 --> 00:00:23.017
+Let's take a look each time you
+calculate self attention for
+
+6
+00:00:23.017 --> 00:00:25.247
+a sequence is called a head.
+
+7
+00:00:26.732 --> 00:00:31.015
+And thus the name multi head attention
+refers to if you do what you saw in
+
+8
+00:00:31.015 --> 00:00:36.140
+the last video, but a bunch of times
+let's walk through how this works.
+
+9
+00:00:36.140 --> 00:00:40.795
+Remember that you got the vectors Q K and
+
+10
+00:00:40.795 --> 00:00:45.875
+V for
+each of the input terms by multiplying
+
+11
+00:00:45.875 --> 00:00:50.840
+them by a few matrices, W Q W K and W V.
+
+12
+00:00:50.840 --> 00:00:54.800
+With multi head attention,
+you take that same set of query key and
+
+13
+00:00:54.800 --> 00:00:56.391
+value vectors as inputs.
+
+14
+00:00:56.391 --> 00:01:03.020
+So the q, k, v values written down here
+and calculate multiple self attentions.
+
+15
+00:01:03.020 --> 00:01:08.190
+So the first of these, you multiply the k,
+
+16
+00:01:08.190 --> 00:01:12.787
+q, v matrices with weight matrices,
+
+17
+00:01:12.787 --> 00:01:16.540
+w one q, w one k and w one v.
+
+18
+00:01:16.540 --> 00:01:22.271
+And so these three values give
+you a new set of query key and
+
+19
+00:01:22.271 --> 00:01:26.340
+value vectors for the first words.
+
+20
+00:01:26.340 --> 00:01:31.340
+And you do the same thing for
+each of the other words.
+
+21
+00:01:31.340 --> 00:01:38.161
+For the sake of intuition, you might
+find it useful to think of w one q,
+
+22
+00:01:38.161 --> 00:01:42.669
+w one k and
+w one v as being learned to help ask and
+
+23
+00:01:42.669 --> 00:01:47.545
+answer the question,
+what's happening there?
+
+24
+00:01:47.545 --> 00:01:51.163
+And so this is just more or
+less the self attention
+
+25
+00:01:51.163 --> 00:01:55.855
+example that we walked through
+earlier in the previous video.
+
+26
+00:01:55.855 --> 00:02:01.027
+After finishing you may think,
+we have w q, w one q, w one k,
+
+27
+00:02:01.027 --> 00:02:06.651
+w one v, I learn to help you ask and
+answer the question, what's happening?
+
+28
+00:02:07.940 --> 00:02:12.930
+And so with this computation, the word
+visite gives the best answer to
+
+29
+00:02:12.930 --> 00:02:17.589
+what's happening, which is why
+I've highlighted with this blue
+
+30
+00:02:17.589 --> 00:02:22.495
+arrow over here to represent that
+the inner product between the key for
+
+31
+00:02:22.495 --> 00:02:26.568
+l'Afrique has the highest value
+with the query for visite,
+
+32
+00:02:26.568 --> 00:02:30.350
+which is the first of
+the questions we'll get to ask.
+
+33
+00:02:30.350 --> 00:02:34.251
+So this is how you get
+the representation for l'Afrique and
+
+34
+00:02:34.251 --> 00:02:39.231
+you do the same for Jane, visite and
+the other words en septembre.
+
+35
+00:02:39.231 --> 00:02:43.560
+So you end up with five vectors to
+represent the five words in the sequence.
+
+36
+00:02:43.560 --> 00:02:46.640
+So this is a computation you carry out for
+
+37
+00:02:46.640 --> 00:02:52.040
+the first of the several heads
+you use in multi head attention.
+
+38
+00:02:52.040 --> 00:02:57.595
+And so you would step through exactly the
+same calculation that we had just now for
+
+39
+00:02:57.595 --> 00:03:02.658
+l'Afrique and for the other words and
+end up with the same attention values,
+
+40
+00:03:02.658 --> 00:03:06.840
+a one through a five that we
+had in the previous video.
+
+41
+00:03:06.840 --> 00:03:11.490
+But now we're going to do this
+not once but a handful of times.
+
+42
+00:03:11.490 --> 00:03:15.922
+So that rather than having one head,
+we may now have eight heads,
+
+43
+00:03:15.922 --> 00:03:21.440
+which just means performing this
+whole calculation maybe eight times.
+
+44
+00:03:21.440 --> 00:03:27.875
+And so so far, we've computed this
+quantity of attention with the first
+
+45
+00:03:27.875 --> 00:03:33.440
+head indicated by the subsequent
+one in these matrices.
+
+46
+00:03:33.440 --> 00:03:36.240
+And the attention equation is just this,
+
+47
+00:03:36.240 --> 00:03:40.010
+which you had previously seen
+in the last video as well.
+
+48
+00:03:40.010 --> 00:03:43.520
+Now, let's do this computation
+with the second head.
+
+49
+00:03:43.520 --> 00:03:47.240
+The second head will have
+a new set of matrices.
+
+50
+00:03:47.240 --> 00:03:51.390
+I'm going to write WQ two, WK two and
+
+51
+00:03:51.390 --> 00:03:56.543
+WV two that allows this
+mechanism to ask and
+
+52
+00:03:56.543 --> 00:04:00.440
+answer a second question.
+
+53
+00:04:00.440 --> 00:04:03.521
+So the first question
+was what's happening?
+
+54
+00:04:03.521 --> 00:04:09.040
+Maybe the second question is
+when is something happening?
+
+55
+00:04:09.040 --> 00:04:13.305
+And so instead of having W
+one here in the general case,
+
+56
+00:04:13.305 --> 00:04:17.849
+we will have here Wi and
+I've now stacked up the second head
+
+57
+00:04:17.849 --> 00:04:22.740
+behind the first one was
+the second one shown in red.
+
+58
+00:04:22.740 --> 00:04:27.516
+So you repeat a computation that's
+exactly the same as the first one but
+
+59
+00:04:27.516 --> 00:04:30.640
+with this new set of matrices instead.
+
+60
+00:04:30.640 --> 00:04:36.622
+And you end up with in this case maybe
+the inner product between the september
+
+61
+00:04:36.622 --> 00:04:41.600
+key and the l'Afrique query will
+have the highest inner product.
+
+62
+00:04:41.600 --> 00:04:48.019
+So I'm going to highlight this red arrow
+to indicate that the value for september
+
+63
+00:04:48.019 --> 00:04:55.040
+will play a large role in this second
+part of the representation for l'Afrique.
+
+64
+00:04:55.040 --> 00:04:59.766
+Maybe the third question
+we now want to ask
+
+65
+00:04:59.766 --> 00:05:04.358
+as represented by W Q three, W K three and
+
+66
+00:05:04.358 --> 00:05:10.460
+WV three is who,
+who has something to do with Africa?
+
+67
+00:05:10.460 --> 00:05:15.561
+And in this case when you do
+this computation the third time,
+
+68
+00:05:15.561 --> 00:05:20.161
+maybe the inner product
+between Jane's key vector and
+
+69
+00:05:20.161 --> 00:05:23.861
+the l'Afrique query vector
+will be highest and
+
+70
+00:05:23.861 --> 00:05:27.390
+self highlighted this black arrow here.
+
+71
+00:05:27.390 --> 00:05:31.311
+So that Jane's value will
+have the greatest weight
+
+72
+00:05:31.311 --> 00:05:36.153
+in this representation which
+I've now stacked on at the back.
+
+73
+00:05:36.153 --> 00:05:37.317
+In the literature,
+
+74
+00:05:37.317 --> 00:05:42.340
+the number of heads is usually
+represented by the lower case letter H.
+
+75
+00:05:42.340 --> 00:05:45.171
+And so H is equal to the number of heads.
+
+76
+00:05:46.640 --> 00:05:50.066
+And you can think of each of these
+heads as a different feature.
+
+77
+00:05:50.066 --> 00:05:55.031
+And when you pass these features to a new
+network you can calculate a very rich
+
+78
+00:05:55.031 --> 00:05:57.293
+representation of the sentence.
+
+79
+00:05:57.293 --> 00:06:02.518
+Calculating these computations for
+the three heads or the eight heads or
+
+80
+00:06:02.518 --> 00:06:07.230
+whatever the number,
+the concatenation of these three values or
+
+81
+00:06:07.230 --> 00:06:12.221
+A values is used to compute the output
+of the multi headed attention.
+
+82
+00:06:12.221 --> 00:06:20.793
+And so the final value is
+the concatenation of all of these H heads.
+
+83
+00:06:22.159 --> 00:06:27.420
+And then finally multiplied by a matrix W.
+
+84
+00:06:27.420 --> 00:06:32.694
+Now one more detail that's worth keeping
+in mind is that in the description
+
+85
+00:06:32.694 --> 00:06:38.053
+of multi head attention, I described
+computing these different values for
+
+86
+00:06:38.053 --> 00:06:42.350
+the different heads as if you
+would do them in a big for-loop.
+
+87
+00:06:42.350 --> 00:06:46.020
+And conceptually it's okay
+to think of it like that.
+
+88
+00:06:46.020 --> 00:06:51.029
+But in practice you can actually compute
+these different heads' values in
+
+89
+00:06:51.029 --> 00:06:55.892
+parallel because no one has value
+depends on the value of any other head.
+
+90
+00:06:55.892 --> 00:06:58.416
+So in terms of how this is implemented,
+
+91
+00:06:58.416 --> 00:07:03.398
+you can actually compute all the heads
+in parallel instead of sequentially.
+
+92
+00:07:03.398 --> 00:07:06.730
+And then concatenate
+them multiply by W zero.
+
+93
+00:07:06.730 --> 00:07:10.040
+And there's your multi headed attention.
+
+94
+00:07:10.040 --> 00:07:12.660
+Now, there's a lot going on on the slide.
+
+95
+00:07:12.660 --> 00:07:17.168
+Thanks for sticking with me all
+the way to the end of this video.
+
+96
+00:07:17.168 --> 00:07:21.066
+In the next video,
+I'm going to use a simplified icon.
+
+97
+00:07:21.066 --> 00:07:26.055
+We're going to use this
+little diagram here to denote
+
+98
+00:07:26.055 --> 00:07:29.081
+this multi head computation.
+
+99
+00:07:29.081 --> 00:07:32.940
+So it takes as input matrices Q, K and V.
+
+100
+00:07:32.940 --> 00:07:38.640
+So these values down here and
+outputs this value up here.
+
+101
+00:07:38.640 --> 00:07:44.975
+So in the next video, when we put this
+into the full transformer network,
+
+102
+00:07:44.975 --> 00:07:49.470
+I'm going to use this little
+picture to denote all of
+
+103
+00:07:49.470 --> 00:07:53.170
+these computations denoted on the slide.
+
+104
+00:07:53.170 --> 00:07:54.606
+So, congratulations.
+
+105
+00:07:54.606 --> 00:07:57.740
+In the last video you
+learned about self attention.
+
+106
+00:07:57.740 --> 00:08:02.708
+And by doing that multiple times, you
+now understand the multi head attention
+
+107
+00:08:02.708 --> 00:08:07.527
+mechanism, which lets you ask multiple
+questions for every single word and
+
+108
+00:08:07.527 --> 00:08:12.040
+learn a much richer,
+much better representation for every word.
+
+109
+00:08:12.040 --> 00:08:15.940
+Let's now put all this together
+to build the transformer network.
+
+110
+00:08:15.940 --> 00:08:17.861
+Let's go to the next video to see that.

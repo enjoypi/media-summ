@@ -1,0 +1,519 @@
+WEBVTT
+
+1
+00:00:03.440 --> 00:00:07.911
+I found the unit architecture useful for
+many applications I have worked on, and
+
+2
+00:00:07.911 --> 00:00:10.278
+there's this one of the most important and
+
+3
+00:00:10.278 --> 00:00:14.320
+foundational neural network
+architectures of computer vision today.
+
+4
+00:00:14.320 --> 00:00:19.540
+So in this video, let's dig in the details
+of exactly how the U-Net works.
+
+5
+00:00:19.540 --> 00:00:21.480
+This is what a U-Net looks like.
+
+6
+00:00:21.480 --> 00:00:25.054
+I know there's a lot going on in this
+picture, is okay we'll break it down and
+
+7
+00:00:25.054 --> 00:00:27.520
+step it through one step at the time.
+
+8
+00:00:27.520 --> 00:00:31.554
+But I want to quickly show you
+the final outcome of what a unit
+
+9
+00:00:31.554 --> 00:00:33.430
+architecture looks like.
+
+10
+00:00:33.430 --> 00:00:36.982
+And this, by the way,
+is also why it's called a unit,
+
+11
+00:00:36.982 --> 00:00:40.781
+because when you draw it like this,
+it looks a lot like a U.
+
+12
+00:00:40.781 --> 00:00:45.231
+But let's break it down and
+build this back up one piece at a time.
+
+13
+00:00:45.231 --> 00:00:49.717
+So we're going to make sure we know what
+all of the things going on in this diagram
+
+14
+00:00:49.717 --> 00:00:50.980
+actually are doing.
+
+15
+00:00:50.980 --> 00:00:56.144
+These ideas were due to Olaf Ranneberger
+for the Fisher and Thomas Bronx.
+
+16
+00:00:56.144 --> 00:00:59.457
+Fun fact,
+when they wrote the original unit paper,
+
+17
+00:00:59.457 --> 00:01:04.404
+they were thinking of the application
+of biomedical image segmentation,
+
+18
+00:01:04.404 --> 00:01:06.570
+really segmenting medical images.
+
+19
+00:01:06.570 --> 00:01:11.072
+But these ideas turned out to be
+useful for many other computer vision,
+
+20
+00:01:11.072 --> 00:01:13.840
+semantic segmentation
+applications as well.
+
+21
+00:01:13.840 --> 00:01:17.582
+So the input to the unit is an image,
+let's say,
+
+22
+00:01:17.582 --> 00:01:24.260
+is h by w by three, for
+three channels RGB channels.
+
+23
+00:01:24.260 --> 00:01:30.440
+I'm going to visualize this
+image as a thin layer like that.
+
+24
+00:01:30.440 --> 00:01:36.058
+I know that previously we had taken
+neural network layers and drawn them,
+
+25
+00:01:36.058 --> 00:01:42.990
+as three D blocks like this, where
+this might be rise of h by w by three.
+
+26
+00:01:42.990 --> 00:01:46.508
+But in order to make
+the unit diagram look
+
+27
+00:01:46.508 --> 00:01:49.291
+simpler going to imagine just
+looking at this edge on.
+
+28
+00:01:49.291 --> 00:01:51.940
+So all you see is this.
+
+29
+00:01:51.940 --> 00:01:59.041
+And the rest of this is hidden behind this
+dark blue rectangle that I've have drawn.
+
+30
+00:01:59.041 --> 00:02:01.030
+And so that's what this is.
+
+31
+00:02:01.030 --> 00:02:06.863
+The height of this is, the height h and
+the width of this is three, right,
+
+32
+00:02:06.863 --> 00:02:10.473
+with the number of channels,the depth is 3.
+
+33
+00:02:10.473 --> 00:02:12.840
+So it looks very thin.
+
+34
+00:02:12.840 --> 00:02:17.263
+So to simplify the unit diagram, I'm
+going to use these rectangles rather than
+
+35
+00:02:17.263 --> 00:02:20.640
+three D shapes to
+illustrate the algorithm.
+
+36
+00:02:20.640 --> 00:02:25.246
+Now, the first part of the unit uses
+normal feed forward neural network
+
+37
+00:02:25.246 --> 00:02:26.880
+convolutional layers.
+
+38
+00:02:26.880 --> 00:02:32.212
+So I'm going to use a black arrow
+to denote a convolutional layer,
+
+39
+00:02:32.212 --> 00:02:35.790
+followed by a value activation function.
+
+40
+00:02:35.790 --> 00:02:40.501
+So the next layer, maybe we'll say that,
+we have increased the number of channels
+
+41
+00:02:40.501 --> 00:02:44.741
+a little bit, but the dimension is still
+height by width by a little bit more
+
+42
+00:02:44.741 --> 00:02:49.551
+channels and then another convolutional
+layer with a rather activation function.
+
+43
+00:02:51.140 --> 00:02:55.380
+Now we're still in the first
+half of the neural network.
+
+44
+00:02:55.380 --> 00:02:59.760
+We're going to use Max pooling
+to reduce the height and width.
+
+45
+00:02:59.760 --> 00:03:03.773
+So maybe you end up with a set of
+activations where the height and
+
+46
+00:03:03.773 --> 00:03:09.440
+width is lower, but maybe a sticker, so
+the number of channels is increasing.
+
+47
+00:03:09.440 --> 00:03:14.660
+Then we have two more layers of
+normal feet forward convolutions with
+
+48
+00:03:14.660 --> 00:03:19.980
+a radio activation function, and
+then the supply Max pooling again.
+
+49
+00:03:19.980 --> 00:03:22.090
+And so you get that, right.
+
+50
+00:03:22.090 --> 00:03:24.130
+And then you repeat again.
+
+51
+00:03:24.130 --> 00:03:26.740
+And so you end up with this.
+
+52
+00:03:26.740 --> 00:03:32.148
+So, so far, this is the normal convolution
+layers with activation functions that
+
+53
+00:03:32.148 --> 00:03:37.261
+you've been used to from earlier videos
+with occasional max pooling layers.
+
+54
+00:03:38.340 --> 00:03:44.740
+So notice that the height of this
+layer I deal with is now very small.
+
+55
+00:03:44.740 --> 00:03:49.690
+So we're going to start to apply
+transpose convolution layers,
+
+56
+00:03:49.690 --> 00:03:54.100
+which I'm going to note by
+the green arrow in order to build
+
+57
+00:03:54.100 --> 00:03:57.620
+the dimension of this
+neural network back up.
+
+58
+00:03:57.620 --> 00:04:02.695
+So with the first transpose
+convolutional layer or trans conv layer,
+
+59
+00:04:02.695 --> 00:04:07.440
+you're going to get a set of
+activations that looks like that.
+
+60
+00:04:07.440 --> 00:04:12.316
+In this example, we did not
+increase the height and width, but
+
+61
+00:04:12.316 --> 00:04:15.940
+we did decrease the number of channels.
+
+62
+00:04:15.940 --> 00:04:20.803
+But there's one more thing you need to
+do to build a unit, which is to add in
+
+63
+00:04:20.803 --> 00:04:25.450
+that skip connection which I'm going
+to denote with this grey arrow.
+
+64
+00:04:25.450 --> 00:04:30.393
+What the skip connection does is
+it takes this set of activations and
+
+65
+00:04:30.393 --> 00:04:32.760
+just copies it over to the right.
+
+66
+00:04:32.760 --> 00:04:36.160
+And so the set of activations
+you end up with is like this.
+
+67
+00:04:36.160 --> 00:04:40.972
+The light blue part comes from
+the transpose convolution, and
+
+68
+00:04:40.972 --> 00:04:44.980
+the dark blue part is just
+copied over from the left.
+
+69
+00:04:44.980 --> 00:04:49.711
+To keep on building up the unit we
+are going to then apply a
+
+70
+00:04:49.711 --> 00:04:52.927
+couple more layers of the regular convolutions,
+
+71
+00:04:52.927 --> 00:04:58.555
+followed by our value activation
+function so denoted by the black arrows,
+
+72
+00:04:58.555 --> 00:05:03.780
+like so, and then we apply another
+transpose convolutional layer.
+
+73
+00:05:03.780 --> 00:05:08.809
+So green arrow and here we're going
+to start to increase the dimension,
+
+74
+00:05:08.809 --> 00:05:11.960
+increase the height and
+width of this image.
+
+75
+00:05:11.960 --> 00:05:15.540
+And so now the height is getting bigger.
+
+76
+00:05:15.540 --> 00:05:18.861
+But here, too,
+we're going to apply a skip connection.
+
+77
+00:05:18.861 --> 00:05:23.969
+So there's a grey arrow again where
+they take this set of activations and
+
+78
+00:05:23.969 --> 00:05:27.161
+just copy it right there,
+over to the right.
+
+79
+00:05:28.440 --> 00:05:32.871
+More convolutional layers and other
+transpose convolution, skip connection.
+
+80
+00:05:32.871 --> 00:05:36.257
+Once again, we're going to take
+this set of activations and
+
+81
+00:05:36.257 --> 00:05:39.849
+copy it over to the right and
+then more convolutional layers,
+
+82
+00:05:39.849 --> 00:05:42.940
+followed by another transpose convolution.
+
+83
+00:05:42.940 --> 00:05:45.880
+Skip connection, copy that over.
+
+84
+00:05:45.880 --> 00:05:49.909
+And now we're back to a set
+of activations that is
+
+85
+00:05:49.909 --> 00:05:54.440
+the original input images,
+height and width.
+
+86
+00:05:54.440 --> 00:06:00.958
+We're going to have a couple more layers
+of a normal fee forward convolutions, and
+
+87
+00:06:00.958 --> 00:06:06.076
+then finally, to take this and
+map this to our segmentation map,
+
+88
+00:06:06.076 --> 00:06:11.477
+we're going to use a one by one
+convolution which I'm going to denote
+
+89
+00:06:11.477 --> 00:06:17.651
+with that magenta arrow to finally give
+us this which is going to be our output.
+
+90
+00:06:18.840 --> 00:06:23.889
+The dimensions of this output
+layer is going to be h by w, so
+
+91
+00:06:23.889 --> 00:06:29.740
+the same dimensions as our
+original input by num classes.
+
+92
+00:06:29.740 --> 00:06:34.020
+So if you have three classes to try and
+recognize, this will be three.
+
+93
+00:06:34.020 --> 00:06:37.808
+If you have ten different classes
+to try to recognize in your
+
+94
+00:06:37.808 --> 00:06:41.090
+segmentation at then that
+last number will be ten.
+
+95
+00:06:41.090 --> 00:06:46.139
+And so what this does is for every one of
+your pixels you have h by w pixels you
+
+96
+00:06:46.139 --> 00:06:53.095
+have, an array or a vector, essentially
+of n classes numbers that tells you for
+
+97
+00:06:53.095 --> 00:06:57.067
+our pixel how likely is that pixel to come
+from each of these different classes.
+
+98
+00:06:57.067 --> 00:07:00.095
+And if you take a arg max
+over these n classes,
+
+99
+00:07:00.095 --> 00:07:04.960
+then that's how you classify each of
+the pixels into one of the classes,
+
+100
+00:07:04.960 --> 00:07:10.240
+and you can visualize it like
+the segmentation map showing on the right.
+
+101
+00:07:10.240 --> 00:07:11.040
+So that's it.
+
+102
+00:07:11.040 --> 00:07:15.455
+You've learned about the transpose
+convolution and the unit architecture.
+
+103
+00:07:15.455 --> 00:07:18.730
+Congrats getting to the end
+of this week's videos.
+
+104
+00:07:18.730 --> 00:07:23.420
+I hope you also enjoy working through
+these ideas in the program exercise.
+
+105
+00:07:23.420 --> 00:07:28.318
+Next week, we'll come back and talk
+about some specialized architecture for
+
+106
+00:07:28.318 --> 00:07:32.843
+face recognition and for your style
+transfer where you get to create some
+
+107
+00:07:32.843 --> 00:07:36.195
+really interesting artwork
+using neural networks.
+
+108
+00:07:36.195 --> 00:07:40.560
+Have fun with pro exercise, and
+I look forward to seeing you next week.

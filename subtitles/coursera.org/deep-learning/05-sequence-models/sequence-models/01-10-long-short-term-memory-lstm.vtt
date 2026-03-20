@@ -1,0 +1,640 @@
+WEBVTT
+
+1
+00:00:00.340 --> 00:00:05.013
+In the last video, you learn about
+the GRU, the Gated Recurring Unit and how
+
+2
+00:00:05.013 --> 00:00:09.780
+that can allow you to learn very
+long range connections in a sequence.
+
+3
+00:00:09.780 --> 00:00:13.907
+The other type of unit that allows you
+to do this very well is the LSTM or
+
+4
+00:00:13.907 --> 00:00:15.981
+the long short term memory units.
+
+5
+00:00:15.981 --> 00:00:20.297
+And this is even more powerful
+than the GRU, let's take a look.
+
+6
+00:00:20.297 --> 00:00:24.800
+Here the equations from the previous
+video for the GRU and for
+
+7
+00:00:24.800 --> 00:00:30.988
+the GRU we had a t = c t and two gates
+the update gate and the relevance gate.
+
+8
+00:00:30.988 --> 00:00:35.169
+c(tilde) t, which is a candidate for
+replacing the memory cell.
+
+9
+00:00:35.169 --> 00:00:39.813
+And then we use the gate, the update
+gate gamma Wu to decide whether or
+
+10
+00:00:39.813 --> 00:00:42.949
+not to update c t  using c(tilde) t.
+
+11
+00:00:42.949 --> 00:00:50.433
+The LSTM is an even slightly more powerful
+and more general version of the GRU and
+
+12
+00:00:50.433 --> 00:00:55.578
+it's due to set hook writer and
+Jurgen Schmidt Huber.
+
+13
+00:00:55.578 --> 00:00:59.762
+And this was a really seminal paper,
+there's a huge impact on sequence
+
+14
+00:00:59.762 --> 00:01:04.530
+modeling, although I think this paper is
+one of the more difficult ones to read.
+
+15
+00:01:04.530 --> 00:01:08.341
+It goes quite a lot into
+the theory of vanishing gradients.
+
+16
+00:01:08.341 --> 00:01:12.349
+And so I think more people have learned
+about the details of LSTM through maybe
+
+17
+00:01:12.349 --> 00:01:16.542
+other places than from this particular
+paper, even though I think this paper has
+
+18
+00:01:16.542 --> 00:01:19.640
+had a wonderful impact on
+the deep learning community.
+
+19
+00:01:19.640 --> 00:01:23.847
+But these are the equations
+that govern the LSTM, so
+
+20
+00:01:23.847 --> 00:01:29.010
+the will continue to the memory cell c and
+the candidate value for
+
+21
+00:01:29.010 --> 00:01:32.940
+updating it c(tilde) t  will be this.
+
+22
+00:01:32.940 --> 00:01:37.306
+And so notice that for the LSTM,
+
+23
+00:01:37.306 --> 00:01:45.740
+we will no longer have the case
+that a t is equal to c t.
+
+24
+00:01:45.740 --> 00:01:50.419
+So this is what we use and so this is
+like the equation on the left except
+
+25
+00:01:50.419 --> 00:01:54.937
+that with now more use a t there or
+a t-1, c t-1 and
+
+26
+00:01:54.937 --> 00:01:58.021
+we are not using this
+
+27
+00:01:58.021 --> 00:02:02.953
+gamma r this relevance.
+Although you can have a deviation of
+the LSTM and we put that
+
+28
+00:02:02.953 --> 00:02:08.240
+back in but with a more common version of
+the LSTM doesn't bother with that.
+
+29
+00:02:08.240 --> 00:02:12.340
+And then we will have
+an update gate same as before.
+
+30
+00:02:12.340 --> 00:02:17.428
+So w update and
+I'm going to use a t-1 here,
+
+31
+00:02:17.428 --> 00:02:22.637
+ct +bu and
+
+32
+00:02:22.637 --> 00:02:28.210
+one new property of the LSTM is instead of having one update gate
+control
+
+33
+00:02:28.210 --> 00:02:32.471
+both of these terms, we're going to have two separate terms.
+
+34
+00:02:32.471 --> 00:02:37.377
+So instead of gamma u and
+1- gamma u were going to have gamma u here
+
+35
+00:02:37.377 --> 00:02:42.240
+and for
+gate k we should call gamma f.
+
+36
+00:02:42.240 --> 00:02:49.461
+So this gate gamma f is going to be
+sigmoid of, pretty much what you'd expect.
+
+37
+00:02:50.540 --> 00:02:53.262
+c t  plus
+
+38
+00:02:53.262 --> 00:02:58.868
+bf, and then we're going to have a new output gate
+
+39
+00:02:58.868 --> 00:03:03.992
+which is sigmoid of Wo and then again,
+
+40
+00:03:03.992 --> 00:03:09.451
+pretty much what you'd expect plus bo.
+
+41
+00:03:10.540 --> 00:03:15.549
+And then the update value to
+the memory cell will be c t equals
+
+42
+00:03:15.549 --> 00:03:21.440
+gamma u then this asterisk in
+those element wise multiplication.
+
+43
+00:03:21.440 --> 00:03:26.849
+There's a vector vector,
+element wise multiplication plus and
+
+44
+00:03:26.849 --> 00:03:31.765
+instead of one minus gamma u were
+going to have a separate for
+
+45
+00:03:31.765 --> 00:03:34.450
+gate gamma f times c t-1.
+
+46
+00:03:34.450 --> 00:03:40.236
+So this gives the memory cell the option
+of keeping the old value c t-1 and
+
+47
+00:03:40.236 --> 00:03:44.380
+then just adding to it this
+new value c(tilde) t.
+
+48
+00:03:44.380 --> 00:03:49.030
+So use a separate update and
+forget gates right?
+
+49
+00:03:49.030 --> 00:03:50.961
+So this stands on update.
+
+50
+00:03:52.340 --> 00:03:55.961
+Forget and output gates and
+
+51
+00:03:55.961 --> 00:04:01.951
+then finally instead of 80 equals c t.
+
+52
+00:04:01.951 --> 00:04:10.840
+Is a t equal to the output gate
+element wise multiply with c t.
+
+53
+00:04:10.840 --> 00:04:14.600
+So these are the equations
+that govern the LSTM.
+
+54
+00:04:14.600 --> 00:04:17.981
+And you can tell it has
+three gates instead of two.
+
+55
+00:04:17.981 --> 00:04:23.340
+So it's a bit more complicated and places
+against in slightly different places.
+
+56
+00:04:23.340 --> 00:04:30.340
+So here again are the equations
+governing the behavior of the LSTM.
+
+57
+00:04:30.340 --> 00:04:34.233
+Once again it's traditional to explain
+these things using pictures, so
+
+58
+00:04:34.233 --> 00:04:35.380
+let me draw one here.
+
+59
+00:04:35.380 --> 00:04:39.156
+And if these pictures are too
+complicated don't worry about it,
+
+60
+00:04:39.156 --> 00:04:43.278
+I probably find the equations easier
+to understand than the picture but
+
+61
+00:04:43.278 --> 00:04:46.940
+just show the picture here for
+the intuitions it conveys.
+
+62
+00:04:46.940 --> 00:04:50.982
+The particular picture here was very
+much inspired by a blog post due to
+
+63
+00:04:50.982 --> 00:04:54.011
+Chris Kohler titled
+Understanding LSTM networks.
+
+64
+00:04:54.011 --> 00:04:57.836
+And the diagram drawn here is quite
+similar to one that he drew in his
+
+65
+00:04:57.836 --> 00:04:58.540
+blog post.
+
+66
+00:04:58.540 --> 00:05:01.954
+But the key things to take
+away from this picture or
+
+67
+00:05:01.954 --> 00:05:06.851
+maybe that you use a t-1 and
+x t to compute all the gate values.
+
+68
+00:05:06.851 --> 00:05:11.436
+So in this picture you have a t-1 and
+x t coming together to compute
+
+69
+00:05:11.436 --> 00:05:16.340
+a forget gate to compute the update
+gates and the computer the output gate.
+
+70
+00:05:16.340 --> 00:05:21.780
+And they also go through a tarnish
+to compute a c(tilde) t.
+
+71
+00:05:21.780 --> 00:05:26.819
+And then these values are combined
+in these complicated ways with element wise multiplies and so on
+
+72
+00:05:26.819 --> 00:05:32.980
+to
+get a c t from the previous c t -1.
+
+73
+00:05:32.980 --> 00:05:36.834
+Now one element of this is interesting
+is if you hook up a bunch of these in parallel
+
+74
+00:05:36.834 --> 00:05:41.631
+so that's one of them and you
+connect them, connect these temporarily.
+
+75
+00:05:41.631 --> 00:05:45.581
+So there's the input x 1,
+then x 2, x 3.
+
+76
+00:05:45.581 --> 00:05:52.097
+So you can take these units and just hook
+them up as follows where the
+
+77
+00:05:52.097 --> 00:05:56.270
+output a for a period of time,
+70 input at the next time set.
+
+78
+00:05:56.270 --> 00:06:02.003
+And similarly for C and I've simplified
+the diagrams a little bit at the bottom.
+
+79
+00:06:02.003 --> 00:06:07.406
+And one cool thing about this, you
+notice is that this is a line at the top that shows how
+
+80
+00:06:07.406 --> 00:06:12.360
+so long as you said
+the forget and the update gates, appropriately,
+
+81
+00:06:12.360 --> 00:06:18.126
+it is relatively easy for
+the LSTM to have some value C0 and
+
+82
+00:06:18.126 --> 00:06:23.760
+have that be passed all the way to
+the right to have, maybe C3 equals C0.
+
+83
+00:06:23.760 --> 00:06:27.880
+And this is why the LSTM as
+well as the GRU is very good at
+
+84
+00:06:27.880 --> 00:06:30.190
+memorizing certain values.
+
+85
+00:06:30.190 --> 00:06:34.479
+Even for a long time for
+certain real values stored in
+
+86
+00:06:34.479 --> 00:06:38.680
+the memory cells even for
+many, many times steps.
+
+87
+00:06:40.440 --> 00:06:44.228
+So that's it for the LSTM,
+
+88
+00:06:44.228 --> 00:06:48.710
+as you can imagine, there are also a few variations
+on this that people use.
+
+89
+00:06:48.710 --> 00:06:53.588
+Perhaps the most common one,
+is that instead of just having the gate values
+
+90
+00:06:53.588 --> 00:06:57.290
+be dependent only on a t-1, xt.
+
+91
+00:06:57.290 --> 00:07:05.760
+Sometimes people also sneak in
+there the value c t -1 as well.
+
+92
+00:07:05.760 --> 00:07:08.561
+This is called a peephole connection.
+
+93
+00:07:09.840 --> 00:07:14.044
+Not a great name maybe, but
+if you see peephole connection,
+
+94
+00:07:14.044 --> 00:07:19.239
+what that means is that the gate values
+may depend not just on a t-1 but
+
+95
+00:07:19.239 --> 00:07:23.220
+and on x t but
+also on the previous memory cell value.
+
+96
+00:07:23.220 --> 00:07:28.940
+And the peephole connection can go into
+all three of these gates computations.
+
+97
+00:07:28.940 --> 00:07:33.713
+So that's one common variation
+you see of LSTMs one technical
+
+98
+00:07:33.713 --> 00:07:38.231
+detail is that these are say
+100 dimensional vectors.
+
+99
+00:07:38.231 --> 00:07:41.141
+If you have 100 dimensional
+hidden memory cell union.
+
+100
+00:07:41.141 --> 00:07:46.320
+So is this and so
+say fifth element of
+
+101
+00:07:46.320 --> 00:07:51.181
+c t-1 affects only the fifth element of
+the correspondent gates.
+
+102
+00:07:51.181 --> 00:07:55.457
+So that relationship is 1 to 1
+where not every element
+
+103
+00:07:55.457 --> 00:07:59.660
+of the 100 dimensional c t-1 can affect
+all elements of the gates, but
+
+104
+00:07:59.660 --> 00:08:04.781
+instead the first element of c t-1
+affects the first element of the gates.
+
+105
+00:08:04.781 --> 00:08:07.740
+Second element affects second elements and
+so on.
+
+106
+00:08:07.740 --> 00:08:09.344
+But if you ever read the paper and see someone
+
+107
+00:08:09.344 --> 00:08:13.092
+talk about the peephole
+connection, that's what they mean,
+
+108
+00:08:13.092 --> 00:08:16.740
+that c t -1 is used to affect
+the gate value as well.
+
+109
+00:08:16.740 --> 00:08:23.280
+So that's it for the LSTM, when should you
+use a GRU and when should you use an LSTM.
+
+110
+00:08:23.280 --> 00:08:25.850
+There is a widespread consensus in this.
+
+111
+00:08:25.850 --> 00:08:30.932
+And even though I presented GRUs first
+in the history of deep learning, LSTMs
+
+112
+00:08:30.932 --> 00:08:36.487
+actually came much earlier and then GRUs
+were relatively recent invention that were
+
+113
+00:08:36.487 --> 00:08:41.679
+maybe derived as partly a simplification
+of the more complicated LSTM model.
+
+114
+00:08:41.679 --> 00:08:45.081
+Researchers have tried both of these
+models on many different problems and
+
+115
+00:08:45.081 --> 00:08:47.951
+on different problems the different
+algorithms will win out.
+
+116
+00:08:47.951 --> 00:08:51.095
+So there isn't a universally
+superior algorithm,
+
+117
+00:08:51.095 --> 00:08:53.680
+which is why I want to
+show you both of them.
+
+118
+00:08:53.680 --> 00:08:56.297
+But I feel like when I am using these,
+
+119
+00:08:56.297 --> 00:09:00.191
+the advantage of the GRU is
+that it's a simpler model.
+
+120
+00:09:00.191 --> 00:09:05.155
+And so it's actually easier to build a
+much bigger network only has two gates, so
+
+121
+00:09:05.155 --> 00:09:10.280
+computation runs a bit faster so it scales
+the building, somewhat bigger models.
+
+122
+00:09:10.280 --> 00:09:12.035
+But the LSTM is more powerful and
+
+123
+00:09:12.035 --> 00:09:15.780
+more flexible since there's
+three gates instead of two.
+
+124
+00:09:15.780 --> 00:09:17.730
+If you want to pick one to use,
+
+125
+00:09:17.730 --> 00:09:21.641
+I think LSTM has been
+the historically more proven choice.
+
+126
+00:09:21.641 --> 00:09:25.668
+So if you had to pick one,
+I think most people today will still use
+
+127
+00:09:25.668 --> 00:09:28.370
+the LSTM as the default
+first thing to try.
+
+128
+00:09:28.370 --> 00:09:33.099
+Although I think the last few years GRUs
+have been gaining a lot of momentum and
+
+129
+00:09:33.099 --> 00:09:34.262
+I feel like more and
+
+130
+00:09:34.262 --> 00:09:38.992
+more teams are also using GRUs because
+they're a bit simpler but often were,
+
+131
+00:09:38.992 --> 00:09:43.840
+just as well and it might be easier to
+scale them to even bigger problems.
+
+132
+00:09:43.840 --> 00:09:48.556
+So that's it for LSTMs with either GRUs or
+LSTMS, you'll be able to
+
+133
+00:09:48.556 --> 00:09:53.461
+build new networks that can capture
+much longer range dependencies.

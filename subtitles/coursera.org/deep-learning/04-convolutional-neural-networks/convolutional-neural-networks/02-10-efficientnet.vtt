@@ -1,0 +1,371 @@
+WEBVTT
+
+1
+00:00:02.780 --> 00:00:05.800
+MobileNet V1 and V2 gave you
+
+2
+00:00:05.800 --> 00:00:08.050
+a way to implement
+a neural network,
+
+3
+00:00:08.050 --> 00:00:10.570
+that is more
+computationally efficient.
+
+4
+00:00:10.570 --> 00:00:13.315
+But is there a way
+to tune MobileNet,
+
+5
+00:00:13.315 --> 00:00:15.070
+or some other architecture,
+
+6
+00:00:15.070 --> 00:00:17.240
+to your specific device?
+
+7
+00:00:17.240 --> 00:00:21.340
+Maybe you're implementing a
+computer vision algorithm for
+
+8
+00:00:21.340 --> 00:00:23.275
+different brands of
+mobile phones with
+
+9
+00:00:23.275 --> 00:00:25.450
+different amounts of
+compute resources,
+
+10
+00:00:25.450 --> 00:00:27.355
+or for different edge devices.
+
+11
+00:00:27.355 --> 00:00:29.485
+If you have a little
+bit more computation,
+
+12
+00:00:29.485 --> 00:00:31.720
+maybe you have a slightly
+bigger neural network
+
+13
+00:00:31.720 --> 00:00:33.910
+and hopefully you get
+a bit more accuracy,
+
+14
+00:00:33.910 --> 00:00:36.865
+or if you are more
+computationally constraint,
+
+15
+00:00:36.865 --> 00:00:39.250
+maybe you want a slightly
+smaller neural network
+
+16
+00:00:39.250 --> 00:00:40.625
+that runs a bit faster,
+
+17
+00:00:40.625 --> 00:00:42.915
+at the cost of a little
+bit of accuracy.
+
+18
+00:00:42.915 --> 00:00:45.440
+How can you automatically
+scale up or
+
+19
+00:00:45.440 --> 00:00:48.470
+down neural networks for
+a particular device?
+
+20
+00:00:48.470 --> 00:00:51.595
+EfficientNet, gives
+you a way to do so.
+
+21
+00:00:51.595 --> 00:00:53.135
+Let's say you have
+
+22
+00:00:53.135 --> 00:00:56.300
+a baseline neural
+network architecture,
+
+23
+00:00:56.300 --> 00:00:59.765
+where the input image has
+a certain resolution r,
+
+24
+00:00:59.765 --> 00:01:03.305
+and your new network
+has a certain depth,
+
+25
+00:01:03.305 --> 00:01:07.770
+and the layers has
+a certain width.
+
+26
+00:01:07.770 --> 00:01:10.290
+The authors of the
+EfficientNet paper,
+
+27
+00:01:10.290 --> 00:01:13.885
+Mingxing Tan and my former
+PhD student, Quoc Le,
+
+28
+00:01:13.885 --> 00:01:16.100
+observed that the
+three things you
+
+29
+00:01:16.100 --> 00:01:18.640
+could do to scale
+things up or down,
+
+30
+00:01:18.640 --> 00:01:21.890
+are, you could use a
+high resolution image.
+
+31
+00:01:21.890 --> 00:01:24.425
+So a new image resolution
+
+32
+00:01:24.425 --> 00:01:27.890
+r. I don't know
+
+33
+00:01:27.890 --> 00:01:30.860
+how to denote a high resolution
+in a video like this.
+
+34
+00:01:30.860 --> 00:01:33.620
+I'm using this blue
+glow here to denote,
+
+35
+00:01:33.620 --> 00:01:35.585
+maybe high resolution image.
+
+36
+00:01:35.585 --> 00:01:39.595
+Or you could make this
+network much deeper.
+
+37
+00:01:39.595 --> 00:01:45.450
+You could vary d to depth
+of the neural network,
+
+38
+00:01:45.450 --> 00:01:49.000
+or you can make the layers wider.
+
+39
+00:01:49.010 --> 00:01:55.070
+You can also vary the
+width of these layers.
+
+40
+00:01:55.070 --> 00:02:00.455
+The question is, given a
+particular computational budget,
+
+41
+00:02:00.455 --> 00:02:04.530
+what's the good choice
+of r, d, and w?
+
+42
+00:02:04.530 --> 00:02:08.150
+Or depending on the computational
+resources you have,
+
+43
+00:02:08.150 --> 00:02:10.684
+you can also use
+compound scaling,
+
+44
+00:02:10.684 --> 00:02:13.370
+where you might
+simultaneously scale up or
+
+45
+00:02:13.370 --> 00:02:17.265
+simultaneously scale down
+the resolution of the image,
+
+46
+00:02:17.265 --> 00:02:19.865
+and the depth, and the width
+of the neural network.
+
+47
+00:02:19.865 --> 00:02:21.725
+Now the tricky part is,
+
+48
+00:02:21.725 --> 00:02:24.630
+if you want to scale up r, d,
+
+49
+00:02:24.630 --> 00:02:26.160
+and w, what's the rate at
+
+50
+00:02:26.160 --> 00:02:28.020
+which you should scale
+up each of these?
+
+51
+00:02:28.020 --> 00:02:29.600
+Should you double the resolution
+
+52
+00:02:29.600 --> 00:02:30.965
+and leave depth with the same,
+
+53
+00:02:30.965 --> 00:02:33.290
+or maybe you should
+double the depth,
+
+54
+00:02:33.290 --> 00:02:34.625
+but leave the others the same,
+
+55
+00:02:34.625 --> 00:02:36.590
+or increase resolution
+by 10 percent,
+
+56
+00:02:36.590 --> 00:02:37.880
+increase depth by 50 percent,
+
+57
+00:02:37.880 --> 00:02:39.230
+and width by 20 percent?
+
+58
+00:02:39.230 --> 00:02:43.100
+What's the best trade-off
+between r, d, and w,
+
+59
+00:02:43.100 --> 00:02:46.205
+to scale up or down
+your neural network,
+
+60
+00:02:46.205 --> 00:02:48.140
+to get the best
+possible performance
+
+61
+00:02:48.140 --> 00:02:50.440
+within your computational budget?
+
+62
+00:02:50.440 --> 00:02:52.910
+If you are ever looking to adapt
+
+63
+00:02:52.910 --> 00:02:56.225
+a neural network architecture
+for a particular device,
+
+64
+00:02:56.225 --> 00:02:57.620
+look at one of the open
+
+65
+00:02:57.620 --> 00:02:59.885
+source implementations
+of EfficientNet,
+
+66
+00:02:59.885 --> 00:03:03.440
+which will help you to choose
+a good trade-off between r,
+
+67
+00:03:03.440 --> 00:03:06.225
+d, and w. That's it.
+
+68
+00:03:06.225 --> 00:03:08.870
+With MobileNet, you've
+learned how to build more
+
+69
+00:03:08.870 --> 00:03:12.485
+computationally efficient
+layers, and with EfficientNet,
+
+70
+00:03:12.485 --> 00:03:16.475
+you can also find a way
+to scale up or down
+
+71
+00:03:16.475 --> 00:03:18.635
+these neural networks based on
+
+72
+00:03:18.635 --> 00:03:21.920
+the resources of a device
+you may be working on.
+
+73
+00:03:21.920 --> 00:03:24.380
+With this, I hope
+you have the skills
+
+74
+00:03:24.380 --> 00:03:27.410
+needed in order to build
+neural networks for
+
+75
+00:03:27.410 --> 00:03:30.290
+mobile devices and for
+embedded devices and for
+
+76
+00:03:30.290 --> 00:03:32.630
+other devices where
+the computation
+
+77
+00:03:32.630 --> 00:03:34.650
+in a memory maybe more limited.
+
+78
+00:03:34.650 --> 00:03:36.290
+I hope this will open up a lot of
+
+79
+00:03:36.290 --> 00:03:39.840
+possible applications that
+you may now be able to build.

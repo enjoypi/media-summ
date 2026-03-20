@@ -1,0 +1,795 @@
+WEBVTT
+
+1
+00:00:02.660 --> 00:00:06.120
+Welcome back, in
+the last video you
+
+2
+00:00:06.120 --> 00:00:09.330
+learned about the depth-wise
+separable convolution.
+
+3
+00:00:09.330 --> 00:00:11.610
+Let's now put this
+into a neural network
+
+4
+00:00:11.610 --> 00:00:14.130
+in order to build the MobileNet.
+
+5
+00:00:14.130 --> 00:00:17.820
+The idea of MobileNet
+is everywhere that
+
+6
+00:00:17.820 --> 00:00:19.440
+you previously have used
+
+7
+00:00:19.440 --> 00:00:21.885
+an expensive
+convolutional operation.
+
+8
+00:00:21.885 --> 00:00:23.715
+You can now instead use
+
+9
+00:00:23.715 --> 00:00:25.635
+a much less expensive
+
+10
+00:00:25.635 --> 00:00:28.995
+depthwise separable
+convolutional operation,
+
+11
+00:00:28.995 --> 00:00:33.225
+comprising the depthwise
+convolution operation
+
+12
+00:00:33.225 --> 00:00:36.645
+and the pointwise
+convolution operation.
+
+13
+00:00:36.645 --> 00:00:41.145
+The MobileNet v1 paper had
+a specific architecture
+
+14
+00:00:41.145 --> 00:00:45.825
+in which it use a block
+like this, 13 times.
+
+15
+00:00:45.825 --> 00:00:49.985
+It would use a depthwise
+convolutional operation
+
+16
+00:00:49.985 --> 00:00:53.690
+to genuine outputs and
+then have a stack of 13 of
+
+17
+00:00:53.690 --> 00:00:56.120
+these layers in order to go from
+
+18
+00:00:56.120 --> 00:00:58.835
+the original raw input image to
+
+19
+00:00:58.835 --> 00:01:02.675
+finally making a
+classification prediction.
+
+20
+00:01:02.675 --> 00:01:07.565
+Just to provide a few more
+details after these 13 layers,
+
+21
+00:01:07.565 --> 00:01:10.340
+the neural networks
+last few layers
+
+22
+00:01:10.340 --> 00:01:12.635
+are the usual Pooling layer,
+
+23
+00:01:12.635 --> 00:01:15.275
+followed by a fully
+connected layer,
+
+24
+00:01:15.275 --> 00:01:17.650
+followed by a Softmax
+
+25
+00:01:17.650 --> 00:01:20.845
+in order for it to make a
+classification prediction.
+
+26
+00:01:20.845 --> 00:01:23.105
+This turns out to perform well
+
+27
+00:01:23.105 --> 00:01:25.340
+while being much
+less computationally
+
+28
+00:01:25.340 --> 00:01:28.280
+expensive than earlier algorithms
+
+29
+00:01:28.280 --> 00:01:31.550
+that used a normal
+convolutional operation.
+
+30
+00:01:31.550 --> 00:01:34.340
+In this video, I want
+to share with you
+
+31
+00:01:34.340 --> 00:01:36.260
+one more improvements on
+
+32
+00:01:36.260 --> 00:01:39.075
+this basic MobileNet
+architecture,
+
+33
+00:01:39.075 --> 00:01:42.360
+which is the MobileNets
+v2 architecture.
+
+34
+00:01:42.360 --> 00:01:43.850
+I'm going to go through this
+
+35
+00:01:43.850 --> 00:01:45.200
+quite quickly to just give you
+
+36
+00:01:45.200 --> 00:01:46.790
+a rough sense of
+what the algorithm
+
+37
+00:01:46.790 --> 00:01:49.235
+does without digging
+into all of the details.
+
+38
+00:01:49.235 --> 00:01:52.160
+But this is a paper published
+by Mark Sandler and
+
+39
+00:01:52.160 --> 00:01:55.800
+his colleagues that make
+mobile network even better.
+
+40
+00:01:55.800 --> 00:01:59.580
+In MobileNet v2, there
+are two main changes.
+
+41
+00:01:59.580 --> 00:02:03.525
+One is the addition of
+a residual connection.
+
+42
+00:02:03.525 --> 00:02:05.930
+This is just a residual
+connections that you
+
+43
+00:02:05.930 --> 00:02:08.595
+learned about in
+the ResNet videos.
+
+44
+00:02:08.595 --> 00:02:11.330
+This residual connection
+or skip connection,
+
+45
+00:02:11.330 --> 00:02:14.255
+takes the input from
+the previous layer
+
+46
+00:02:14.255 --> 00:02:18.095
+and sums it or passes it
+directly to the next layer,
+
+47
+00:02:18.095 --> 00:02:19.640
+does allow ingredients to
+
+48
+00:02:19.640 --> 00:02:22.055
+propagate backward
+more efficiently.
+
+49
+00:02:22.055 --> 00:02:27.170
+The second change is that it
+also as an expansion layer,
+
+50
+00:02:27.170 --> 00:02:30.280
+which you learn more
+about on the next slide,
+
+51
+00:02:30.280 --> 00:02:33.380
+before the depthwise convolution,
+
+52
+00:02:33.380 --> 00:02:35.915
+followed by the
+pointwise convolution,
+
+53
+00:02:35.915 --> 00:02:37.240
+which we're going to call
+
+54
+00:02:37.240 --> 00:02:39.310
+projection in a
+point-wise convolution.
+
+55
+00:02:39.310 --> 00:02:40.715
+Is really the same operation,
+
+56
+00:02:40.715 --> 00:02:42.200
+but we'll give it
+a different name,
+
+57
+00:02:42.200 --> 00:02:44.750
+for reasons that you
+see on the next slide.
+
+58
+00:02:44.750 --> 00:02:46.610
+What MobileNet v2 does,
+
+59
+00:02:46.610 --> 00:02:48.080
+is it uses this block and
+
+60
+00:02:48.080 --> 00:02:50.315
+repeats this block
+some number of times,
+
+61
+00:02:50.315 --> 00:02:53.340
+just like we had 13 times here,
+
+62
+00:02:53.340 --> 00:02:55.520
+the MobileNet v2
+architecture happened to
+
+63
+00:02:55.520 --> 00:02:57.905
+choose to do this 17 times,
+
+64
+00:02:57.905 --> 00:03:01.310
+surpass the inputs through
+17 of these blocks,
+
+65
+00:03:01.310 --> 00:03:03.125
+and then finally ends up with
+
+66
+00:03:03.125 --> 00:03:06.920
+the usual pooling
+fully-connected softmax,
+
+67
+00:03:06.920 --> 00:03:09.710
+in order to make a
+classification prediction.
+
+68
+00:03:09.710 --> 00:03:14.000
+But the key idea is really
+how blocks like this,
+
+69
+00:03:14.000 --> 00:03:17.540
+or like this reduces
+computational cost.
+
+70
+00:03:17.540 --> 00:03:24.225
+This block over here is also
+called the bottleneck block.
+
+71
+00:03:24.225 --> 00:03:26.490
+Let's dig into the details of how
+
+72
+00:03:26.490 --> 00:03:29.730
+the MobileNet v2 block works.
+
+73
+00:03:29.730 --> 00:03:31.880
+Given an input that is say,
+
+74
+00:03:31.880 --> 00:03:35.435
+n by n by three,
+
+75
+00:03:35.435 --> 00:03:38.990
+the MobileNet v2
+bottleneck will pass
+
+76
+00:03:38.990 --> 00:03:41.660
+that input via the
+residual connection
+
+77
+00:03:41.660 --> 00:03:43.550
+directly to the output,
+
+78
+00:03:43.550 --> 00:03:45.115
+just like in the Resnet.
+
+79
+00:03:45.115 --> 00:03:47.220
+Then in this main
+
+80
+00:03:47.220 --> 00:03:50.085
+non-residual connection
+parts of the block,
+
+81
+00:03:50.085 --> 00:03:54.115
+you'll first apply an
+expansion operator,
+
+82
+00:03:54.115 --> 00:03:56.670
+and what that means
+is you'll apply a
+
+83
+00:03:56.670 --> 00:03:59.570
+1 by 1 by n c. In this case,
+
+84
+00:03:59.570 --> 00:04:02.315
+one by one by
+three-dimensional filter.
+
+85
+00:04:02.315 --> 00:04:04.220
+But you apply a fairly
+large number of
+
+86
+00:04:04.220 --> 00:04:06.920
+them, say 18 filters,
+
+87
+00:04:06.920 --> 00:04:09.605
+so that you end up with an n by
+
+88
+00:04:09.605 --> 00:04:13.850
+n by 18-dimensional
+block over here.
+
+89
+00:04:13.850 --> 00:04:16.850
+A factor of expansion of six is
+
+90
+00:04:16.850 --> 00:04:19.520
+quite typical in
+MobileNet v2 which is
+
+91
+00:04:19.520 --> 00:04:21.920
+why your inputs goes from n
+
+92
+00:04:21.920 --> 00:04:25.299
+by n by three to n by n by 18,
+
+93
+00:04:25.299 --> 00:04:27.490
+and that's why we call
+it an expansion as well,
+
+94
+00:04:27.490 --> 00:04:31.295
+it increases the dimension
+of this by a factor of six,
+
+95
+00:04:31.295 --> 00:04:36.980
+the next step is then a
+depthwise separable convolution.
+
+96
+00:04:37.740 --> 00:04:40.150
+With a little bit of padding,
+
+97
+00:04:40.150 --> 00:04:45.735
+you can then go from n by n
+by 18 to the same dimension.
+
+98
+00:04:45.735 --> 00:04:49.290
+In the last video, we
+went from 6 by 6 by 3
+
+99
+00:04:49.290 --> 00:04:52.555
+to 4 by 4 by 3 because
+we didn't use padding.
+
+100
+00:04:52.555 --> 00:04:54.700
+But with padding, you
+can maintain the n
+
+101
+00:04:54.700 --> 00:04:57.104
+by n by 18 dimension,
+
+102
+00:04:57.104 --> 00:04:58.500
+so it doesn't shrink when you
+
+103
+00:04:58.500 --> 00:05:02.010
+apply the depthwise convolution.
+
+104
+00:05:02.010 --> 00:05:07.285
+Finally, you apply a
+pointwise convolution,
+
+105
+00:05:07.285 --> 00:05:10.500
+which in this case means
+convolving with a 1 by
+
+106
+00:05:10.500 --> 00:05:14.475
+1 by 18-dimensional filter.
+
+107
+00:05:14.475 --> 00:05:16.995
+If you have, say,
+
+108
+00:05:16.995 --> 00:05:21.625
+three filters and
+c prime filters,
+
+109
+00:05:21.625 --> 00:05:25.930
+then you end up with
+an output that is n by
+
+110
+00:05:25.930 --> 00:05:30.935
+n by 3 because you have
+three such filters.
+
+111
+00:05:30.935 --> 00:05:32.655
+In this last step,
+
+112
+00:05:32.655 --> 00:05:37.425
+we went from n by n by 18
+down to n by n by three,
+
+113
+00:05:37.425 --> 00:05:40.680
+and in the MobileNet
+v2 bottleneck block.
+
+114
+00:05:40.680 --> 00:05:44.375
+This last step is also
+called a projection
+
+115
+00:05:44.375 --> 00:05:47.655
+step because you're
+projecting down from
+
+116
+00:05:47.655 --> 00:05:51.270
+n by n by 18 down to n by n by 3.
+
+117
+00:05:51.270 --> 00:05:53.490
+You might be wondering, why do we
+
+118
+00:05:53.490 --> 00:05:56.415
+meet these bottleneck blocks?
+
+119
+00:05:56.415 --> 00:05:59.365
+It turns out that
+the bottleneck block
+
+120
+00:05:59.365 --> 00:06:02.085
+accomplishes two things, One,
+
+121
+00:06:02.085 --> 00:06:04.490
+by using the expansion operation,
+
+122
+00:06:04.490 --> 00:06:06.080
+it increases the size of
+
+123
+00:06:06.080 --> 00:06:09.705
+the representation within
+the bottleneck block.
+
+124
+00:06:09.705 --> 00:06:11.540
+This allows the neural network
+
+125
+00:06:11.540 --> 00:06:13.265
+to learn a richer function.
+
+126
+00:06:13.265 --> 00:06:16.970
+There's just more
+computation over here.
+
+127
+00:06:16.970 --> 00:06:20.450
+But when deploying
+on a mobile device,
+
+128
+00:06:20.450 --> 00:06:22.490
+on edge device, you will
+
+129
+00:06:22.490 --> 00:06:24.770
+often be heavy
+memory constraints.
+
+130
+00:06:24.770 --> 00:06:29.450
+The bottleneck block uses
+the pointwise convolution or
+
+131
+00:06:29.450 --> 00:06:32.660
+the projection operation in
+order to project it back
+
+132
+00:06:32.660 --> 00:06:36.540
+down to a smaller set of values,
+
+133
+00:06:36.540 --> 00:06:39.050
+so that when you pass
+this the next block,
+
+134
+00:06:39.050 --> 00:06:41.120
+the amount of memory needed to
+
+135
+00:06:41.120 --> 00:06:44.000
+store these values is
+reduced back down.
+
+136
+00:06:44.000 --> 00:06:46.520
+The clever idea, The
+cool thing about
+
+137
+00:06:46.520 --> 00:06:48.200
+the bottleneck block is that it
+
+138
+00:06:48.200 --> 00:06:50.450
+enables a richer set
+of computations,
+
+139
+00:06:50.450 --> 00:06:52.370
+thus allow your neural
+network to learn
+
+140
+00:06:52.370 --> 00:06:54.349
+richer and more
+complex functions,
+
+141
+00:06:54.349 --> 00:06:58.280
+while also keeping the amounts
+of memory that is the size
+
+142
+00:06:58.280 --> 00:07:00.080
+of the activations
+you need to pass from
+
+143
+00:07:00.080 --> 00:07:02.330
+layer to layer, relatively small.
+
+144
+00:07:02.330 --> 00:07:04.730
+That's why the
+MobileNet v2 can get
+
+145
+00:07:04.730 --> 00:07:07.880
+a better performance
+than MobileNet v1,
+
+146
+00:07:07.880 --> 00:07:10.400
+while still continuing to use
+
+147
+00:07:10.400 --> 00:07:14.560
+only a modest amount of
+compute and memory resources.
+
+148
+00:07:14.560 --> 00:07:17.235
+Putting It all together again,
+
+149
+00:07:17.235 --> 00:07:21.885
+here's our earliest slide
+describing MobileNet v1 and v2.
+
+150
+00:07:21.885 --> 00:07:24.620
+The MobileNet v2
+architecture will
+
+151
+00:07:24.620 --> 00:07:28.899
+repeat this bottleneck
+block 17 times.
+
+152
+00:07:28.899 --> 00:07:33.470
+Then if your goal is to
+make a classification,
+
+153
+00:07:33.470 --> 00:07:35.090
+then as usual will have
+
+154
+00:07:35.090 --> 00:07:40.625
+this pooling fully-connected
+softmax layer
+
+155
+00:07:40.625 --> 00:07:44.315
+to generate the
+classification output.
+
+156
+00:07:44.315 --> 00:07:48.715
+You now know the main ideas
+of MobileNet v1 and v2.
+
+157
+00:07:48.715 --> 00:07:52.940
+If you want to see a few
+additional details such as
+
+158
+00:07:52.940 --> 00:07:55.280
+the exact dimensions of
+the different layers as
+
+159
+00:07:55.280 --> 00:07:58.025
+you flow the data
+from left to right.
+
+160
+00:07:58.025 --> 00:08:00.320
+You can also take a look at
+
+161
+00:08:00.320 --> 00:08:03.085
+the paper by Mark Sandler
+and others as well.
+
+162
+00:08:03.085 --> 00:08:05.780
+Congrats on making it to
+the end of this video,
+
+163
+00:08:05.780 --> 00:08:09.680
+you now know how MobileNet
+v1 and v2 work by using
+
+164
+00:08:09.680 --> 00:08:12.830
+depthwise separable
+convolutions and by
+
+165
+00:08:12.830 --> 00:08:16.055
+using the bottleneck blocks
+that you saw in this video.
+
+166
+00:08:16.055 --> 00:08:18.350
+If you are thinking of
+
+167
+00:08:18.350 --> 00:08:20.765
+building efficient
+neural networks,
+
+168
+00:08:20.765 --> 00:08:24.515
+there's one other idea
+to found very useful,
+
+169
+00:08:24.515 --> 00:08:27.440
+and I hope you will
+learn about as well,
+
+170
+00:08:27.440 --> 00:08:28.930
+which is efficient nets.
+
+171
+00:08:28.930 --> 00:08:33.090
+Let's touch on that idea very
+briefly in the next video.

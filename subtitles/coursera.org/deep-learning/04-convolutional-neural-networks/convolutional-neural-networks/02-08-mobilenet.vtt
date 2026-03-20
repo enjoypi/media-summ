@@ -1,0 +1,1456 @@
+WEBVTT
+
+1
+00:00:02.870 --> 00:00:05.385
+Hi and welcome back.
+
+2
+00:00:05.385 --> 00:00:08.400
+You've learned about the
+ResNet architecture,
+
+3
+00:00:08.400 --> 00:00:10.470
+you've learned about
+Inception net.
+
+4
+00:00:10.470 --> 00:00:13.260
+In this video, you'll
+learn about MobileNets,
+
+5
+00:00:13.260 --> 00:00:15.510
+which is another foundational
+
+6
+00:00:15.510 --> 00:00:18.029
+convolutional neural
+network architecture
+
+7
+00:00:18.029 --> 00:00:19.695
+used for computer vision.
+
+8
+00:00:19.695 --> 00:00:23.190
+Using MobileNets will allow
+you to build and deploy
+
+9
+00:00:23.190 --> 00:00:26.985
+new networks that work even
+in low compute environment,
+
+10
+00:00:26.985 --> 00:00:29.970
+such as a mobile
+phone. Let's dive in.
+
+11
+00:00:29.970 --> 00:00:33.630
+Why do you need another
+neural network architecture?
+
+12
+00:00:33.630 --> 00:00:35.040
+It turns out in other
+
+13
+00:00:35.040 --> 00:00:36.320
+neural networks
+you've learned about
+
+14
+00:00:36.320 --> 00:00:39.440
+so far are quite
+computationally expensive.
+
+15
+00:00:39.440 --> 00:00:43.610
+If you want your neural network
+to run on a device with
+
+16
+00:00:43.610 --> 00:00:47.645
+less powerful CPU or
+a GPU at deployment,
+
+17
+00:00:47.645 --> 00:00:50.390
+then there's another neural
+network architecture called
+
+18
+00:00:50.390 --> 00:00:53.560
+the MobileNet that could
+perform much better.
+
+19
+00:00:53.560 --> 00:00:56.810
+I hope to share a view
+into this video how
+
+20
+00:00:56.810 --> 00:01:00.905
+the depthwise separable
+convolution works.
+
+21
+00:01:00.905 --> 00:01:03.950
+Let's first revisit what the
+normal convolution does,
+
+22
+00:01:03.950 --> 00:01:05.480
+and then we'll modify it to build
+
+23
+00:01:05.480 --> 00:01:08.455
+the depthwise
+separable convolution.
+
+24
+00:01:08.455 --> 00:01:10.700
+In the normal convolution,
+
+25
+00:01:10.700 --> 00:01:18.615
+you may have an input image
+that is some n by n by n_c,
+
+26
+00:01:18.615 --> 00:01:21.170
+where n_c is the
+number of channels.
+
+27
+00:01:21.170 --> 00:01:24.680
+Six by six by three
+channels in this case,
+
+28
+00:01:24.680 --> 00:01:28.030
+and you want to convolve
+it with a filter that
+
+29
+00:01:28.030 --> 00:01:32.705
+is f by f by n_c,
+
+30
+00:01:32.705 --> 00:01:36.260
+and in this case is
+three by three by three.
+
+31
+00:01:36.560 --> 00:01:39.690
+The way you do this
+is you would take
+
+32
+00:01:39.690 --> 00:01:42.445
+this filter which
+I'm going to draw as
+
+33
+00:01:42.445 --> 00:01:46.119
+a three-dimensional yellow block
+
+34
+00:01:46.119 --> 00:01:48.685
+and put the yellow
+filter over there.
+
+35
+00:01:48.685 --> 00:01:53.065
+There are 27 multiplications
+you have to do,
+
+36
+00:01:53.065 --> 00:01:56.559
+sum it up, and then that
+gives you this value.
+
+37
+00:01:56.559 --> 00:01:58.740
+Then shift a filter over,
+
+38
+00:01:58.740 --> 00:02:01.105
+multiply the 27 pairs of numbers,
+
+39
+00:02:01.105 --> 00:02:03.865
+add that up that gives
+you this number,
+
+40
+00:02:03.865 --> 00:02:06.415
+and you keep going to get this,
+
+41
+00:02:06.415 --> 00:02:10.839
+to get this, and then this,
+
+42
+00:02:10.839 --> 00:02:14.810
+and so on, until you have
+
+43
+00:02:14.810 --> 00:02:18.875
+computed all four by
+four output values.
+
+44
+00:02:18.875 --> 00:02:21.350
+We didn't use padding
+in this case,
+
+45
+00:02:21.350 --> 00:02:22.670
+and we use a stride of one,
+
+46
+00:02:22.670 --> 00:02:25.270
+which is why the
+output size a n out by
+
+47
+00:02:25.270 --> 00:02:30.170
+a n out is a bit smaller
+than the input size.
+
+48
+00:02:30.170 --> 00:02:33.995
+That is this four by four
+instead of six by six.
+
+49
+00:02:33.995 --> 00:02:36.230
+Rather than just having one of
+
+50
+00:02:36.230 --> 00:02:38.255
+these three by three
+by three filters,
+
+51
+00:02:38.255 --> 00:02:44.025
+you may have some
+n_c prime filters
+
+52
+00:02:44.025 --> 00:02:45.770
+and if you have five of them,
+
+53
+00:02:45.770 --> 00:02:50.375
+then the output will be
+four by four by five,
+
+54
+00:02:50.375 --> 00:02:55.740
+or a n out by a n out by n_c prime.
+
+55
+00:02:55.740 --> 00:02:58.280
+Let's figure out what is
+the computational cost
+
+56
+00:02:58.280 --> 00:02:59.735
+of what we just did.
+
+57
+00:02:59.735 --> 00:03:02.450
+It turns out the total
+number of computations
+
+58
+00:03:02.450 --> 00:03:05.600
+needed to compute
+this output is given
+
+59
+00:03:05.600 --> 00:03:09.220
+by the number of filter
+parameters which is
+
+60
+00:03:09.220 --> 00:03:13.570
+three by three by
+three in this case,
+
+61
+00:03:13.570 --> 00:03:17.254
+multiplied by the number
+of filter positions.
+
+62
+00:03:17.254 --> 00:03:19.190
+That is a number
+of places where we
+
+63
+00:03:19.190 --> 00:03:21.760
+place this big yellow block,
+
+64
+00:03:21.760 --> 00:03:24.405
+which is four by four,
+
+65
+00:03:24.405 --> 00:03:27.815
+and then multiplied by
+the number of filters,
+
+66
+00:03:27.815 --> 00:03:29.880
+which is five in this case.
+
+67
+00:03:29.880 --> 00:03:32.900
+You can check for
+yourself that this is
+
+68
+00:03:32.900 --> 00:03:36.080
+the total number of
+multiplications we need to do,
+
+69
+00:03:36.080 --> 00:03:37.220
+because at each of
+
+70
+00:03:37.220 --> 00:03:39.395
+the locations we plopped
+down the filter,
+
+71
+00:03:39.395 --> 00:03:41.645
+we need to do this
+many multiplications,
+
+72
+00:03:41.645 --> 00:03:44.090
+and then we have
+this many filters.
+
+73
+00:03:44.090 --> 00:03:46.430
+If you multiply
+these numbers out,
+
+74
+00:03:46.430 --> 00:03:52.200
+this turns out to be
+2,160. We'll come back.
+
+75
+00:03:52.200 --> 00:03:54.520
+You see this number again
+later in this video,
+
+76
+00:03:54.520 --> 00:03:55.715
+when we come up with
+
+77
+00:03:55.715 --> 00:03:58.045
+the depthwise
+separable convolution
+
+78
+00:03:58.045 --> 00:04:00.410
+that will be able
+to take as input
+
+79
+00:04:00.410 --> 00:04:05.330
+a six by six by three image
+and outputs four by four by
+
+80
+00:04:05.330 --> 00:04:07.790
+five set of activations that were
+
+81
+00:04:07.790 --> 00:04:10.855
+fewer computations than 2,160.
+
+82
+00:04:10.855 --> 00:04:12.420
+Let us see how the depthwise
+
+83
+00:04:12.420 --> 00:04:14.310
+separable convolution does that.
+
+84
+00:04:14.310 --> 00:04:17.675
+In contrast to the normal
+convolution which you just saw,
+
+85
+00:04:17.675 --> 00:04:21.605
+the depthwise separable
+convolution has two steps.
+
+86
+00:04:21.605 --> 00:04:26.480
+You're going to first use
+a depthwise convolution,
+
+87
+00:04:26.480 --> 00:04:29.560
+followed by a
+pointwise convolution.
+
+88
+00:04:29.560 --> 00:04:32.960
+It is these two steps
+which together make
+
+89
+00:04:32.960 --> 00:04:36.480
+up this depthwise
+separable convolution.
+
+90
+00:04:36.480 --> 00:04:39.270
+Let's see how each of
+these two steps work.
+
+91
+00:04:39.270 --> 00:04:41.915
+In particular, let's flesh out
+
+92
+00:04:41.915 --> 00:04:45.155
+the details of how the
+depthwise convolution,
+
+93
+00:04:45.155 --> 00:04:47.080
+the first of these
+two steps works.
+
+94
+00:04:47.080 --> 00:04:52.250
+As before we have an input
+that is six by six by three,
+
+95
+00:04:52.250 --> 00:04:57.309
+so n by n by n_c, three channels.
+
+96
+00:04:57.309 --> 00:04:59.360
+The filter and depthwise
+
+97
+00:04:59.360 --> 00:05:03.050
+convolution is
+going to be f by f,
+
+98
+00:05:03.050 --> 00:05:05.120
+not f by f by n_c,
+
+99
+00:05:05.120 --> 00:05:08.780
+but just f by f. The number of
+
+100
+00:05:08.780 --> 00:05:13.725
+filters is going to be n_c,
+
+101
+00:05:13.725 --> 00:05:16.095
+which in this case is three.
+
+102
+00:05:16.095 --> 00:05:19.060
+The way that you will
+compute the four by four
+
+103
+00:05:19.060 --> 00:05:22.030
+by three output is that you
+
+104
+00:05:22.030 --> 00:05:24.190
+apply one of each of
+
+105
+00:05:24.190 --> 00:05:29.530
+these filters to one of each
+of these input channels.
+
+106
+00:05:29.530 --> 00:05:31.720
+Let's step through this.
+
+107
+00:05:31.720 --> 00:05:34.000
+Let's focus on the first of
+
+108
+00:05:34.000 --> 00:05:36.145
+the three filters,
+just the red one.
+
+109
+00:05:36.145 --> 00:05:39.805
+Then take the red filter
+and position it there,
+
+110
+00:05:39.805 --> 00:05:42.175
+carry out the nine
+multiplications.
+
+111
+00:05:42.175 --> 00:05:44.455
+Notice this, on nine
+numbers means multiply,
+
+112
+00:05:44.455 --> 00:05:47.440
+not 27, but nine,
+and add them up.
+
+113
+00:05:47.440 --> 00:05:49.105
+That will give you this value.
+
+114
+00:05:49.105 --> 00:05:50.560
+Then shift it over,
+
+115
+00:05:50.560 --> 00:05:53.920
+multiply the nine corresponding
+pairs of numbers,
+
+116
+00:05:53.920 --> 00:05:57.520
+that gives you this
+value over here,
+
+117
+00:05:57.520 --> 00:06:00.370
+gives you that, gives you that,
+
+118
+00:06:00.370 --> 00:06:08.680
+and so on, until you get to
+the last of these 16 values.
+
+119
+00:06:08.680 --> 00:06:12.024
+Next, we go to the
+second channel,
+
+120
+00:06:12.024 --> 00:06:14.455
+and let's look at
+the green filter.
+
+121
+00:06:14.455 --> 00:06:16.915
+The green filter,
+you position there,
+
+122
+00:06:16.915 --> 00:06:19.960
+carry out the nine multiplications
+to compute this value,
+
+123
+00:06:19.960 --> 00:06:22.495
+shift it over by one
+to compute this value,
+
+124
+00:06:22.495 --> 00:06:25.360
+shift over by one, and so on.
+
+125
+00:06:25.360 --> 00:06:28.900
+You do that 16 times until
+you've computed all of
+
+126
+00:06:28.900 --> 00:06:32.395
+these values in the second
+channel of the outputs.
+
+127
+00:06:32.395 --> 00:06:35.230
+Finally, you do this
+for the third channel,
+
+128
+00:06:35.230 --> 00:06:36.430
+there's a blue filter,
+
+129
+00:06:36.430 --> 00:06:40.525
+position it there to compute
+this value, shift it over,
+
+130
+00:06:40.525 --> 00:06:44.845
+shift it over, shift
+it over, and so on,
+
+131
+00:06:44.845 --> 00:06:49.045
+until you've computed
+all 16 outputs
+
+132
+00:06:49.045 --> 00:06:52.300
+in that third channel as well.
+
+133
+00:06:52.300 --> 00:06:55.750
+The size of the output
+after this step will
+
+134
+00:06:55.750 --> 00:06:59.020
+be n out by n out,
+
+135
+00:06:59.020 --> 00:07:04.105
+four-by-four, by nc, where
+nc is the same as this nc;
+
+136
+00:07:04.105 --> 00:07:06.940
+the number of channels
+in your original input.
+
+137
+00:07:06.940 --> 00:07:09.715
+Let's look at the
+computational cost
+
+138
+00:07:09.715 --> 00:07:11.290
+of what we've just done.
+
+139
+00:07:11.290 --> 00:07:13.900
+Because to generate each
+of these output values,
+
+140
+00:07:13.900 --> 00:07:16.360
+each of these 4 by 4
+by 3 output values,
+
+141
+00:07:16.360 --> 00:07:19.435
+it required nine multiplications.
+
+142
+00:07:19.435 --> 00:07:22.465
+The total computational
+cost is 3 by 3
+
+143
+00:07:22.465 --> 00:07:26.844
+times the number of
+filter positions,
+
+144
+00:07:26.844 --> 00:07:29.890
+that is, the number
+of positions each of
+
+145
+00:07:29.890 --> 00:07:33.430
+these filters was placed on
+top of the image on the left.
+
+146
+00:07:33.430 --> 00:07:36.070
+There was 4 by 4,
+and then finally,
+
+147
+00:07:36.070 --> 00:07:39.175
+times the number of
+filters, which is 3.
+
+148
+00:07:39.175 --> 00:07:41.620
+Another way to look
+at this is that you
+
+149
+00:07:41.620 --> 00:07:45.685
+have 4 by 4 by 3 outputs,
+
+150
+00:07:45.685 --> 00:07:47.710
+and for each of those outputs,
+
+151
+00:07:47.710 --> 00:07:51.475
+you needed to carry out
+nine multiplications.
+
+152
+00:07:51.475 --> 00:07:54.640
+The total computational
+cost is 3 times
+
+153
+00:07:54.640 --> 00:07:57.715
+3 times 4 times 4 times 3.
+
+154
+00:07:57.715 --> 00:07:59.440
+If you multiply
+all these numbers,
+
+155
+00:07:59.440 --> 00:08:02.860
+it turns out to be 432.
+
+156
+00:08:02.860 --> 00:08:04.900
+But we're not yet done.
+
+157
+00:08:04.900 --> 00:08:07.915
+This is a depth-wise
+convolution part
+
+158
+00:08:07.915 --> 00:08:10.705
+of the depth wise
+separable convolution.
+
+159
+00:08:10.705 --> 00:08:12.490
+There's one more step, which is,
+
+160
+00:08:12.490 --> 00:08:17.290
+we need to take this 4 by
+4 by 3 intermediate value
+
+161
+00:08:17.290 --> 00:08:20.305
+and carry out one more step.
+
+162
+00:08:20.305 --> 00:08:23.710
+The remaining step
+is to take this 4 by
+
+163
+00:08:23.710 --> 00:08:28.630
+4 by 3 set of values,
+
+164
+00:08:28.630 --> 00:08:30.550
+or n out by n out by nc set of
+
+165
+00:08:30.550 --> 00:08:33.700
+values and apply a
+pointwise convolution in
+
+166
+00:08:33.700 --> 00:08:36.370
+order to get the output
+we want which will
+
+167
+00:08:36.370 --> 00:08:39.805
+be 4 by 4 by 5.
+
+168
+00:08:39.805 --> 00:08:42.760
+Let's see how the pointwise
+convolution works.
+
+169
+00:08:42.760 --> 00:08:45.340
+Here's the pointwise convolution.
+
+170
+00:08:45.340 --> 00:08:49.360
+We are going to take the
+intermediate set of values,
+
+171
+00:08:49.360 --> 00:08:55.180
+which is n out by n out by nc,
+
+172
+00:08:55.180 --> 00:09:02.320
+and convolve it with a
+filter that is 1 by 1 by nc,
+
+173
+00:09:02.320 --> 00:09:04.510
+1 by 1 by 3 in this case.
+
+174
+00:09:04.510 --> 00:09:07.405
+Well, you take this pink filter,
+
+175
+00:09:07.405 --> 00:09:10.675
+this pink 1 by 1 by 3 block,
+
+176
+00:09:10.675 --> 00:09:13.495
+and apply it to upper
+left-most position,
+
+177
+00:09:13.495 --> 00:09:16.270
+carry out the three
+multiplications,
+
+178
+00:09:16.270 --> 00:09:19.675
+add them up, and that
+gives you this value,
+
+179
+00:09:19.675 --> 00:09:21.400
+shift it over by one,
+
+180
+00:09:21.400 --> 00:09:24.070
+multiply the three pairs
+of numbers, add them up,
+
+181
+00:09:24.070 --> 00:09:27.865
+that gives you that
+value, and so on.
+
+182
+00:09:27.865 --> 00:09:31.300
+You keep going
+until you've filled
+
+183
+00:09:31.300 --> 00:09:34.660
+out all 16 values of this output.
+
+184
+00:09:34.660 --> 00:09:38.020
+Now, we've done this
+with just one filter in
+
+185
+00:09:38.020 --> 00:09:41.965
+order to get another
+4 by 4 output,
+
+186
+00:09:41.965 --> 00:09:44.605
+by the 4 by 4 by 5
+dimensional outputs,
+
+187
+00:09:44.605 --> 00:09:49.840
+you would actually do this
+with nc prime filters,
+
+188
+00:09:49.840 --> 00:09:52.525
+in this case nc
+prime will set to 5.
+
+189
+00:09:52.525 --> 00:09:55.840
+So a five of these 1
+by 1 by 3 filters,
+
+190
+00:09:55.840 --> 00:10:01.195
+you end up with a 4 by 4
+by 5 output as follows,
+
+191
+00:10:01.195 --> 00:10:04.165
+to give you an n out by n
+
+192
+00:10:04.165 --> 00:10:08.710
+out by nc prime
+dimensional output.
+
+193
+00:10:08.710 --> 00:10:11.500
+The pointwise convolution gives
+
+194
+00:10:11.500 --> 00:10:14.785
+you the 4 by 4 by 5 output.
+
+195
+00:10:14.785 --> 00:10:17.200
+Let's figure out the
+computational cost
+
+196
+00:10:17.200 --> 00:10:18.370
+of what we just did.
+
+197
+00:10:18.370 --> 00:10:20.260
+For every one of these four
+
+198
+00:10:20.260 --> 00:10:22.345
+by four by five output values,
+
+199
+00:10:22.345 --> 00:10:27.040
+we had to apply this pink
+filter to part of the input.
+
+200
+00:10:27.040 --> 00:10:33.150
+That cost three operations
+or 1 by 1 by 1,
+
+201
+00:10:33.150 --> 00:10:35.405
+which is number of
+filter parameters.
+
+202
+00:10:35.405 --> 00:10:38.080
+The filtered had to be placed in
+
+203
+00:10:38.080 --> 00:10:41.470
+4 by 4 different positions,
+
+204
+00:10:41.470 --> 00:10:44.125
+and we had five filters.
+
+205
+00:10:44.125 --> 00:10:47.290
+To tell the cost of what
+we just did here is,
+
+206
+00:10:47.290 --> 00:10:50.740
+1 times 1 times 3 times
+4 times 4 times 5,
+
+207
+00:10:50.740 --> 00:10:54.760
+which is 240 multiplications.
+
+208
+00:10:54.760 --> 00:10:56.830
+In the example we just walked
+
+209
+00:10:56.830 --> 00:10:58.990
+through, the normal convolution,
+
+210
+00:10:58.990 --> 00:11:01.825
+took as input a six by
+six by three input,
+
+211
+00:11:01.825 --> 00:11:05.995
+and wound up with a four
+by four by five outwards.
+
+212
+00:11:05.995 --> 00:11:09.490
+Same for the depthwise
+separable convolution,
+
+213
+00:11:09.490 --> 00:11:11.350
+except we did it in two steps
+
+214
+00:11:11.350 --> 00:11:13.600
+with a depthwise convolution,
+
+215
+00:11:13.600 --> 00:11:16.825
+followed by a
+pointwise convolution.
+
+216
+00:11:16.825 --> 00:11:20.395
+Now, what were the
+computational costs
+
+217
+00:11:20.395 --> 00:11:22.495
+of all of these operations?
+
+218
+00:11:22.495 --> 00:11:25.075
+In the case of the
+normal convolution,
+
+219
+00:11:25.075 --> 00:11:30.955
+we needed 2160 multiplications
+to compute the output.
+
+220
+00:11:30.955 --> 00:11:33.985
+For the depthwise
+separable convolution,
+
+221
+00:11:33.985 --> 00:11:37.630
+there was first,
+the depthwise step,
+
+222
+00:11:37.630 --> 00:11:40.105
+where we had from
+earlier in the video,
+
+223
+00:11:40.105 --> 00:11:45.445
+432 multiplications and
+then the pointwise step,
+
+224
+00:11:45.445 --> 00:11:49.750
+where we had 240 multiplications,
+
+225
+00:11:49.750 --> 00:11:51.640
+and so adding these up,
+
+226
+00:11:51.640 --> 00:11:57.010
+we wind up with 672
+multiplications.
+
+227
+00:11:57.010 --> 00:12:00.069
+If we look the ratio
+between these two numbers,
+
+228
+00:12:00.069 --> 00:12:07.210
+672 over 2160, this turns
+out to be about 0.31.
+
+229
+00:12:07.210 --> 00:12:10.689
+In this example, the depthwise
+separable convolution
+
+230
+00:12:10.689 --> 00:12:12.655
+was about 31 percent
+
+231
+00:12:12.655 --> 00:12:14.860
+as computationally expensive as
+
+232
+00:12:14.860 --> 00:12:18.595
+the normal convolution,
+roughly [inaudible] savings.
+
+233
+00:12:18.595 --> 00:12:22.195
+The authors of the
+MobileNets paper
+
+234
+00:12:22.195 --> 00:12:24.325
+showed that in general,
+
+235
+00:12:24.325 --> 00:12:27.190
+the ratio of the cost of
+
+236
+00:12:27.190 --> 00:12:30.039
+the depthwise
+separable convolution
+
+237
+00:12:30.039 --> 00:12:32.065
+compared to the
+normal convolution,
+
+238
+00:12:32.065 --> 00:12:35.784
+that turns out to be
+equal to one over
+
+239
+00:12:35.784 --> 00:12:41.425
+n_c prime plus one over f
+squared in the general case.
+
+240
+00:12:41.425 --> 00:12:44.530
+In our case, this was
+one over five plus
+
+241
+00:12:44.530 --> 00:12:48.745
+one over three squared or one
+over nine, which is 0.31.
+
+242
+00:12:48.745 --> 00:12:51.985
+In a more typical
+neural network example,
+
+243
+00:12:51.985 --> 00:12:54.400
+n_c prime will be much bigger.
+
+244
+00:12:54.400 --> 00:12:59.305
+so It may be, say, one over 512.
+
+245
+00:12:59.305 --> 00:13:02.200
+If you have 512 channels in
+
+246
+00:13:02.200 --> 00:13:05.980
+your output plus one
+over three squared,
+
+247
+00:13:05.980 --> 00:13:10.315
+this would be a fairly typical
+parameters or new network.
+
+248
+00:13:10.315 --> 00:13:13.945
+This is really small
+and this is one-ninth.
+
+249
+00:13:13.945 --> 00:13:15.670
+So very roughly,
+
+250
+00:13:15.670 --> 00:13:17.890
+the depthwise
+separable convolution
+
+251
+00:13:17.890 --> 00:13:20.125
+may be about one-ninth,
+
+252
+00:13:20.125 --> 00:13:22.300
+rounding up roughly 10
+
+253
+00:13:22.300 --> 00:13:27.520
+times cheaper in
+computational costs.
+
+254
+00:13:27.520 --> 00:13:30.339
+That's why the depthwise
+separable convolution
+
+255
+00:13:30.339 --> 00:13:33.175
+as a building block of a convnet,
+
+256
+00:13:33.175 --> 00:13:35.560
+allows you to carry
+out inference much
+
+257
+00:13:35.560 --> 00:13:38.335
+more efficiently than using
+a normal convolution.
+
+258
+00:13:38.335 --> 00:13:41.200
+Now, there's just one
+more detail I want to
+
+259
+00:13:41.200 --> 00:13:44.230
+share with you before
+we wrap up this video.
+
+260
+00:13:44.230 --> 00:13:46.225
+In the example that
+we went through,
+
+261
+00:13:46.225 --> 00:13:50.650
+the input here was
+six by six by n_c,
+
+262
+00:13:50.650 --> 00:13:54.100
+where n_c was equal
+to three and thus you
+
+263
+00:13:54.100 --> 00:13:58.540
+had three by three
+by n_c filters here.
+
+264
+00:13:58.540 --> 00:14:01.450
+Now, the depthwise
+separable convolution works
+
+265
+00:14:01.450 --> 00:14:03.925
+for any number of input channels.
+
+266
+00:14:03.925 --> 00:14:06.820
+So if you had six input channels,
+
+267
+00:14:06.820 --> 00:14:10.690
+then n_c would be
+equal to six and you
+
+268
+00:14:10.690 --> 00:14:12.310
+would also then have to have
+
+269
+00:14:12.310 --> 00:14:15.040
+three by three by six filters.
+
+270
+00:14:15.040 --> 00:14:17.470
+The intermediate outputs
+will continue to
+
+271
+00:14:17.470 --> 00:14:20.155
+be four by four by n_c,
+
+272
+00:14:20.155 --> 00:14:25.600
+that becomes four by four by six.
+
+273
+00:14:25.600 --> 00:14:28.540
+Now, something looks wrong
+with this diagram, doesn't it?
+
+274
+00:14:28.540 --> 00:14:31.180
+Which is that this
+should be three
+
+275
+00:14:31.180 --> 00:14:34.030
+by three by six not
+three by three by three.
+
+276
+00:14:34.030 --> 00:14:36.115
+But in order to make the diagrams
+
+277
+00:14:36.115 --> 00:14:38.425
+in the next video look
+a little bit simpler,
+
+278
+00:14:38.425 --> 00:14:41.620
+even when the number of
+channels is greater than three,
+
+279
+00:14:41.620 --> 00:14:43.270
+I'm still going to draw
+
+280
+00:14:43.270 --> 00:14:46.030
+the depthwise
+convolution operation as
+
+281
+00:14:46.030 --> 00:14:49.165
+if it was this stack
+of three filters.
+
+282
+00:14:49.165 --> 00:14:54.055
+When you see this
+exact icon later,
+
+283
+00:14:54.055 --> 00:14:56.140
+think of that as the icon we're
+
+284
+00:14:56.140 --> 00:14:58.825
+using to denote a
+depthwise convolution,
+
+285
+00:14:58.825 --> 00:15:02.695
+rather than a very literal
+exact visualization
+
+286
+00:15:02.695 --> 00:15:04.030
+of the number of channels at
+
+287
+00:15:04.030 --> 00:15:06.205
+the depthwise convolution filter.
+
+288
+00:15:06.205 --> 00:15:08.950
+Going to use a similar icon
+
+289
+00:15:08.950 --> 00:15:11.215
+to denote pointwise convolution.
+
+290
+00:15:11.215 --> 00:15:13.585
+In this example, the
+input here would
+
+291
+00:15:13.585 --> 00:15:17.265
+be four by four by n_c,
+
+292
+00:15:17.265 --> 00:15:20.160
+so it's really this
+value from up here.
+
+293
+00:15:20.160 --> 00:15:23.400
+Rather than expanding
+the stack of values to
+
+294
+00:15:23.400 --> 00:15:27.085
+be one by one by n_c,
+
+295
+00:15:27.085 --> 00:15:28.570
+I'm going to continue to use
+
+296
+00:15:28.570 --> 00:15:31.810
+this pink set of filters
+that looks like that.
+
+297
+00:15:31.810 --> 00:15:34.465
+Even if n_c is much larger,
+
+298
+00:15:34.465 --> 00:15:36.580
+I'm still going to
+draw it as if it looks
+
+299
+00:15:36.580 --> 00:15:38.710
+like it only has
+three filters to make
+
+300
+00:15:38.710 --> 00:15:41.500
+some of the diagrams looks
+simpler and this can give
+
+301
+00:15:41.500 --> 00:15:44.860
+you the outputs of whatever's
+necessary dimensions,
+
+302
+00:15:44.860 --> 00:15:47.620
+such as four by four by eight,
+
+303
+00:15:47.620 --> 00:15:50.890
+by some of the value of
+n_c prime in this case.
+
+304
+00:15:50.890 --> 00:15:52.660
+That's it. You've learned about
+
+305
+00:15:52.660 --> 00:15:55.060
+the depthwise
+separable convolution,
+
+306
+00:15:55.060 --> 00:15:56.920
+which comprises two main steps,
+
+307
+00:15:56.920 --> 00:16:00.640
+the depthwise convolution and
+the pointwise convolution.
+
+308
+00:16:00.640 --> 00:16:02.290
+This operation can be
+
+309
+00:16:02.290 --> 00:16:04.195
+designed to have
+the same inputs and
+
+310
+00:16:04.195 --> 00:16:07.810
+output dimensions as the normal
+convolutional operation,
+
+311
+00:16:07.810 --> 00:16:11.125
+but it can be done in much
+lower computational cost.
+
+312
+00:16:11.125 --> 00:16:13.300
+Let's now take this
+building block and
+
+313
+00:16:13.300 --> 00:16:15.655
+use it to build the MobileNet,
+
+314
+00:16:15.655 --> 00:16:18.410
+we'll do that in the next video.

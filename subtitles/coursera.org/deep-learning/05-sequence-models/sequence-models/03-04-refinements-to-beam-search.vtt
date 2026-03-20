@@ -1,0 +1,991 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:04.090
+In the last video, you saw
+the basic search algorithm,
+
+2
+00:00:04.090 --> 00:00:07.130
+in this video, you learn
+some little changes,
+
+3
+00:00:07.130 --> 00:00:09.450
+they'll make it
+work even better.
+
+4
+00:00:09.450 --> 00:00:13.280
+Length normalization is a small
+change to the beam search,
+
+5
+00:00:13.280 --> 00:00:16.280
+however, they can help you
+get much better results.
+
+6
+00:00:16.280 --> 00:00:19.520
+Here's what it is, we
+talked about beam search
+
+7
+00:00:19.520 --> 00:00:23.000
+as maximizing this
+probability and
+
+8
+00:00:23.000 --> 00:00:24.860
+this product here is just
+
+9
+00:00:24.860 --> 00:00:27.590
+expressing the
+observation that p
+
+10
+00:00:27.590 --> 00:00:32.750
+of y1 up to yt y given x
+
+11
+00:00:32.750 --> 00:00:38.450
+can be expressed as p
+of y1 given x times p
+
+12
+00:00:38.450 --> 00:00:46.200
+of y2 given x and
+y1 times up to,
+
+13
+00:00:46.200 --> 00:00:55.545
+I guess, p y ty given x
+and y1 up to y ty minus 1.
+
+14
+00:00:55.545 --> 00:00:58.130
+But maybe this notation is a bit
+
+15
+00:00:58.130 --> 00:01:01.280
+more scary and more intimidating
+than it needs to be,
+
+16
+00:01:01.280 --> 00:01:06.755
+but is that probabilities
+that you've seen previously.
+
+17
+00:01:06.755 --> 00:01:09.620
+Now, if you're
+implementing these,
+
+18
+00:01:09.620 --> 00:01:12.409
+these probabilities
+are all numbers
+
+19
+00:01:12.409 --> 00:01:13.880
+less than one, in fact,
+
+20
+00:01:13.880 --> 00:01:17.180
+often they're much less than
+one and multiplying a lot
+
+21
+00:01:17.180 --> 00:01:21.135
+of numbers less than one
+result in a tiny number,
+
+22
+00:01:21.135 --> 00:01:24.050
+which can result in
+numerical under-floor,
+
+23
+00:01:24.050 --> 00:01:26.865
+meaning that is too small
+for the floating point of
+
+24
+00:01:26.865 --> 00:01:31.465
+representation in your
+computer to store accurately.
+
+25
+00:01:31.465 --> 00:01:35.570
+In practice, instead of
+maximizing this product,
+
+26
+00:01:35.570 --> 00:01:42.135
+we will take logs and if
+you insert a log there,
+
+27
+00:01:42.135 --> 00:01:45.295
+then a log of a product
+becomes a sum of a log,
+
+28
+00:01:45.295 --> 00:01:49.930
+and maximizing this sum of
+log probabilities should
+
+29
+00:01:49.930 --> 00:01:51.940
+give you the same
+results in terms
+
+30
+00:01:51.940 --> 00:01:55.270
+of selecting the most
+likely sentence.
+
+31
+00:01:55.270 --> 00:01:56.920
+By taking logs,
+
+32
+00:01:56.920 --> 00:02:01.075
+you end up with a more
+numerically stable algorithm
+
+33
+00:02:01.075 --> 00:02:02.320
+that is less prone
+
+34
+00:02:02.320 --> 00:02:07.240
+to numerical rounding errors
+
+35
+00:02:07.240 --> 00:02:09.475
+or really numerical under-floor.
+
+36
+00:02:09.475 --> 00:02:11.860
+Because the logarithmic
+function is
+
+37
+00:02:11.860 --> 00:02:16.150
+a strictly monotonically
+increasing function,
+
+38
+00:02:16.150 --> 00:02:18.490
+we know that maximizing
+
+39
+00:02:18.490 --> 00:02:22.570
+log p of y given x should
+give you the same result as
+
+40
+00:02:22.570 --> 00:02:25.210
+maximizing p of y given
+
+41
+00:02:25.210 --> 00:02:29.740
+x as in the same value
+of y that maximizes,
+
+42
+00:02:29.740 --> 00:02:32.555
+this should also maximize that.
+
+43
+00:02:32.555 --> 00:02:36.700
+In most implementations,
+you keep track of the sum
+
+44
+00:02:36.700 --> 00:02:38.260
+of logs of the probabilities
+
+45
+00:02:38.260 --> 00:02:40.945
+rather than the product
+of probabilities.
+
+46
+00:02:40.945 --> 00:02:44.290
+Now there's one other change to
+
+47
+00:02:44.290 --> 00:02:47.110
+this objective
+function that makes
+
+48
+00:02:47.110 --> 00:02:51.860
+the machine translation
+algorithm work even better.
+
+49
+00:02:52.050 --> 00:02:55.420
+Which is that if
+
+50
+00:02:55.420 --> 00:02:58.135
+you refer to this original
+objective up here,
+
+51
+00:02:58.135 --> 00:03:00.680
+if you have a very
+long sentence,
+
+52
+00:03:00.680 --> 00:03:03.500
+the probability of that
+sentence is going to be low
+
+53
+00:03:03.500 --> 00:03:06.670
+because you're multiplying
+as many terms here,
+
+54
+00:03:06.670 --> 00:03:09.045
+lots of numbers less than one
+
+55
+00:03:09.045 --> 00:03:11.810
+to estimate the probability
+of that sentence.
+
+56
+00:03:11.810 --> 00:03:13.430
+If you multiply
+log of the numbers
+
+57
+00:03:13.430 --> 00:03:14.510
+less than one together,
+
+58
+00:03:14.510 --> 00:03:19.020
+you just tend to end up
+with a smaller probability.
+
+59
+00:03:19.640 --> 00:03:22.780
+This objective function has
+
+60
+00:03:22.780 --> 00:03:24.610
+an undesirable effect that
+
+61
+00:03:24.610 --> 00:03:27.370
+it may be unnaturally
+tend to prefer
+
+62
+00:03:27.370 --> 00:03:30.070
+very short
+translations to prefer
+
+63
+00:03:30.070 --> 00:03:33.590
+very short outputs because
+
+64
+00:03:33.590 --> 00:03:35.790
+the probability of
+a short sentence is
+
+65
+00:03:35.790 --> 00:03:39.110
+just by multiplying fewer
+of these numbers are
+
+66
+00:03:39.110 --> 00:03:42.390
+less than one and
+
+67
+00:03:42.390 --> 00:03:46.250
+so the product will just
+be not quite as small.
+
+68
+00:03:46.250 --> 00:03:48.980
+By the way, the same
+thing is true for this,
+
+69
+00:03:48.980 --> 00:03:50.870
+the log of a probability is
+
+70
+00:03:50.870 --> 00:03:54.945
+always less than
+or equal to one,
+
+71
+00:03:54.945 --> 00:03:56.960
+you're actually in
+this range of the log,
+
+72
+00:03:56.960 --> 00:03:59.000
+so the more terms
+you add together,
+
+73
+00:03:59.000 --> 00:04:02.610
+the more negative
+this thing becomes.
+
+74
+00:04:04.070 --> 00:04:06.700
+There's one other
+change the algorithm
+
+75
+00:04:06.700 --> 00:04:08.560
+that makes it work better,
+
+76
+00:04:08.560 --> 00:04:11.290
+which is instead
+of using this as
+
+77
+00:04:11.290 --> 00:04:14.660
+the objective you're
+trying to maximize.
+
+78
+00:04:14.660 --> 00:04:17.860
+One thing you could
+do is normalizes by
+
+79
+00:04:17.860 --> 00:04:20.830
+the number of words in
+your translation and
+
+80
+00:04:20.830 --> 00:04:23.440
+so this takes the average
+
+81
+00:04:23.440 --> 00:04:25.300
+of the log of the probability of
+
+82
+00:04:25.300 --> 00:04:29.350
+each word and does
+
+83
+00:04:29.350 --> 00:04:31.585
+significantly
+reduces the penalty
+
+84
+00:04:31.585 --> 00:04:34.000
+for outputting longer translations.
+
+85
+00:04:34.000 --> 00:04:37.270
+In practice as a heuristic
+
+86
+00:04:37.270 --> 00:04:38.620
+instead of dividing by
+
+87
+00:04:38.620 --> 00:04:41.440
+ty the number of words
+in the output sentence,
+
+88
+00:04:41.440 --> 00:04:44.080
+sometimes you use
+the softer approach
+
+89
+00:04:44.080 --> 00:04:45.625
+we have ty to power of
+
+90
+00:04:45.625 --> 00:04:50.055
+Alpha where maybe
+Alpha is equal to 0.7.
+
+91
+00:04:50.055 --> 00:04:51.635
+If Alpha was equal to one,
+
+92
+00:04:51.635 --> 00:04:54.460
+then the completely
+normalized by length,
+
+93
+00:04:54.460 --> 00:04:57.795
+if Alpha was equal
+to 0, then well,
+
+94
+00:04:57.795 --> 00:04:59.980
+ty to the 0 will be 1,
+
+95
+00:04:59.980 --> 00:05:01.450
+then you're just
+not normalizing at
+
+96
+00:05:01.450 --> 00:05:03.250
+all and this is somewhere
+
+97
+00:05:03.250 --> 00:05:07.190
+in between full normalization
+and no normalization.
+
+98
+00:05:07.190 --> 00:05:10.480
+Alpha is another
+parameter hyperparameter,
+
+99
+00:05:10.480 --> 00:05:11.800
+so the algorithm that you
+
+100
+00:05:11.800 --> 00:05:14.960
+can tune to try to
+get the best results.
+
+101
+00:05:15.920 --> 00:05:18.195
+Using Alpha this way,
+
+102
+00:05:18.195 --> 00:05:20.870
+does this heuristic
+or does this a hack?
+
+103
+00:05:20.870 --> 00:05:23.810
+There isn't a great theoretical
+justification for it,
+
+104
+00:05:23.810 --> 00:05:26.630
+but people found
+this works well,
+
+105
+00:05:26.630 --> 00:05:28.730
+people found it
+works well in practice,
+
+106
+00:05:28.730 --> 00:05:30.560
+so many groups won't do this,
+
+107
+00:05:30.560 --> 00:05:32.570
+and you can try out
+different values of
+
+108
+00:05:32.570 --> 00:05:37.980
+Alpha and see which one
+gives you the best result.
+
+109
+00:05:38.050 --> 00:05:41.265
+Just to wrap up how
+you can beam search,
+
+110
+00:05:41.265 --> 00:05:43.610
+as you run beam search
+you see a lot of
+
+111
+00:05:43.610 --> 00:05:46.760
+sentences with length equal 1,
+
+112
+00:05:46.760 --> 00:05:49.400
+length sentences were equal 2,
+
+113
+00:05:49.400 --> 00:05:53.490
+length sentence that
+equals 3 and so on,
+
+114
+00:05:53.490 --> 00:05:57.100
+and maybe you run beam search
+for 30 steps you consider,
+
+115
+00:05:57.100 --> 00:06:01.330
+output sentences
+up to 30, let's say.
+
+116
+00:06:01.340 --> 00:06:04.410
+Would beam width of three,
+
+117
+00:06:04.410 --> 00:06:06.770
+you would be keeping track of
+
+118
+00:06:06.770 --> 00:06:08.600
+the top three possibilities for
+
+119
+00:06:08.600 --> 00:06:10.760
+each of these possible
+sentence length 1,
+
+120
+00:06:10.760 --> 00:06:14.700
+2, 3, 4, and so on up to 30.
+
+121
+00:06:18.890 --> 00:06:22.770
+Output sentences and score
+
+122
+00:06:22.770 --> 00:06:28.300
+them against this score
+and so you can take
+
+123
+00:06:28.300 --> 00:06:31.869
+your top sentences
+and just computes
+
+124
+00:06:31.869 --> 00:06:35.110
+this objective function
+on the sentences that you
+
+125
+00:06:35.110 --> 00:06:38.875
+have seen through the
+beam search process.
+
+126
+00:06:38.875 --> 00:06:42.399
+Then finally, of
+all these sentences
+
+127
+00:06:42.399 --> 00:06:43.825
+that you evaluate this way,
+
+128
+00:06:43.825 --> 00:06:45.370
+you pick the one that achieves,
+
+129
+00:06:45.370 --> 00:06:47.230
+the highest value on this
+
+130
+00:06:47.230 --> 00:06:50.275
+normalize low
+probability objective,
+
+131
+00:06:50.275 --> 00:06:51.730
+sometimes it's
+called a normalized
+
+132
+00:06:51.730 --> 00:06:53.020
+log likelihood objective
+
+133
+00:06:53.020 --> 00:06:57.375
+and then that would be the
+final translation you output.
+
+134
+00:06:57.375 --> 00:07:00.970
+That's how you implement
+beam search and you get to
+
+135
+00:07:00.970 --> 00:07:02.230
+play with this yourself in
+
+136
+00:07:02.230 --> 00:07:04.210
+this week's
+programming exercise.
+
+137
+00:07:04.210 --> 00:07:07.660
+Finally, a few
+implementation details,
+
+138
+00:07:07.660 --> 00:07:09.965
+how do you choose
+the beam width?
+
+139
+00:07:09.965 --> 00:07:12.970
+Share the pros and cons
+of setting beam to be
+
+140
+00:07:12.970 --> 00:07:15.610
+very large versus very small.
+
+141
+00:07:15.610 --> 00:07:18.835
+If the beam width is very large,
+
+142
+00:07:18.835 --> 00:07:22.870
+then you consider a lot of
+possibilities and so you
+
+143
+00:07:22.870 --> 00:07:24.865
+tend to get a better result
+
+144
+00:07:24.865 --> 00:07:27.640
+because you're considering a
+lot of different options,
+
+145
+00:07:27.640 --> 00:07:29.950
+but it will be slower.
+
+146
+00:07:29.950 --> 00:07:32.140
+The memory requirements
+will also grow and
+
+147
+00:07:32.140 --> 00:07:35.065
+also be computationally slower.
+
+148
+00:07:35.065 --> 00:07:37.660
+Whereas if you use a
+very small beam width,
+
+149
+00:07:37.660 --> 00:07:40.960
+then you get a worse result
+because you are just keeping
+
+150
+00:07:40.960 --> 00:07:45.470
+less possibilities in mind
+as the algorithm is running,
+
+151
+00:07:45.470 --> 00:07:48.010
+but you get a result faster and
+
+152
+00:07:48.010 --> 00:07:50.800
+the memory requirements
+will also be lower.
+
+153
+00:07:50.800 --> 00:07:53.050
+In the previous video,
+
+154
+00:07:53.050 --> 00:07:56.520
+we use in our running
+example a beam width of 3,
+
+155
+00:07:56.520 --> 00:07:59.590
+so we're keeping three
+possibilities in mind in
+
+156
+00:07:59.590 --> 00:08:03.160
+practice that is on the small
+side in production systems,
+
+157
+00:08:03.160 --> 00:08:07.030
+it's not uncommon to see a
+beam width maybe around 10.
+
+158
+00:08:07.030 --> 00:08:09.700
+I think a beam width
+of 100 would be
+
+159
+00:08:09.700 --> 00:08:13.150
+considered very large
+for a production system,
+
+160
+00:08:13.150 --> 00:08:15.255
+depending on the application.
+
+161
+00:08:15.255 --> 00:08:18.625
+But for research systems where
+people want to squeeze out
+
+162
+00:08:18.625 --> 00:08:20.680
+every last drop of
+performance in order
+
+163
+00:08:20.680 --> 00:08:22.710
+to publish a paper with the
+best possible result,
+
+164
+00:08:22.710 --> 00:08:25.105
+it's not uncommon
+to see people use
+
+165
+00:08:25.105 --> 00:08:28.055
+beam width of 1,000 or 3,000,
+
+166
+00:08:28.055 --> 00:08:30.775
+but this is very application
+
+167
+00:08:30.775 --> 00:08:33.410
+as well as a domain dependent.
+
+168
+00:08:33.410 --> 00:08:36.310
+I would say try out a
+variety of values of
+
+169
+00:08:36.310 --> 00:08:39.355
+beam as see what works
+for your application,
+
+170
+00:08:39.355 --> 00:08:41.775
+but when beam is very large,
+
+171
+00:08:41.775 --> 00:08:45.365
+there is often
+diminishing returns.
+
+172
+00:08:45.365 --> 00:08:49.030
+For many applications,
+I would expect to see
+
+173
+00:08:49.030 --> 00:08:51.970
+a huge gain as you
+go from beam of one,
+
+174
+00:08:51.970 --> 00:08:54.730
+which is basically greedy search
+to three to maybe 10,
+
+175
+00:08:54.730 --> 00:08:57.490
+but the gains as you
+go from the thousands
+
+176
+00:08:57.490 --> 00:09:01.445
+to three thousand beam width
+might not be as big.
+
+177
+00:09:01.445 --> 00:09:03.970
+For those of you that have
+
+178
+00:09:03.970 --> 00:09:08.185
+taken maybe a lot of computer
+science courses before,
+
+179
+00:09:08.185 --> 00:09:11.500
+if you're familiar with computer
+science search algorithms
+
+180
+00:09:11.500 --> 00:09:15.580
+like BFS breadth first search
+or DFS depth first search,
+
+181
+00:09:15.580 --> 00:09:17.380
+the way to think
+about beam search is
+
+182
+00:09:17.380 --> 00:09:19.450
+that unlike those
+other algorithms
+
+183
+00:09:19.450 --> 00:09:20.950
+which you might
+have learned about
+
+184
+00:09:20.950 --> 00:09:23.110
+in computer science
+algorithms course,
+
+185
+00:09:23.110 --> 00:09:24.340
+and don't worry
+about it if you've
+
+186
+00:09:24.340 --> 00:09:25.825
+not heard of these algorithms.
+
+187
+00:09:25.825 --> 00:09:27.970
+But if you've heard
+of breadth first search or depth first search,
+
+188
+00:09:27.970 --> 00:09:30.280
+unlike those algorithms,
+
+189
+00:09:30.280 --> 00:09:33.100
+which are exact search
+algorithms beam search
+
+190
+00:09:33.100 --> 00:09:35.230
+runs much faster but is
+
+191
+00:09:35.230 --> 00:09:36.730
+not guaranteed to find
+
+192
+00:09:36.730 --> 00:09:38.305
+the exact maximum for
+
+193
+00:09:38.305 --> 00:09:41.035
+this arg max that
+you like to find.
+
+194
+00:09:41.035 --> 00:09:43.950
+If you haven't heard of
+breadth first search or depth first search,
+
+195
+00:09:43.950 --> 00:09:46.740
+don't worry about it.
+It is not important for our purposes,
+
+196
+00:09:46.740 --> 00:09:48.580
+but if you have, this is how
+
+197
+00:09:48.580 --> 00:09:51.570
+the beam search relates
+to those algorithms.
+
+198
+00:09:51.570 --> 00:09:53.710
+That's it for beam search,
+
+199
+00:09:53.710 --> 00:09:55.900
+which is a widely
+used algorithm in
+
+200
+00:09:55.900 --> 00:09:59.695
+many production systems or
+many commercial systems.
+
+201
+00:09:59.695 --> 00:10:01.990
+Now in the third course
+
+202
+00:10:01.990 --> 00:10:04.135
+in this sequence of courses
+on deep learning,
+
+203
+00:10:04.135 --> 00:10:06.940
+we talk a lot about
+error analysis,
+
+204
+00:10:06.940 --> 00:10:09.760
+it turns out one of the
+most useful tools I found
+
+205
+00:10:09.760 --> 00:10:12.705
+is devoted to error
+analysis on beam search,
+
+206
+00:10:12.705 --> 00:10:14.040
+so you sometimes wonder,
+
+207
+00:10:14.040 --> 00:10:15.450
+should I increase my beam width?
+
+208
+00:10:15.450 --> 00:10:17.310
+Is beam width
+working well enough
+
+209
+00:10:17.310 --> 00:10:19.930
+and there are some simple
+things we can compute
+
+210
+00:10:19.930 --> 00:10:21.985
+to give you guidance
+on whether you need to
+
+211
+00:10:21.985 --> 00:10:24.685
+work on improving your
+search algorithm.
+
+212
+00:10:24.685 --> 00:10:27.950
+Let's talk about that
+in the next video.

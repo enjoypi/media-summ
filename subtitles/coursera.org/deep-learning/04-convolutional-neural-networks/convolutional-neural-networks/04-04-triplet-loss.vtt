@@ -1,0 +1,1546 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:03.720
+One way to learn the parameters
+of the neural network,
+
+2
+00:00:03.720 --> 00:00:06.225
+so that it gives
+you a good encoding
+
+3
+00:00:06.225 --> 00:00:07.620
+for your pictures of faces,
+
+4
+00:00:07.620 --> 00:00:09.150
+is to define and apply
+
+5
+00:00:09.150 --> 00:00:11.940
+gradient descent on the
+triplet loss function.
+
+6
+00:00:11.940 --> 00:00:13.425
+Let's see what that means.
+
+7
+00:00:13.425 --> 00:00:15.780
+To apply the triplet loss you
+
+8
+00:00:15.780 --> 00:00:18.645
+need to compare pairs of images.
+
+9
+00:00:18.645 --> 00:00:21.390
+For example, given this picture,
+
+10
+00:00:21.390 --> 00:00:24.105
+to learn the parameters
+of the neural network,
+
+11
+00:00:24.105 --> 00:00:27.300
+you have to look at several
+pictures at the same time.
+
+12
+00:00:27.300 --> 00:00:29.700
+For example, given
+this pair of images,
+
+13
+00:00:29.700 --> 00:00:31.200
+you want their encodings to be
+
+14
+00:00:31.200 --> 00:00:33.825
+similar because these
+are the same person.
+
+15
+00:00:33.825 --> 00:00:35.925
+Whereas given this
+pair of images,
+
+16
+00:00:35.925 --> 00:00:38.360
+you want their
+encodings to be quite
+
+17
+00:00:38.360 --> 00:00:41.555
+different because these
+are different persons.
+
+18
+00:00:41.555 --> 00:00:44.570
+In the terminology
+of the triplet loss,
+
+19
+00:00:44.570 --> 00:00:46.340
+what you're going
+to do is always
+
+20
+00:00:46.340 --> 00:00:48.740
+look at one anchor image,
+
+21
+00:00:48.740 --> 00:00:51.260
+and then you want
+to distance between
+
+22
+00:00:51.260 --> 00:00:53.805
+the anchor and a positive image,
+
+23
+00:00:53.805 --> 00:00:55.205
+really a positive example,
+
+24
+00:00:55.205 --> 00:00:57.950
+meaning is the same
+person, to be similar.
+
+25
+00:00:57.950 --> 00:00:59.840
+Whereas you want the anchor
+
+26
+00:00:59.840 --> 00:01:01.550
+when pairs are compared to have
+
+27
+00:01:01.550 --> 00:01:03.905
+a negative example for
+
+28
+00:01:03.905 --> 00:01:07.360
+their distances to be
+much further apart.
+
+29
+00:01:07.360 --> 00:01:10.790
+This is what gives rise
+to the term triplet loss,
+
+30
+00:01:10.790 --> 00:01:12.440
+which is that you
+always be looking
+
+31
+00:01:12.440 --> 00:01:14.850
+at three images at a time.
+
+32
+00:01:14.850 --> 00:01:17.420
+You'll be looking
+at an anchor image,
+
+33
+00:01:17.420 --> 00:01:22.160
+a positive image, as well
+as a negative image.
+
+34
+00:01:22.160 --> 00:01:24.365
+I'm going to abbreviate
+anchor, positive,
+
+35
+00:01:24.365 --> 00:01:26.760
+and negative as A, P,
+
+36
+00:01:26.760 --> 00:01:29.540
+and N. To formalize this,
+
+37
+00:01:29.540 --> 00:01:32.690
+what you want is for
+the parameters of
+
+38
+00:01:32.690 --> 00:01:34.370
+your neural network
+or for your encoding
+
+39
+00:01:34.370 --> 00:01:36.064
+to have the following property;
+
+40
+00:01:36.064 --> 00:01:39.755
+which is that you
+want the encoding
+
+41
+00:01:39.755 --> 00:01:41.990
+between the anchor minus
+
+42
+00:01:41.990 --> 00:01:44.450
+the encoding of the
+positive example,
+
+43
+00:01:44.450 --> 00:01:47.880
+you want this to be
+small, and in particular,
+
+44
+00:01:47.880 --> 00:01:50.030
+you want this to be
+less than or equal to
+
+45
+00:01:50.030 --> 00:01:52.985
+the distance or the squared norm
+
+46
+00:01:52.985 --> 00:01:54.440
+between the encoding of
+
+47
+00:01:54.440 --> 00:01:59.110
+the anchor and the
+encoding of the negative,
+
+48
+00:01:59.110 --> 00:02:02.490
+whereof course this is d of A,
+
+49
+00:02:02.490 --> 00:02:06.765
+P and this is d of A,
+
+50
+00:02:06.765 --> 00:02:11.300
+N. You can think of d
+as a distance function,
+
+51
+00:02:11.300 --> 00:02:14.705
+which is why we named it
+with the alphabet d. Now,
+
+52
+00:02:14.705 --> 00:02:16.430
+if we move the term from
+
+53
+00:02:16.430 --> 00:02:18.860
+the right side of this
+equation to the left side,
+
+54
+00:02:18.860 --> 00:02:21.185
+what you end up with is f of
+
+55
+00:02:21.185 --> 00:02:25.295
+A minus f of P squared minus,
+
+56
+00:02:25.295 --> 00:02:27.650
+I'm going to take the
+right-hand side now,
+
+57
+00:02:27.650 --> 00:02:31.425
+minus f of N squared,
+
+58
+00:02:31.425 --> 00:02:34.660
+you want it to be less
+than or equal to zero.
+
+59
+00:02:34.660 --> 00:02:37.040
+But now we're going to
+make a slight change
+
+60
+00:02:37.040 --> 00:02:38.940
+to this expression, which is;
+
+61
+00:02:38.940 --> 00:02:41.464
+one trivial way to make
+sure this is satisfied
+
+62
+00:02:41.464 --> 00:02:44.250
+is to just learn
+everything equals zero.
+
+63
+00:02:44.250 --> 00:02:46.285
+If f always output zero,
+
+64
+00:02:46.285 --> 00:02:48.740
+then this is 0 minus
+0, which is 0,
+
+65
+00:02:48.740 --> 00:02:51.650
+this is 0 minus 0, which
+is 0, and so, well,
+
+66
+00:02:51.650 --> 00:02:57.180
+by saying f of any image
+equals a vector of all zero's,
+
+67
+00:02:57.180 --> 00:03:01.450
+you can see almost trivially
+satisfy this equation.
+
+68
+00:03:01.450 --> 00:03:03.740
+To make sure that
+the neural network
+
+69
+00:03:03.740 --> 00:03:05.930
+doesn't just output zero,
+
+70
+00:03:05.930 --> 00:03:07.450
+for all the encodings,
+
+71
+00:03:07.450 --> 00:03:09.470
+or to make sure
+that it doesn't set
+
+72
+00:03:09.470 --> 00:03:12.280
+all the encodings
+equal to each other.
+
+73
+00:03:12.280 --> 00:03:14.000
+Another way for
+the neural network
+
+74
+00:03:14.000 --> 00:03:16.160
+to give a trivial outputs is
+
+75
+00:03:16.160 --> 00:03:18.020
+if the encoding for
+every image was
+
+76
+00:03:18.020 --> 00:03:20.240
+identical to the encoding
+to every other image,
+
+77
+00:03:20.240 --> 00:03:25.215
+in which case you
+again get 0 minus 0.
+
+78
+00:03:25.215 --> 00:03:28.070
+To prevent your neural
+network from doing that,
+
+79
+00:03:28.070 --> 00:03:31.850
+what we're going to do is
+modify this objective to say
+
+80
+00:03:31.850 --> 00:03:33.470
+that this doesn't need to be
+
+81
+00:03:33.470 --> 00:03:36.750
+just less than equal to zero,
+
+82
+00:03:36.750 --> 00:03:40.745
+it needs to be quite a
+bit smaller than zero.
+
+83
+00:03:40.745 --> 00:03:43.040
+In particular, if we
+say this needs to
+
+84
+00:03:43.040 --> 00:03:45.810
+be less than negative Alpha,
+
+85
+00:03:45.810 --> 00:03:49.265
+where Alpha is another
+hyperparameter
+
+86
+00:03:49.265 --> 00:03:51.230
+then this prevents
+a neural network
+
+87
+00:03:51.230 --> 00:03:53.600
+from outputting the
+trivial solutions.
+
+88
+00:03:53.600 --> 00:03:55.955
+By convention, usually, we write
+
+89
+00:03:55.955 --> 00:03:59.425
+plus Alpha instead of
+negative Alpha there.
+
+90
+00:03:59.425 --> 00:04:02.810
+This is also called a margin,
+
+91
+00:04:02.810 --> 00:04:06.080
+which is terminology that
+you'd be familiar with
+
+92
+00:04:06.080 --> 00:04:08.300
+if you've also seen
+the literature
+
+93
+00:04:08.300 --> 00:04:10.340
+on support vector machines,
+
+94
+00:04:10.340 --> 00:04:12.640
+but don't worry about
+it if you haven't.
+
+95
+00:04:12.640 --> 00:04:15.185
+We can also modify
+this equation on top
+
+96
+00:04:15.185 --> 00:04:18.205
+by adding this margin parameter.
+
+97
+00:04:18.205 --> 00:04:23.120
+Given example, let's say
+the margin is set to 0.2.
+
+98
+00:04:23.120 --> 00:04:25.550
+If in this example d of
+
+99
+00:04:25.550 --> 00:04:29.540
+the anchor and the
+positive is equal to 0.5,
+
+100
+00:04:29.540 --> 00:04:31.610
+then you won't be satisfied if
+
+101
+00:04:31.610 --> 00:04:34.010
+d between the anchor
+and the negative,
+
+102
+00:04:34.010 --> 00:04:36.570
+was just a little bit
+bigger, say 0.51.
+
+103
+00:04:36.570 --> 00:04:41.600
+Of one. Even though 0.51
+is bigger than 0.5,
+
+104
+00:04:41.600 --> 00:04:43.190
+you're saying that's
+not good enough.
+
+105
+00:04:43.190 --> 00:04:48.345
+We want d of A,N to be
+much bigger than d of A,P.
+
+106
+00:04:48.345 --> 00:04:50.700
+In particular, you
+want this to be
+
+107
+00:04:50.700 --> 00:04:53.410
+at least 0.7 or higher.
+
+108
+00:04:53.410 --> 00:04:54.775
+Alternatively,
+
+109
+00:04:54.775 --> 00:04:58.750
+to achieve this margin or
+this gap of at least 0.2,
+
+110
+00:04:58.750 --> 00:05:02.040
+you could either push
+this up or push this down
+
+111
+00:05:02.040 --> 00:05:05.465
+so that there is at
+least this gap of
+
+112
+00:05:05.465 --> 00:05:09.365
+this hyperparameter
+Alpha 0.2 between
+
+113
+00:05:09.365 --> 00:05:11.450
+the distance between
+the anchor and the
+
+114
+00:05:11.450 --> 00:05:14.580
+positive versus the
+anchor and the negative.
+
+115
+00:05:14.580 --> 00:05:17.570
+That's what having a margin
+parameter here does.
+
+116
+00:05:17.570 --> 00:05:18.830
+Which is it pushes
+
+117
+00:05:18.830 --> 00:05:21.900
+the anchor-positive pair and
+
+118
+00:05:21.900 --> 00:05:25.645
+the anchor-negative pair
+further away from each other.
+
+119
+00:05:25.645 --> 00:05:28.570
+Let's take this equation
+we have here at
+
+120
+00:05:28.570 --> 00:05:31.195
+the bottom and on
+the next slide,
+
+121
+00:05:31.195 --> 00:05:35.620
+formalize it and define
+the triplet loss function.
+
+122
+00:05:35.620 --> 00:05:37.870
+The triplet loss function is
+
+123
+00:05:37.870 --> 00:05:40.865
+defined on triples of images.
+
+124
+00:05:40.865 --> 00:05:44.835
+Given three images: A,
+
+125
+00:05:44.835 --> 00:05:48.969
+P, and N, the anchor positive
+and negative examples,
+
+126
+00:05:48.969 --> 00:05:51.030
+so the positive examples is of
+
+127
+00:05:51.030 --> 00:05:53.245
+the same person as the anchor,
+
+128
+00:05:53.245 --> 00:05:54.600
+but the negative is of
+
+129
+00:05:54.600 --> 00:05:57.605
+a different person
+than the anchor.
+
+130
+00:05:57.605 --> 00:06:01.530
+We're going to define
+the loss as follows.
+
+131
+00:06:01.530 --> 00:06:03.084
+The loss on this example,
+
+132
+00:06:03.084 --> 00:06:06.390
+which is really defined on
+a triplet of images is,
+
+133
+00:06:06.390 --> 00:06:10.085
+let me first copy over what
+we had on the previous slide.
+
+134
+00:06:10.085 --> 00:06:16.060
+That was f A minus f P squared
+
+135
+00:06:16.060 --> 00:06:23.674
+minus f A minus f N squared,
+
+136
+00:06:23.674 --> 00:06:26.845
+and then plus alpha,
+the margin parameter.
+
+137
+00:06:26.845 --> 00:06:28.870
+What you want is for this to
+
+138
+00:06:28.870 --> 00:06:32.075
+be less than or equal to zero.
+
+139
+00:06:32.075 --> 00:06:34.390
+To define the loss function,
+
+140
+00:06:34.390 --> 00:06:39.265
+let's take the max
+between this and zero.
+
+141
+00:06:39.265 --> 00:06:42.040
+The effect of taking
+the max here is that
+
+142
+00:06:42.040 --> 00:06:45.229
+so long as this is
+less than zero,
+
+143
+00:06:45.229 --> 00:06:47.095
+then the loss is zero
+
+144
+00:06:47.095 --> 00:06:48.965
+because the max is
+something less than equal
+
+145
+00:06:48.965 --> 00:06:52.790
+to zero with zero is
+going to be zero.
+
+146
+00:06:52.790 --> 00:06:54.510
+So long as you
+achieve the goal of
+
+147
+00:06:54.510 --> 00:06:56.760
+making this thing I've
+underlined in green,
+
+148
+00:06:56.760 --> 00:06:58.475
+so long as you've
+achieved the objective of
+
+149
+00:06:58.475 --> 00:07:00.980
+making that less than
+or equal to zero,
+
+150
+00:07:00.980 --> 00:07:04.045
+then the loss on this
+example is equal to zero.
+
+151
+00:07:04.045 --> 00:07:05.385
+But if on the other hand,
+
+152
+00:07:05.385 --> 00:07:07.654
+if this is greater than zero,
+
+153
+00:07:07.654 --> 00:07:09.130
+then if you take the max,
+
+154
+00:07:09.130 --> 00:07:10.674
+the max will end up selecting
+
+155
+00:07:10.674 --> 00:07:11.800
+this thing I've underlined in
+
+156
+00:07:11.800 --> 00:07:15.425
+green and so you'd
+have a positive loss.
+
+157
+00:07:15.425 --> 00:07:17.470
+By trying to minimize this,
+
+158
+00:07:17.470 --> 00:07:19.805
+this has the effect
+of trying to send
+
+159
+00:07:19.805 --> 00:07:23.490
+this thing to be zero or
+less than equal to zero.
+
+160
+00:07:23.490 --> 00:07:26.550
+Then so long as this zero
+or less than equal to zero,
+
+161
+00:07:26.550 --> 00:07:28.715
+the neural network doesn't care
+
+162
+00:07:28.715 --> 00:07:31.940
+how much further negative it is.
+
+163
+00:07:31.940 --> 00:07:33.995
+This is how you
+define the loss on
+
+164
+00:07:33.995 --> 00:07:36.220
+a single triplet and the
+
+165
+00:07:36.220 --> 00:07:38.980
+overall cost function for
+your neural network can
+
+166
+00:07:38.980 --> 00:07:42.580
+be sum over a training set of
+
+167
+00:07:42.580 --> 00:07:47.530
+these individual losses
+on different triplets.
+
+168
+00:07:48.090 --> 00:07:51.790
+If you have a
+training set of say,
+
+169
+00:07:51.790 --> 00:07:55.090
+10,000 pictures with
+1,000 different persons,
+
+170
+00:07:55.090 --> 00:07:57.605
+what you'd have to
+do is take your
+
+171
+00:07:57.605 --> 00:08:00.425
+10,000 pictures and
+use it to generate,
+
+172
+00:08:00.425 --> 00:08:02.825
+to select triplets like this,
+
+173
+00:08:02.825 --> 00:08:05.320
+and then train your
+learning algorithm using
+
+174
+00:08:05.320 --> 00:08:08.045
+gradient descent on this
+type of cost function,
+
+175
+00:08:08.045 --> 00:08:09.910
+which is really
+defined on triplets
+
+176
+00:08:09.910 --> 00:08:13.630
+of images drawn from
+your training set.
+
+177
+00:08:13.630 --> 00:08:19.659
+Notice that in order to define
+this dataset of triplets,
+
+178
+00:08:19.659 --> 00:08:22.895
+you do need some
+pairs of A and P,
+
+179
+00:08:22.895 --> 00:08:25.340
+pairs of pictures
+of the same person.
+
+180
+00:08:25.340 --> 00:08:27.520
+For the purpose of
+training your system,
+
+181
+00:08:27.520 --> 00:08:29.280
+you do need a dataset where you
+
+182
+00:08:29.280 --> 00:08:32.240
+have multiple pictures
+of the same person.
+
+183
+00:08:32.240 --> 00:08:34.895
+That's why in this example
+I said if you have
+
+184
+00:08:34.895 --> 00:08:38.140
+10,000 pictures of 1,000
+different persons,
+
+185
+00:08:38.140 --> 00:08:40.160
+so maybe you have ten pictures,
+
+186
+00:08:40.160 --> 00:08:41.775
+on average of each of your
+
+187
+00:08:41.775 --> 00:08:44.315
+1,000 persons to make
+up your entire dataset.
+
+188
+00:08:44.315 --> 00:08:47.140
+If you had just one
+picture of each person,
+
+189
+00:08:47.140 --> 00:08:49.625
+then you can't actually
+train this system.
+
+190
+00:08:49.625 --> 00:08:56.570
+But of course, after
+having trained a system,
+
+191
+00:08:56.570 --> 00:08:58.210
+you can then apply it to
+
+192
+00:08:58.210 --> 00:08:59.950
+your one-shot learning problem
+
+193
+00:08:59.950 --> 00:09:02.710
+where for your face
+recognition system,
+
+194
+00:09:02.710 --> 00:09:04.935
+maybe you have only
+a single picture
+
+195
+00:09:04.935 --> 00:09:06.990
+of someone you might be
+trying to recognize.
+
+196
+00:09:06.990 --> 00:09:08.330
+But for your training set,
+
+197
+00:09:08.330 --> 00:09:09.935
+you do need to
+make sure you have
+
+198
+00:09:09.935 --> 00:09:12.340
+multiple images of
+the same person,
+
+199
+00:09:12.340 --> 00:09:14.245
+at least for some people
+in your training set,
+
+200
+00:09:14.245 --> 00:09:18.725
+so that you can have pairs of
+anchor and positive images.
+
+201
+00:09:18.725 --> 00:09:21.840
+Now, how do you actually
+
+202
+00:09:21.840 --> 00:09:24.955
+choose these triplets to
+form your training set?
+
+203
+00:09:24.955 --> 00:09:28.330
+One of the problems
+is if you choose A,
+
+204
+00:09:28.330 --> 00:09:31.175
+P, and N randomly from
+your training set,
+
+205
+00:09:31.175 --> 00:09:33.285
+subject to A and P being
+
+206
+00:09:33.285 --> 00:09:36.110
+the same person and A and
+N being different persons,
+
+207
+00:09:36.110 --> 00:09:38.105
+one of the problems is that if
+
+208
+00:09:38.105 --> 00:09:40.160
+you choose them so
+that they're random,
+
+209
+00:09:40.160 --> 00:09:44.175
+then this constraint is
+very easy to satisfy.
+
+210
+00:09:44.175 --> 00:09:48.409
+Because given two randomly
+chosen pictures of people,
+
+211
+00:09:48.409 --> 00:09:53.170
+chances are A and N are much
+different than A and P.
+
+212
+00:09:53.170 --> 00:09:55.880
+I hope you still
+recognize this notation.
+
+213
+00:09:55.880 --> 00:09:59.150
+Does d (A, P) will be high
+
+214
+00:09:59.150 --> 00:10:02.825
+written on the last few
+slides of these encoding.
+
+215
+00:10:02.825 --> 00:10:05.120
+This is equal to
+
+216
+00:10:05.120 --> 00:10:08.060
+this squared norm
+distance between
+
+217
+00:10:08.060 --> 00:10:10.910
+the encodings that we had
+on the previous line.
+
+218
+00:10:10.910 --> 00:10:14.660
+But if A and N are two randomly
+chosen different persons,
+
+219
+00:10:14.660 --> 00:10:16.310
+then there's a very
+high chance that
+
+220
+00:10:16.310 --> 00:10:18.080
+this will be much bigger,
+
+221
+00:10:18.080 --> 00:10:20.060
+more than the margin helper,
+
+222
+00:10:20.060 --> 00:10:21.920
+than that term on the left and
+
+223
+00:10:21.920 --> 00:10:24.710
+the Neural Network won't
+learn much from it.
+
+224
+00:10:24.710 --> 00:10:26.000
+To construct your training set,
+
+225
+00:10:26.000 --> 00:10:28.460
+what you want to do is
+to choose triplets, A,
+
+226
+00:10:28.460 --> 00:10:31.265
+P, and N, they're the
+''hard'' to train on.
+
+227
+00:10:31.265 --> 00:10:34.430
+In particular, what you
+want is for all triplets
+
+228
+00:10:34.430 --> 00:10:38.850
+that this constraint
+be satisfied.
+
+229
+00:10:38.920 --> 00:10:42.320
+A triplet that is
+''hard'' would be if you
+
+230
+00:10:42.320 --> 00:10:44.930
+choose values for A, P,
+
+231
+00:10:44.930 --> 00:10:47.570
+and N so that may be d (A,
+
+232
+00:10:47.570 --> 00:10:52.565
+P) is actually quite
+close to d (A, N).
+
+233
+00:10:52.565 --> 00:10:55.190
+In that case, the
+learning algorithm has
+
+234
+00:10:55.190 --> 00:10:58.190
+to try extra hard to take
+this thing on the right
+
+235
+00:10:58.190 --> 00:11:00.290
+and try to push it up or take
+
+236
+00:11:00.290 --> 00:11:02.885
+this thing on the left
+and try to push it down
+
+237
+00:11:02.885 --> 00:11:05.570
+so that there is at
+least a margin of
+
+238
+00:11:05.570 --> 00:11:08.570
+alpha between the left
+side and the right side.
+
+239
+00:11:08.570 --> 00:11:11.885
+The effect of choosing
+these triplets is that it
+
+240
+00:11:11.885 --> 00:11:14.750
+increases the
+computational efficiency
+
+241
+00:11:14.750 --> 00:11:16.340
+of your learning algorithm.
+
+242
+00:11:16.340 --> 00:11:18.500
+If you choose the
+triplets randomly,
+
+243
+00:11:18.500 --> 00:11:20.150
+then too many triplets would be
+
+244
+00:11:20.150 --> 00:11:22.565
+really easy and gradient descent
+
+245
+00:11:22.565 --> 00:11:24.665
+won't do anything because
+you're Neural Network would
+
+246
+00:11:24.665 --> 00:11:27.110
+get them right pretty
+much all the time.
+
+247
+00:11:27.110 --> 00:11:29.510
+It's only by choosing
+''hard'' to triplets
+
+248
+00:11:29.510 --> 00:11:32.254
+that the gradient
+descent procedure
+
+249
+00:11:32.254 --> 00:11:34.925
+has to do some work
+to try to push
+
+250
+00:11:34.925 --> 00:11:38.765
+these quantities further
+away from those quantities.
+
+251
+00:11:38.765 --> 00:11:41.690
+If you're interested,
+the details are
+
+252
+00:11:41.690 --> 00:11:45.530
+presented in this paper
+by Florian Schroff,
+
+253
+00:11:45.530 --> 00:11:48.845
+Dmitry Kalenichenko,
+and James Philbin,
+
+254
+00:11:48.845 --> 00:11:51.305
+where they have a
+system called FaceNet,
+
+255
+00:11:51.305 --> 00:11:53.030
+which is where a lot
+of the ideas I'm
+
+256
+00:11:53.030 --> 00:11:55.610
+presenting in this
+video had come from.
+
+257
+00:11:55.610 --> 00:11:58.250
+By the way, this is
+also a fun fact about
+
+258
+00:11:58.250 --> 00:12:00.350
+how algorithms are often
+
+259
+00:12:00.350 --> 00:12:02.015
+named in the Deep
+Learning World,
+
+260
+00:12:02.015 --> 00:12:04.400
+which is if you work
+in a certain domain,
+
+261
+00:12:04.400 --> 00:12:05.810
+then we call that Blank.
+
+262
+00:12:05.810 --> 00:12:10.880
+You often have a system called
+Blank Net or Deep Blank.
+
+263
+00:12:10.880 --> 00:12:13.085
+We've been talking
+about Face recognition.
+
+264
+00:12:13.085 --> 00:12:15.860
+This paper is called FaceNet,
+
+265
+00:12:15.860 --> 00:12:17.465
+and in the last video,
+
+266
+00:12:17.465 --> 00:12:19.750
+you just saw Deep Face.
+
+267
+00:12:19.750 --> 00:12:23.590
+But this idea of Blank
+Net or Deep Blank is
+
+268
+00:12:23.590 --> 00:12:25.120
+a very popular way of
+
+269
+00:12:25.120 --> 00:12:28.510
+naming algorithms in the
+Deep Learning World.
+
+270
+00:12:28.510 --> 00:12:30.670
+You should feel free
+to take a look at
+
+271
+00:12:30.670 --> 00:12:32.800
+that paper if you
+want to learn some of
+
+272
+00:12:32.800 --> 00:12:34.780
+these other details
+for speeding up
+
+273
+00:12:34.780 --> 00:12:36.430
+your algorithm by choosing
+
+274
+00:12:36.430 --> 00:12:38.620
+the most useful
+triplets to train on;
+
+275
+00:12:38.620 --> 00:12:40.185
+it is a nice paper.
+
+276
+00:12:40.185 --> 00:12:43.160
+Just to wrap up, to
+train on triplet loss,
+
+277
+00:12:43.160 --> 00:12:45.035
+you need to take
+your training set
+
+278
+00:12:45.035 --> 00:12:47.420
+and map it to a lot of triples.
+
+279
+00:12:47.420 --> 00:12:50.539
+Here is a triple with an
+Anchor and a Positive,
+
+280
+00:12:50.539 --> 00:12:52.010
+both of the same person and
+
+281
+00:12:52.010 --> 00:12:54.035
+a Negative of a
+different person.
+
+282
+00:12:54.035 --> 00:12:56.930
+Here's another one where
+
+283
+00:12:56.930 --> 00:12:59.375
+the Anchor and Positive
+are of the same person,
+
+284
+00:12:59.375 --> 00:13:01.280
+but the Anchor and Negative are
+
+285
+00:13:01.280 --> 00:13:03.905
+of different persons and so on.
+
+286
+00:13:03.905 --> 00:13:05.810
+What you do, having to find
+
+287
+00:13:05.810 --> 00:13:08.060
+this training set of
+Anchor, Positive,
+
+288
+00:13:08.060 --> 00:13:11.600
+and Negative triples is use
+gradient descent to try to
+
+289
+00:13:11.600 --> 00:13:14.225
+minimize the cost function
+
+290
+00:13:14.225 --> 00:13:16.865
+J we defined on
+an earlier slide.
+
+291
+00:13:16.865 --> 00:13:18.785
+That will have the effect of
+
+292
+00:13:18.785 --> 00:13:20.990
+backpropagating to
+all the parameters
+
+293
+00:13:20.990 --> 00:13:22.400
+of the Neural Network in
+
+294
+00:13:22.400 --> 00:13:26.015
+order to learn an
+encoding so that
+
+295
+00:13:26.015 --> 00:13:31.130
+d of two images
+will be small when
+
+296
+00:13:31.130 --> 00:13:34.700
+these two images are of the
+same person and they'll
+
+297
+00:13:34.700 --> 00:13:40.235
+be large when these are two
+images of different persons.
+
+298
+00:13:40.235 --> 00:13:42.110
+That's it for the triplet loss
+
+299
+00:13:42.110 --> 00:13:43.895
+and how you can use it to train
+
+300
+00:13:43.895 --> 00:13:45.590
+a Neural Network to output
+
+301
+00:13:45.590 --> 00:13:48.410
+a good encoding for
+face recognition.
+
+302
+00:13:48.410 --> 00:13:52.025
+Now, it turns out that today's
+Face recognition systems,
+
+303
+00:13:52.025 --> 00:13:53.510
+especially the large-scale
+
+304
+00:13:53.510 --> 00:13:55.355
+commercial face
+recognition systems
+
+305
+00:13:55.355 --> 00:13:57.605
+are trained on very
+large datasets.
+
+306
+00:13:57.605 --> 00:14:00.755
+Datasets north of a million
+images are not uncommon.
+
+307
+00:14:00.755 --> 00:14:02.420
+Some companies are
+using north of
+
+308
+00:14:02.420 --> 00:14:04.550
+10 million images
+and some companies
+
+309
+00:14:04.550 --> 00:14:06.560
+have north of a100
+million images
+
+310
+00:14:06.560 --> 00:14:08.675
+with which they try to
+train these systems.
+
+311
+00:14:08.675 --> 00:14:10.580
+These are very large datasets,
+
+312
+00:14:10.580 --> 00:14:12.200
+even by modern standards,
+
+313
+00:14:12.200 --> 00:14:15.620
+these dataset assets are
+not easy to acquire.
+
+314
+00:14:15.620 --> 00:14:18.650
+Fortunately, some of these
+companies have trained
+
+315
+00:14:18.650 --> 00:14:22.415
+these large networks and
+posted parameters online.
+
+316
+00:14:22.415 --> 00:14:23.930
+Rather than trying to train one
+
+317
+00:14:23.930 --> 00:14:25.535
+of these networks from scratch,
+
+318
+00:14:25.535 --> 00:14:27.740
+this is one domain
+where because of
+
+319
+00:14:27.740 --> 00:14:30.870
+the sheer data volumes sizes,
+
+320
+00:14:30.880 --> 00:14:33.890
+it might be useful
+for you to download
+
+321
+00:14:33.890 --> 00:14:35.645
+someone else's pre-trained model
+
+322
+00:14:35.645 --> 00:14:38.120
+rather than do everything
+from scratch yourself.
+
+323
+00:14:38.120 --> 00:14:39.560
+But even if you do download
+
+324
+00:14:39.560 --> 00:14:40.970
+someone else's
+pre-trained model,
+
+325
+00:14:40.970 --> 00:14:42.980
+I think it's still
+useful to know
+
+326
+00:14:42.980 --> 00:14:45.110
+how these algorithms
+were trained in
+
+327
+00:14:45.110 --> 00:14:47.210
+case you need to apply
+these ideas from
+
+328
+00:14:47.210 --> 00:14:49.820
+scratch yourself for
+some application.
+
+329
+00:14:49.820 --> 00:14:51.965
+That's it for the triplet loss.
+
+330
+00:14:51.965 --> 00:14:54.305
+In the next video, I
+want to show you also
+
+331
+00:14:54.305 --> 00:14:56.105
+some other variations on
+
+332
+00:14:56.105 --> 00:14:58.865
+Siamese networks and how
+to train these systems.
+
+333
+00:14:58.865 --> 00:15:01.290
+Let's go on to the next video.

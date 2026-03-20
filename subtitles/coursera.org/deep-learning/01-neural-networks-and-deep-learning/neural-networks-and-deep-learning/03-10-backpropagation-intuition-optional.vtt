@@ -1,0 +1,1345 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.620
+In the last video, you saw
+
+2
+00:00:01.620 --> 00:00:03.705
+the equations for
+back-propagation.
+
+3
+00:00:03.705 --> 00:00:06.930
+In this video, let's go
+over some intuition using
+
+4
+00:00:06.930 --> 00:00:08.610
+the computation graph for
+
+5
+00:00:08.610 --> 00:00:10.500
+how those equations
+were derived.
+
+6
+00:00:10.500 --> 00:00:12.390
+This video is
+completely optional
+
+7
+00:00:12.390 --> 00:00:14.130
+so feel free to watch it or not.
+
+8
+00:00:14.130 --> 00:00:16.275
+You should be able to do
+the whole works either way.
+
+9
+00:00:16.275 --> 00:00:19.470
+Recall that when we talked
+about logistic regression,
+
+10
+00:00:19.470 --> 00:00:24.840
+we had this forward pass
+where we compute z, then A,
+
+11
+00:00:24.840 --> 00:00:27.630
+and then A loss and the
+to take derivatives we
+
+12
+00:00:27.630 --> 00:00:30.240
+had this backward
+pass where we can
+
+13
+00:00:30.240 --> 00:00:35.490
+first compute da and then
+go on to compute dz,
+
+14
+00:00:35.490 --> 00:00:40.875
+and then go on to
+compute dw and db.
+
+15
+00:00:40.875 --> 00:00:48.560
+The definition for the loss
+was L of a comma y equals
+
+16
+00:00:48.560 --> 00:00:57.225
+negative y log A minus 1
+minus y times log 1 minus A.
+
+17
+00:00:57.225 --> 00:00:59.720
+If you're familiar with
+
+18
+00:00:59.720 --> 00:01:01.910
+calculus and you take
+the derivative of
+
+19
+00:01:01.910 --> 00:01:03.800
+this with respect to A
+
+20
+00:01:03.800 --> 00:01:06.185
+that will give you
+the formula for da.
+
+21
+00:01:06.185 --> 00:01:08.875
+So da is equal to that.
+
+22
+00:01:08.875 --> 00:01:11.300
+If you actually figure
+out the calculus,
+
+23
+00:01:11.300 --> 00:01:13.550
+you can show that this is
+
+24
+00:01:13.550 --> 00:01:19.040
+negative y over A plus 1
+minus y over one minus A.
+
+25
+00:01:19.040 --> 00:01:20.540
+Just kind of derived that from
+
+26
+00:01:20.540 --> 00:01:22.855
+calculus by taking
+derivatives of this.
+
+27
+00:01:22.855 --> 00:01:24.500
+It turns out when you take
+
+28
+00:01:24.500 --> 00:01:26.465
+another step backwards
+to compute dz,
+
+29
+00:01:26.465 --> 00:01:29.150
+we then worked out
+that dz is equal to A
+
+30
+00:01:29.150 --> 00:01:32.389
+minus y. I didn't
+explain why previously,
+
+31
+00:01:32.389 --> 00:01:36.310
+but it turns out that from
+the chain rule of calculus,
+
+32
+00:01:36.310 --> 00:01:44.970
+dz is equal to da
+times g prime of z.
+
+33
+00:01:44.970 --> 00:01:49.890
+Where here g of z
+equals sigmoid of
+
+34
+00:01:49.890 --> 00:01:52.790
+z as our activation function
+
+35
+00:01:52.790 --> 00:01:55.885
+for this output unit in
+logistic regression.
+
+36
+00:01:55.885 --> 00:01:59.225
+Just remember, this is
+still logistic regression,
+
+37
+00:01:59.225 --> 00:02:00.665
+will have X_1, X_2,
+
+38
+00:02:00.665 --> 00:02:03.800
+X_3, and then just
+one sigmoid unit,
+
+39
+00:02:03.800 --> 00:02:07.410
+and then that gives
+us a, gives us y hat.
+
+40
+00:02:07.410 --> 00:02:11.620
+Here the activation function
+was sigmoid function.
+
+41
+00:02:11.620 --> 00:02:14.470
+As an aside, only for
+those of you familiar
+
+42
+00:02:14.470 --> 00:02:17.200
+with the chain rule of calculus.
+
+43
+00:02:17.200 --> 00:02:18.610
+The reason for this is
+
+44
+00:02:18.610 --> 00:02:22.330
+because a is equal
+to sigmoid of z,
+
+45
+00:02:22.330 --> 00:02:25.960
+and so partial of L with respect
+
+46
+00:02:25.960 --> 00:02:29.320
+to z is equal to partial of
+
+47
+00:02:29.320 --> 00:02:36.605
+L with respect to
+a times da, dz.
+
+48
+00:02:36.605 --> 00:02:39.740
+Since A is equal
+to sigmoid of z.
+
+49
+00:02:39.740 --> 00:02:41.840
+This is equal to d,
+
+50
+00:02:41.840 --> 00:02:45.000
+dz g of z,
+
+51
+00:02:45.140 --> 00:02:48.915
+which is equal to g prime of z.
+
+52
+00:02:48.915 --> 00:02:51.329
+That's why this expression,
+
+53
+00:02:51.329 --> 00:02:55.075
+which is dz in our code is
+equal to this expression,
+
+54
+00:02:55.075 --> 00:02:59.650
+which is da in our code
+times g prime of z
+
+55
+00:02:59.650 --> 00:03:05.670
+and so this just that.
+
+56
+00:03:05.670 --> 00:03:09.850
+That last derivation would
+have made sense only if you're
+
+57
+00:03:09.850 --> 00:03:11.320
+familiar with calculus and
+
+58
+00:03:11.320 --> 00:03:13.525
+specifically the chain
+rule from calculus.
+
+59
+00:03:13.525 --> 00:03:15.310
+But if not, don't
+worry about it,
+
+60
+00:03:15.310 --> 00:03:18.855
+I'll try to explain the
+intuition wherever it's needed.
+
+61
+00:03:18.855 --> 00:03:22.330
+Then finally, having computed
+dz for logistic regression,
+
+62
+00:03:22.330 --> 00:03:24.770
+we will compute dw,
+
+63
+00:03:24.770 --> 00:03:27.630
+which it turned out
+was dz times x and
+
+64
+00:03:27.630 --> 00:03:29.175
+db which is just
+
+65
+00:03:29.175 --> 00:03:31.350
+dz where you have a
+single training example.
+
+66
+00:03:31.350 --> 00:03:33.675
+That was logistic regression.
+
+67
+00:03:33.675 --> 00:03:36.460
+What we're going to
+do when computing
+
+68
+00:03:36.460 --> 00:03:38.410
+back-propagation for
+a neural network
+
+69
+00:03:38.410 --> 00:03:40.630
+is a calculation
+a lot like this,
+
+70
+00:03:40.630 --> 00:03:42.720
+but only we'll do it twice.
+
+71
+00:03:42.720 --> 00:03:47.010
+Because now we have not x
+going to an output unit,
+
+72
+00:03:47.010 --> 00:03:49.065
+but x going to a hidden layer
+
+73
+00:03:49.065 --> 00:03:51.165
+and then going to
+an output unit.
+
+74
+00:03:51.165 --> 00:03:54.990
+Instead of this computation
+
+75
+00:03:54.990 --> 00:03:58.030
+being one step as we have here,
+
+76
+00:03:58.030 --> 00:04:00.475
+we'll have two steps here
+
+77
+00:04:00.475 --> 00:04:04.415
+in this neural network
+with two layers.
+
+78
+00:04:04.415 --> 00:04:07.315
+In this two-layer
+neural network,
+
+79
+00:04:07.315 --> 00:04:08.635
+that is with the input layer,
+
+80
+00:04:08.635 --> 00:04:10.180
+hidden layer, and
+an output layer.
+
+81
+00:04:10.180 --> 00:04:12.055
+Remember the steps
+of a computation.
+
+82
+00:04:12.055 --> 00:04:15.425
+First, you compute z_1
+
+83
+00:04:15.425 --> 00:04:19.530
+using this equation
+and then compute a_1,
+
+84
+00:04:19.530 --> 00:04:21.675
+and then you compute z_2.
+
+85
+00:04:21.675 --> 00:04:25.630
+Notice z_2 also depends on
+the parameters W_2 and b_2,
+
+86
+00:04:25.630 --> 00:04:28.700
+and then based on
+z_2 you compute a_2.
+
+87
+00:04:28.700 --> 00:04:32.490
+Then finally, that
+gives you the loss.
+
+88
+00:04:32.500 --> 00:04:37.510
+What back-propagation does,
+is it will go backward to
+
+89
+00:04:37.510 --> 00:04:42.425
+compute da_2 and then dz_2,
+
+90
+00:04:42.425 --> 00:04:48.810
+then go back to
+compute dW_2 and db_2.
+
+91
+00:04:48.810 --> 00:04:52.360
+Go back to compute da_1,
+
+92
+00:04:53.960 --> 00:04:57.070
+dz_1, and so on.
+
+93
+00:04:57.100 --> 00:04:59.270
+We don't need to take
+
+94
+00:04:59.270 --> 00:05:00.980
+derivatives with
+respect to the input x,
+
+95
+00:05:00.980 --> 00:05:04.010
+since input x for supervised
+learning because
+
+96
+00:05:04.010 --> 00:05:05.450
+We're not trying to optimize x,
+
+97
+00:05:05.450 --> 00:05:07.880
+so we won't bother
+to take derivatives,
+
+98
+00:05:07.880 --> 00:05:10.190
+at least for supervised
+learning with respect to
+
+99
+00:05:10.190 --> 00:05:16.020
+x. I'm going to skip
+explicitly computing da.
+
+100
+00:05:16.020 --> 00:05:18.725
+If you want, you can
+actually compute da^2,
+
+101
+00:05:18.725 --> 00:05:20.455
+and then use that
+to compute dz^2.
+
+102
+00:05:20.455 --> 00:05:22.390
+But in practice, you
+could collapse both of
+
+103
+00:05:22.390 --> 00:05:25.375
+these steps into one step.
+
+104
+00:05:25.375 --> 00:05:30.305
+You end up that dz^2 is
+equal to a^2 minus y,
+
+105
+00:05:30.305 --> 00:05:34.180
+same as before, and
+you have also going to
+
+106
+00:05:34.180 --> 00:05:38.615
+write dw^2 and db^2
+down here below.
+
+107
+00:05:38.615 --> 00:05:47.795
+You have that dw^2 is equal
+to dz^2 times a^1 transpose,
+
+108
+00:05:47.795 --> 00:05:51.955
+and db^2 equals dz^2.
+
+109
+00:05:51.955 --> 00:05:55.380
+This step is quite similar
+for logistic regression,
+
+110
+00:05:55.380 --> 00:06:01.945
+where we had that dw was
+equal to dz times x,
+
+111
+00:06:01.945 --> 00:06:05.975
+except that now, a^1
+plays the role of x,
+
+112
+00:06:05.975 --> 00:06:08.005
+and there's an extra
+transpose there.
+
+113
+00:06:08.005 --> 00:06:10.190
+Because the relationship between
+
+114
+00:06:10.190 --> 00:06:12.040
+the capital matrix W
+
+115
+00:06:12.040 --> 00:06:14.560
+and our individual
+parameters w was,
+
+116
+00:06:14.560 --> 00:06:16.255
+there's a transpose there,
+
+117
+00:06:16.255 --> 00:06:21.820
+because w is equal
+to a row vector.
+
+118
+00:06:21.820 --> 00:06:23.275
+In the case of
+logistic regression
+
+119
+00:06:23.275 --> 00:06:25.225
+with the single output,
+
+120
+00:06:25.225 --> 00:06:28.510
+dw^2 is like that, whereas
+w here was a column vector.
+
+121
+00:06:28.510 --> 00:06:32.825
+That's why there's an
+extra transpose for a^1,
+
+122
+00:06:32.825 --> 00:06:36.625
+whereas we didn't for x here
+for logistic regression.
+
+123
+00:06:36.625 --> 00:06:40.405
+This completes half
+of backpropagation.
+
+124
+00:06:40.405 --> 00:06:43.475
+Then again, you
+can compute da^1,
+
+125
+00:06:43.475 --> 00:06:45.355
+if you wish although
+in practice,
+
+126
+00:06:45.355 --> 00:06:49.075
+the computation for da^1,
+
+127
+00:06:49.075 --> 00:06:52.750
+and dz^1 are usually
+collapsed into one step.
+
+128
+00:06:52.750 --> 00:06:56.705
+What you'd actually implement
+is that dz^1 is equal to
+
+129
+00:06:56.705 --> 00:07:02.470
+w^2 transpose times
+dz^2 and then,
+
+130
+00:07:02.470 --> 00:07:11.425
+times an element-wise
+product of g^1 prime of z^1.
+
+131
+00:07:11.425 --> 00:07:13.865
+Just to do a check
+on the dimensions.
+
+132
+00:07:13.865 --> 00:07:19.730
+If you have a neural network
+that looks like this,
+
+133
+00:07:20.370 --> 00:07:22.990
+outputs y if so.
+
+134
+00:07:22.990 --> 00:07:27.025
+If you have n^0
+and x equals n^0,
+
+135
+00:07:27.025 --> 00:07:30.220
+and for features,
+n^1 hidden units,
+
+136
+00:07:30.220 --> 00:07:32.940
+and n^2 so far,
+
+137
+00:07:32.940 --> 00:07:36.730
+and n^2 in our case,
+
+138
+00:07:36.730 --> 00:07:38.840
+just one output unit,
+
+139
+00:07:38.840 --> 00:07:49.120
+then the matrix w^2 is
+n^2 by n^1 dimensional,
+
+140
+00:07:49.120 --> 00:07:53.680
+z^2, and therefore,
+dz^2 are going
+
+141
+00:07:53.680 --> 00:07:57.470
+to be n^2 by one-dimensional.
+
+142
+00:07:57.470 --> 00:07:59.555
+There's really going
+to be a one by one
+
+143
+00:07:59.555 --> 00:08:02.260
+when we're doing
+binary classification,
+
+144
+00:08:02.260 --> 00:08:05.750
+and z^1, and therefore also dz^1
+
+145
+00:08:05.750 --> 00:08:09.745
+are going to be n^1
+by one-dimensional.
+
+146
+00:08:09.745 --> 00:08:12.115
+Note that for any variable,
+
+147
+00:08:12.115 --> 00:08:16.145
+foo and dfoo always have
+the same dimensions.
+
+148
+00:08:16.145 --> 00:08:20.050
+That's why, w and dw always
+have the same dimension.
+
+149
+00:08:20.050 --> 00:08:22.150
+Similarly, for b and db,
+
+150
+00:08:22.150 --> 00:08:23.785
+and z and dz, and so on.
+
+151
+00:08:23.785 --> 00:08:26.885
+To make sure that the dimensions
+of these all match up,
+
+152
+00:08:26.885 --> 00:08:35.075
+we have that dz^1 is equal to
+w^2 transpose, times dz^2.
+
+153
+00:08:35.075 --> 00:08:41.320
+Then, this is an
+element-wise product times
+
+154
+00:08:41.320 --> 00:08:44.495
+g^1 prime of z^1.
+
+155
+00:08:44.495 --> 00:08:46.775
+Mashing the dimensions
+from above,
+
+156
+00:08:46.775 --> 00:08:50.195
+this is going to be n^1 by 1,
+
+157
+00:08:50.195 --> 00:08:52.600
+is equal to w^2 transpose,
+
+158
+00:08:52.600 --> 00:08:53.705
+we transpose of this.
+
+159
+00:08:53.705 --> 00:08:58.660
+It is just going to be,
+n^1 by n^2-dimensional,
+
+160
+00:08:59.120 --> 00:09:04.645
+dz^2 is going to be n^2
+by one-dimensional.
+
+161
+00:09:04.645 --> 00:09:07.455
+Then, this is same
+dimension as z^.
+
+162
+00:09:07.455 --> 00:09:10.270
+This is also, n^1 by
+
+163
+00:09:10.270 --> 00:09:12.790
+one-dimensional, so
+element-wise product.
+
+164
+00:09:12.790 --> 00:09:14.550
+The dimensions do make sense.
+
+165
+00:09:14.550 --> 00:09:17.650
+N^1 by one-dimensional
+vector can be
+
+166
+00:09:17.650 --> 00:09:20.620
+obtained by n^1 by n^2
+dimensional matrix,
+
+167
+00:09:20.620 --> 00:09:21.865
+times n^2 by n^1,
+
+168
+00:09:21.865 --> 00:09:24.580
+because the product of
+these two things gives you
+
+169
+00:09:24.580 --> 00:09:27.745
+an n^1 by
+one-dimensional matrix.
+
+170
+00:09:27.745 --> 00:09:32.080
+This becomes the
+element-wise product of 2,
+
+171
+00:09:32.080 --> 00:09:34.580
+n^1 by one-dimensional vectors,
+
+172
+00:09:34.580 --> 00:09:36.370
+so the dimensions do match up.
+
+173
+00:09:36.370 --> 00:09:40.125
+One tip when
+implementing backprop,
+
+174
+00:09:40.125 --> 00:09:42.990
+if you just make sure
+that the dimensions of
+
+175
+00:09:42.990 --> 00:09:45.895
+your matrices match up,
+if you think through,
+
+176
+00:09:45.895 --> 00:09:47.220
+what are the dimensions of
+
+177
+00:09:47.220 --> 00:09:49.520
+your various matrices
+including w^1,
+
+178
+00:09:49.520 --> 00:09:52.240
+w^2, z^1, z^2, a^1,
+
+179
+00:09:52.240 --> 00:09:53.390
+a^2, and so on,
+
+180
+00:09:53.390 --> 00:09:54.665
+and just make sure that
+
+181
+00:09:54.665 --> 00:09:58.725
+the dimensions of these matrix
+operations may match up,
+
+182
+00:09:58.725 --> 00:10:00.780
+sometimes that will already
+
+183
+00:10:00.780 --> 00:10:03.590
+eliminate quite a lot
+of bugs in backprop.
+
+184
+00:10:03.590 --> 00:10:06.950
+This gives us dz^1.
+Then finally,
+
+185
+00:10:06.950 --> 00:10:11.645
+just to wrap up, dw^1 and db^1,
+
+186
+00:10:11.645 --> 00:10:13.985
+we should write
+them here, I guess.
+
+187
+00:10:13.985 --> 00:10:15.430
+But since I'm running
+out of space,
+
+188
+00:10:15.430 --> 00:10:17.565
+I'll write them on the
+right of the slide,
+
+189
+00:10:17.565 --> 00:10:21.600
+dw^1 and db^1 are given by
+the following formulas.
+
+190
+00:10:21.600 --> 00:10:25.975
+This is going to equal to
+dz^1 times x transpose,
+
+191
+00:10:25.975 --> 00:10:29.525
+and this is going
+to be equal to dz.
+
+192
+00:10:29.525 --> 00:10:31.180
+You might notice a
+similarity between
+
+193
+00:10:31.180 --> 00:10:34.060
+these equations and
+these equations,
+
+194
+00:10:34.060 --> 00:10:35.740
+which is really no coincidence,
+
+195
+00:10:35.740 --> 00:10:39.710
+because x plays the role of a^0.
+
+196
+00:10:39.710 --> 00:10:41.715
+X transpose is a^0 transpose.
+
+197
+00:10:41.715 --> 00:10:44.700
+Those equations are
+actually very similar.
+
+198
+00:10:44.850 --> 00:10:50.290
+That gives a sense for how
+backpropagation is derived.
+
+199
+00:10:50.290 --> 00:10:54.565
+We have six key
+equations here for dz_2,
+
+200
+00:10:54.565 --> 00:11:00.285
+dw_2, db_2, dz_1,
+dw_1, and db_1.
+
+201
+00:11:00.285 --> 00:11:02.100
+Let me just take these
+six equations and
+
+202
+00:11:02.100 --> 00:11:04.280
+copy them over to
+the next slide.
+
+203
+00:11:04.280 --> 00:11:07.690
+Here they are. So
+far we've derived
+
+204
+00:11:07.690 --> 00:11:10.240
+that propagation for training
+
+205
+00:11:10.240 --> 00:11:13.600
+on a single training
+example at a time.
+
+206
+00:11:13.600 --> 00:11:17.425
+But it should come
+as no surprise that
+
+207
+00:11:17.425 --> 00:11:21.550
+rather than working on a
+single example at a time,
+
+208
+00:11:21.550 --> 00:11:24.340
+we would like to vectorize
+
+209
+00:11:24.340 --> 00:11:27.925
+across different
+training examples.
+
+210
+00:11:27.925 --> 00:11:29.695
+You remember that for
+
+211
+00:11:29.695 --> 00:11:31.450
+a propagation when we're
+
+212
+00:11:31.450 --> 00:11:33.550
+operating on one
+example at a time,
+
+213
+00:11:33.550 --> 00:11:35.860
+we had equations like this,
+
+214
+00:11:35.860 --> 00:11:41.665
+as well as say a^1
+equals g^1 plus z^1.
+
+215
+00:11:41.665 --> 00:11:45.580
+In order to vectorize,
+we took say,
+
+216
+00:11:45.580 --> 00:11:53.690
+the z's and stack them
+up in columns like this,
+
+217
+00:11:54.960 --> 00:12:00.910
+z^1m, and call this capital Z.
+
+218
+00:12:00.910 --> 00:12:04.960
+Then we found that by
+stacking things up in columns
+
+219
+00:12:04.960 --> 00:12:10.165
+and defining the capital
+uppercase version of these,
+
+220
+00:12:10.165 --> 00:12:16.600
+we then just had z^1
+equals to the w^1x plus
+
+221
+00:12:16.600 --> 00:12:25.180
+b and a^1 equals g^1 of z^1.
+
+222
+00:12:25.180 --> 00:12:26.890
+We defined the notation
+very carefully
+
+223
+00:12:26.890 --> 00:12:28.915
+in this course to make sure that
+
+224
+00:12:28.915 --> 00:12:32.470
+stacking examples into
+different columns
+
+225
+00:12:32.470 --> 00:12:35.425
+of a matrix makes
+all this workout.
+
+226
+00:12:35.425 --> 00:12:40.105
+It turns out that if you go
+through the math carefully,
+
+227
+00:12:40.105 --> 00:12:43.690
+the same trick also works
+for backpropagation.
+
+228
+00:12:43.690 --> 00:12:46.494
+The vectorized equations
+are as follows.
+
+229
+00:12:46.494 --> 00:12:50.530
+First, if you take this dzs for
+
+230
+00:12:50.530 --> 00:12:52.270
+different training
+examples and stack
+
+231
+00:12:52.270 --> 00:12:55.870
+them as different
+columns of a matrix,
+
+232
+00:12:55.870 --> 00:12:58.165
+same for this, same for this.
+
+233
+00:12:58.165 --> 00:13:01.435
+Then this is the
+vectorized implementation.
+
+234
+00:13:01.435 --> 00:13:06.160
+Here's how you can compute dW^2.
+
+235
+00:13:06.160 --> 00:13:08.260
+There is this extra 1 over n
+
+236
+00:13:08.260 --> 00:13:11.140
+because the cost function J is
+
+237
+00:13:11.140 --> 00:13:14.320
+this 1 over m of the sum from I
+
+238
+00:13:14.320 --> 00:13:18.440
+equals 1 through
+m of the losses.
+
+239
+00:13:18.440 --> 00:13:20.730
+When computing derivatives, we
+
+240
+00:13:20.730 --> 00:13:22.290
+have that extra 1 over m term,
+
+241
+00:13:22.290 --> 00:13:23.880
+just as we did when we were
+
+242
+00:13:23.880 --> 00:13:27.510
+computing the weight updates
+for logistic regression.
+
+243
+00:13:27.510 --> 00:13:31.400
+That's the update
+you get for db^2,
+
+244
+00:13:31.400 --> 00:13:33.880
+again, some of the dz's.
+
+245
+00:13:33.880 --> 00:13:40.000
+Then, we have 1 over m. Dz^1
+is computed as follows.
+
+246
+00:13:40.000 --> 00:13:46.840
+Once again, this is an
+element-wise product only,
+
+247
+00:13:46.840 --> 00:13:50.200
+whereas previously, we saw on
+
+248
+00:13:50.200 --> 00:13:52.750
+the previous slide that this was
+
+249
+00:13:52.750 --> 00:13:56.455
+an n1 by one-dimensional vector.
+
+250
+00:13:56.455 --> 00:14:02.980
+No w, this is n1 by m
+dimensional matrix.
+
+251
+00:14:02.980 --> 00:14:09.370
+Both of these are also
+n1 by m dimensional.
+
+252
+00:14:09.370 --> 00:14:16.280
+That's why that asterisk is
+the element-wise product.
+
+253
+00:14:17.340 --> 00:14:21.550
+Finally, the
+remaining two updates
+
+254
+00:14:21.550 --> 00:14:24.410
+perhaps shouldn't
+look too surprising.
+
+255
+00:14:24.660 --> 00:14:27.760
+I hope that gives you
+some intuition for how
+
+256
+00:14:27.760 --> 00:14:30.145
+the backpropagation
+algorithm is derived.
+
+257
+00:14:30.145 --> 00:14:32.080
+In all of machine learning,
+
+258
+00:14:32.080 --> 00:14:35.035
+I think the derivation of the
+backpropagation algorithm
+
+259
+00:14:35.035 --> 00:14:36.100
+is actually one of the most
+
+260
+00:14:36.100 --> 00:14:38.545
+complicated pieces
+of math I've seen.
+
+261
+00:14:38.545 --> 00:14:42.490
+It requires knowing both
+linear algebra as well as
+
+262
+00:14:42.490 --> 00:14:44.440
+the derivative of
+matrices to really
+
+263
+00:14:44.440 --> 00:14:46.735
+derive it from scratch
+from first principles.
+
+264
+00:14:46.735 --> 00:14:50.184
+If you are an expert
+in matrix calculus,
+
+265
+00:14:50.184 --> 00:14:52.180
+using this process, you
+
+266
+00:14:52.180 --> 00:14:54.130
+might want to derive
+the algorithm yourself.
+
+267
+00:14:54.130 --> 00:14:56.200
+But I think that there
+actually plenty of
+
+268
+00:14:56.200 --> 00:14:59.230
+deep learning practitioners
+that have seen
+
+269
+00:14:59.230 --> 00:15:01.090
+the derivation at
+about the level you've
+
+270
+00:15:01.090 --> 00:15:03.430
+seen in this video
+and are already
+
+271
+00:15:03.430 --> 00:15:05.560
+able to have all the right
+intuitions and be able
+
+272
+00:15:05.560 --> 00:15:08.515
+to implement this algorithm
+very effectively.
+
+273
+00:15:08.515 --> 00:15:10.780
+If you are an expert in calculus
+
+274
+00:15:10.780 --> 00:15:13.270
+do see if you can derive the
+whole thing from scratch.
+
+275
+00:15:13.270 --> 00:15:15.820
+It is one of the hardest
+pieces of math on
+
+276
+00:15:15.820 --> 00:15:17.589
+the very hardest derivations
+
+277
+00:15:17.589 --> 00:15:19.855
+that I've seen in all
+of machine learning.
+
+278
+00:15:19.855 --> 00:15:22.585
+But either way, if
+you implement this,
+
+279
+00:15:22.585 --> 00:15:24.460
+this will work and
+I think you have
+
+280
+00:15:24.460 --> 00:15:27.860
+enough intuitions to tune
+in and get it to work.
+
+281
+00:15:28.170 --> 00:15:30.640
+There's just one last detail,
+
+282
+00:15:30.640 --> 00:15:34.150
+my share of you before you
+implement your neural network,
+
+283
+00:15:34.150 --> 00:15:35.320
+which is how to
+
+284
+00:15:35.320 --> 00:15:37.585
+initialize the weights
+of your neural network.
+
+285
+00:15:37.585 --> 00:15:38.880
+It turns out that
+
+286
+00:15:38.880 --> 00:15:41.505
+initializing your
+parameters not to zero,
+
+287
+00:15:41.505 --> 00:15:43.320
+but randomly turns out to be
+
+288
+00:15:43.320 --> 00:15:45.495
+very important for training
+your neural network.
+
+289
+00:15:45.495 --> 00:15:48.670
+In the next video,
+you'll see why.

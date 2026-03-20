@@ -1,0 +1,194 @@
+WEBVTT
+
+1
+00:00:01.440 --> 00:00:06.640
+Let's start to formalize the problem of learning a good word embedding.
+When you implement an algorithm to
+
+2
+00:00:06.640 --> 00:00:09.230
+learn a word embedding, what you end up learning is an
+
+3
+00:00:09.230 --> 00:00:12.698
+embedding matrix. Let's take a look at what that means.
+
+4
+00:00:12.698 --> 00:00:14.285
+Let's say, as usual we're using
+
+5
+00:00:14.285 --> 00:00:19.005
+our 10,000-word vocabulary. So, the vocabulary has A,
+
+6
+00:00:19.005 --> 00:00:21.412
+Aaron, Orange, Zulu, maybe also unknown word as a token.
+
+7
+00:00:21.412 --> 00:00:29.750
+What we're going to do is
+
+8
+00:00:29.750 --> 00:00:34.475
+learn embedding matrix E, which is going
+
+9
+00:00:34.475 --> 00:00:43.900
+to be a 300 dimensional by 10,000 dimensional matrix, if you have 10,000 words vocabulary
+
+10
+00:00:43.900 --> 00:00:48.933
+or maybe 10,001 is unknown word token,there's one extra token.
+
+11
+00:00:48.933 --> 00:00:51.105
+And the columns of this matrix would be the
+
+12
+00:00:51.105 --> 00:00:54.675
+different embeddings for the
+
+13
+00:00:54.675 --> 00:00:58.245
+10,000 different words you have in your vocabulary. So, Orange was word number
+
+14
+00:00:58.245 --> 00:01:05.475
+6257 in our vocabulary of 10,000 words. So, one piece of notation
+
+15
+00:01:05.475 --> 00:01:12.300
+we'll use is that 06257 was the one-hot vector with
+
+16
+00:01:12.300 --> 00:01:18.995
+zeros everywhere and a one in position 6257. And so, this will be a
+
+17
+00:01:20.995 --> 00:01:25.690
+10,000-dimensional vector with a one in just one position.
+
+18
+00:01:25.690 --> 00:01:29.430
+So, this isn't quite a drawn scale. Yes, this should be as tall
+
+19
+00:01:29.430 --> 00:01:32.220
+as the embedding matrix on the left is wide.
+
+20
+00:01:32.220 --> 00:01:39.930
+And if the embedding matrix is called capital E then notice that if you take E
+
+21
+00:01:40.030 --> 00:01:46.140
+and multiply it by just one-hot vector by 0 of 6257,
+
+22
+00:01:46.140 --> 00:01:52.045
+then this will be a 300-dimensional vector.
+
+23
+00:01:52.045 --> 00:02:00.170
+So, E is 300 by 10,000 and 0 is 10,000 by 1.
+
+24
+00:02:00.170 --> 00:02:05.700
+So, the product will be 300 by 1,
+
+25
+00:02:05.700 --> 00:02:08.060
+so with 300-dimensional vector and notice that
+
+26
+00:02:08.060 --> 00:02:12.840
+to compute the first element of this vector,
+
+27
+00:02:12.840 --> 00:02:14.385
+of this 300-dimensional vector,
+
+28
+00:02:14.385 --> 00:02:19.565
+what you do is you will multiply the first row of the matrix E with this.
+
+29
+00:02:19.565 --> 00:02:22.535
+But all of these elements are zero except for
+
+30
+00:02:22.535 --> 00:02:26.970
+element 6257 and so you end up with zero times this,
+
+31
+00:02:27.070 --> 00:02:29.490
+zero times this, zero times this, and so on.
+
+32
+00:02:29.490 --> 00:02:32.270
+And then, 1 times whatever this is,
+
+33
+00:02:32.270 --> 00:02:35.060
+and zero times this, zero times this, zero times and so on.
+
+34
+00:02:35.060 --> 00:02:42.350
+And so, you end up with the first element as whatever is that elements up there,
+
+35
+00:02:42.350 --> 00:02:44.235
+under the Orange column.
+
+36
+00:02:44.235 --> 00:02:48.169
+And then, for the second element of this 300-dimensional vector we're computing,
+
+37
+00:02:48.169 --> 00:02:50.210
+you would take the vector
+
+38
+00:02:50.210 --> 00:02:57.055
+0657 and multiply it by the second row with the matrix E. So again,
+
+39
+00:02:57.055 --> 00:02:58.010
+you have zero times this,
+
+40
+00:02:58.010 --> 00:03:00.835
+plus zero times this,
+
+41
+00:03:00.835 --> 00:03:05.855
+plus zero times all of these are the elements and then one times this,
+
+42
+00:03:05.855 --> 00:03:09.330
+and then zero times everything else and add that together.
+
+43
+00:03:09.330 --> 00:03:17.795
+So you end up with this and so on as you go down the rest of this column.
+
+44
+00:03:17.795 --> 00:03:23.485
+So, that's why the embedding matrix E times this one-hot vector here winds up
+
+45
+00:03:23.485 --> 00:03:30.430
+selecting out this 300-dimensional column corresponding to the word Orange.
+
+46
+00:03:30.430 --> 00:03:36.870
+So, this is going to be equal to E 6257 which
+
+47
+00:03:36.870 --> 00:03:39.245
+is the notation we're going to use to represent
+
+48
+00:03:39.245 --> 00:03:43.345
+the embedding vector that 300 by one dimensional vector for the word Orange.

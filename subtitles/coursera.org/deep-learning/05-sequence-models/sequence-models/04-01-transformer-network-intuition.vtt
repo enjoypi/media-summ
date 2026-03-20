@@ -1,0 +1,337 @@
+WEBVTT
+
+1
+00:00:03.440 --> 00:00:07.456
+One of the most exciting developments
+in deep learning has been
+
+2
+00:00:07.456 --> 00:00:11.570
+the transformer Network, or
+sometimes called Transformers.
+
+3
+00:00:11.570 --> 00:00:16.570
+This is an architecture that has
+completely taken the NLP world by storm.
+
+4
+00:00:16.570 --> 00:00:19.952
+And many of the most effective algorithms for
+
+5
+00:00:19.952 --> 00:00:24.541
+NLP today are based on
+the transformer architecture.
+
+6
+00:00:24.541 --> 00:00:29.498
+It is a relatively complex neural
+network architecture, but in this and
+
+7
+00:00:29.498 --> 00:00:34.059
+the next three videos after this
+will go through it piece by piece.
+
+8
+00:00:34.059 --> 00:00:38.789
+So that by the end of this next four
+videos, you have a good sense of how
+
+9
+00:00:38.789 --> 00:00:43.861
+the transformer Network works and
+you'll be able to apply to your problems.
+
+10
+00:00:43.861 --> 00:00:48.085
+As the complexity of your
+sequence task increases,
+
+11
+00:00:48.085 --> 00:00:51.540
+so does the complexity of your model.
+
+12
+00:00:51.540 --> 00:00:54.682
+We have started this
+course with the RNN and
+
+13
+00:00:54.682 --> 00:00:59.046
+found that it had some problems
+with vanishing gradients,
+
+14
+00:00:59.046 --> 00:01:04.220
+which made it hard to capture long
+range dependencies and sequences.
+
+15
+00:01:04.220 --> 00:01:10.119
+We then looked at the GRU and then
+the LSTM model as a way to resolve many
+
+16
+00:01:10.119 --> 00:01:17.640
+of those problems where you make use of
+gates to control the flow of information.
+
+17
+00:01:17.640 --> 00:01:21.151
+And so each of these units
+had a few more computations.
+
+18
+00:01:22.340 --> 00:01:26.706
+While these editions improved control
+over the flow of information,
+
+19
+00:01:26.706 --> 00:01:30.340
+they also came with increased complexity.
+
+20
+00:01:30.340 --> 00:01:39.240
+So as we move from our RNNs to GRU to
+LSTM ,the models became more complex.
+
+21
+00:01:39.240 --> 00:01:44.083
+And all of these models
+are still sequential models in
+
+22
+00:01:44.083 --> 00:01:46.880
+that they ingested the input,
+
+23
+00:01:46.880 --> 00:01:52.640
+maybe the input sentence one word or
+one token at the time.
+
+24
+00:01:52.640 --> 00:01:58.265
+And so, as as if each unit was like
+a bottleneck to the flow of information.
+
+25
+00:01:58.265 --> 00:02:03.017
+Because to compute the output
+of this final unit, for example,
+
+26
+00:02:03.017 --> 00:02:08.490
+you first have to compute the outputs
+of all of the units that come before.
+
+27
+00:02:08.490 --> 00:02:13.634
+In this video, you learned about the
+transformer architecture, which allows you
+
+28
+00:02:13.634 --> 00:02:18.278
+to run a lot more of these computations
+for an entire sequence in parallel.
+
+29
+00:02:18.278 --> 00:02:22.105
+So you can ingest an entire
+sentence all at the same time,
+
+30
+00:02:22.105 --> 00:02:26.671
+rather than just processing it one
+word at a time from left to right.
+
+31
+00:02:26.671 --> 00:02:31.451
+The Transformer Network was published
+in a seminal paper by Ashish Vaswani
+
+32
+00:02:31.451 --> 00:02:36.233
+, Noam Shazeer, Niki Parmar,
+Jakob Uszkoreit, Llion Jones,
+
+33
+00:02:36.233 --> 00:02:39.215
+Aidan Gomez, Lukasz Kaiser and Illia Polosukhin.
+
+34
+00:02:39.215 --> 00:02:44.302
+One of the inventors of
+the Transformer network, Lukasz Kaiser,
+
+35
+00:02:44.302 --> 00:02:50.140
+is also co instructor of the NLP
+specialization with deep learning dot AI.
+
+36
+00:02:50.140 --> 00:02:53.739
+So you can check that out as well when
+you're done with this deep learning
+
+37
+00:02:53.739 --> 00:02:54.700
+specialization.
+
+38
+00:02:54.700 --> 00:02:59.740
+The major innovation of
+the transformer architecture is
+
+39
+00:02:59.740 --> 00:03:04.886
+combining the use of attention
+based representations and
+
+40
+00:03:04.886 --> 00:03:10.200
+a CNN convolutional neural
+network style of processing.
+
+41
+00:03:10.200 --> 00:03:16.046
+So an RNN may process
+one output at the time,
+
+42
+00:03:16.046 --> 00:03:24.578
+and so maybe y(0) feeds in to
+them that you compute y(1) and
+
+43
+00:03:24.578 --> 00:03:30.240
+then this is used to compute y(2).
+
+44
+00:03:30.240 --> 00:03:35.023
+This is a very sequential
+way of processing tokens,
+
+45
+00:03:35.023 --> 00:03:38.610
+and you might contrast this with a CNN or
+
+46
+00:03:38.610 --> 00:03:43.340
+confident that can take
+input a lot of pixels.
+
+47
+00:03:43.340 --> 00:03:46.892
+Yeah, or maybe a lot of words and
+
+48
+00:03:46.892 --> 00:03:52.692
+can compute representations for
+them in parallel.
+
+49
+00:03:52.692 --> 00:03:58.256
+So what you see in the Attention Network
+is a way of computing very rich,
+
+50
+00:03:58.256 --> 00:04:01.433
+very useful representations of words.
+
+51
+00:04:01.433 --> 00:04:07.980
+But with something more akin to this
+CNN style of parallel processing.
+
+52
+00:04:07.980 --> 00:04:11.263
+To understand the attention network,
+
+53
+00:04:11.263 --> 00:04:16.750
+there will be two key ideas will
+go through in the next few videos.
+
+54
+00:04:16.750 --> 00:04:19.730
+The first is self attention.
+
+55
+00:04:19.730 --> 00:04:23.594
+The goal of self attention is,
+if you have, say,
+
+56
+00:04:23.594 --> 00:04:29.114
+a sentence of five words will end up
+computing five representations for
+
+57
+00:04:29.114 --> 00:04:34.365
+these five words,
+was going to write A1,A2,A3, A4 and A5.
+
+58
+00:04:34.365 --> 00:04:40.327
+And this will be an attention based
+way of computing representations for
+
+59
+00:04:40.327 --> 00:04:43.950
+all the words in your
+sentence in parallel.
+
+60
+00:04:43.950 --> 00:04:50.900
+Then multi headed attention is basically for
+loop over the self attention process.
+
+61
+00:04:50.900 --> 00:04:55.388
+So you end up with multiple
+versions of these representations.
+
+62
+00:04:55.388 --> 00:04:58.646
+And it turns out that
+these representations,
+
+63
+00:04:58.646 --> 00:05:02.655
+which will be very rich representations,
+can be used for
+
+64
+00:05:02.655 --> 00:05:07.270
+machine translation or
+other NLP tasks to great effectiveness.
+
+65
+00:05:07.270 --> 00:05:11.643
+So in the next video, let's jump
+in to learn about self attention,
+
+66
+00:05:11.643 --> 00:05:14.350
+to compute these rich representations.
+
+67
+00:05:14.350 --> 00:05:18.550
+The video after that,
+we'll talk about multi headed attention.
+
+68
+00:05:18.550 --> 00:05:22.878
+And then the final video on transforming
+networks will put all of these together so
+
+69
+00:05:22.878 --> 00:05:27.040
+that you understand how the entire
+transformer architecture works into end.
+
+70
+00:05:27.040 --> 00:05:28.561
+Let's go to the next video.

@@ -1,0 +1,223 @@
+WEBVTT
+
+1
+00:00:02.036 --> 00:00:04.293
+Armed of the transfers convolution,
+
+2
+00:00:04.293 --> 00:00:08.392
+you're now ready to dive into
+the details of the unit architecture.
+
+3
+00:00:08.392 --> 00:00:12.013
+In this video, let's first go
+over the architecture quickly to
+
+4
+00:00:12.013 --> 00:00:15.273
+build intuition about how the unit works.
+
+5
+00:00:15.273 --> 00:00:19.232
+And in the next video,
+we'll go through the details together.
+
+6
+00:00:19.232 --> 00:00:20.555
+Let's dig in.
+
+7
+00:00:20.555 --> 00:00:26.022
+Here's a rough diagram of
+the neural network architecture
+
+8
+00:00:26.022 --> 00:00:28.300
+for semantic segmentation.
+
+9
+00:00:28.300 --> 00:00:34.074
+And so we use normal convolutions for
+the first part of the neural network.
+
+10
+00:00:34.074 --> 00:00:37.537
+And similar to the earlier neural
+networks that you've seen.
+
+11
+00:00:37.537 --> 00:00:41.452
+This part of the neural network
+will sort of compress the image.
+
+12
+00:00:41.452 --> 00:00:46.209
+You've gone from a very large image
+to one where the heightened whiff
+
+13
+00:00:46.209 --> 00:00:48.759
+of this activation is much smaller.
+
+14
+00:00:48.759 --> 00:00:53.037
+So you've lost a lot of spatial
+information because the dimension is much
+
+15
+00:00:53.037 --> 00:00:55.045
+smaller, but it's much deeper.
+
+16
+00:00:55.045 --> 00:00:59.498
+So, for example, this middle layer
+may represent that looks like
+
+17
+00:00:59.498 --> 00:01:04.046
+there's a cat roughly in the lower
+right hand portion of the image.
+
+18
+00:01:04.046 --> 00:01:07.127
+But the detailed spatial
+information is lost because
+
+19
+00:01:07.127 --> 00:01:09.257
+of heightened with is much smaller.
+
+20
+00:01:09.257 --> 00:01:14.590
+Then the second half of this neural
+network uses the transports convolution
+
+21
+00:01:14.590 --> 00:01:20.187
+to blow the representation size up back
+to the size of the original input image.
+
+22
+00:01:20.187 --> 00:01:24.125
+Now it turns out that there's one
+modification to this architecture that
+
+23
+00:01:24.125 --> 00:01:25.848
+would make it work much better.
+
+24
+00:01:25.848 --> 00:01:31.459
+And that's what we turn this into
+the unit architecture, which is
+
+25
+00:01:31.459 --> 00:01:37.988
+that skip connections from the earlier
+layers to the later layers like this.
+
+26
+00:01:37.988 --> 00:01:44.464
+So that this earlier block of activations
+is copied directly to this later block.
+
+27
+00:01:44.464 --> 00:01:46.771
+So why do we want to do this?
+
+28
+00:01:46.771 --> 00:01:53.542
+It turns out that for this, next final
+layer to decide which region is a cat.
+
+29
+00:01:53.542 --> 00:01:55.867
+Two types of information are useful.
+
+30
+00:01:55.867 --> 00:01:59.211
+One is the high level, spatial,
+
+31
+00:01:59.211 --> 00:02:03.587
+high level contextual information which
+it gets from this previous layer.
+
+32
+00:02:03.587 --> 00:02:05.966
+Where hopefully the neural network,
+
+33
+00:02:05.966 --> 00:02:10.201
+we have figured out that in the lower
+right hand corner of the image or
+
+34
+00:02:10.201 --> 00:02:14.975
+maybe in the right part of the image,
+there's some cat like stuff going on.
+
+35
+00:02:14.975 --> 00:02:20.033
+But what is missing is a very detailed,
+fine grained spatial information.
+
+36
+00:02:20.033 --> 00:02:24.577
+Because this set of activations
+here has lower spatial
+
+37
+00:02:24.577 --> 00:02:28.239
+resolution to heighten with is just lower.
+
+38
+00:02:28.239 --> 00:02:33.516
+So what the skip connection does is it
+allows the neural network to take this
+
+39
+00:02:33.516 --> 00:02:39.215
+very high resolution, low level feature
+information where it could capture for
+
+40
+00:02:39.215 --> 00:02:44.015
+every pixel position, how much
+fairy stuff is there in this pixel?
+
+41
+00:02:44.015 --> 00:02:48.688
+And used to skip connection to pause
+that directly to this later layer.
+
+42
+00:02:48.688 --> 00:02:54.711
+And so this way this layer has both
+the lower resolution, but high level,
+
+43
+00:02:54.711 --> 00:03:00.751
+spatial, high level contextual
+information, as well as the low level.
+
+44
+00:03:00.751 --> 00:03:05.324
+But more detailed texture like
+information in order to make
+
+45
+00:03:05.324 --> 00:03:10.088
+a decision as to whether a certain
+pixel is part of a cat or not.
+
+46
+00:03:10.088 --> 00:03:16.802
+In this video, you saw just a brief,
+high level intuition about how unit works.
+
+47
+00:03:16.802 --> 00:03:20.761
+Let's go on to the next video to see
+the details of how you can implement it.

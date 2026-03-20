@@ -1,0 +1,973 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.740
+In a previous video, you saw
+
+2
+00:00:01.740 --> 00:00:04.890
+the basic blocks of implementing
+a deep neural network,
+
+3
+00:00:04.890 --> 00:00:07.020
+a forward propagation step for
+
+4
+00:00:07.020 --> 00:00:09.885
+each layer and a corresponding
+backward propagation step.
+
+5
+00:00:09.885 --> 00:00:12.345
+Let's see how you can actually
+implement these steps.
+
+6
+00:00:12.345 --> 00:00:14.085
+We'll start with
+forward propagation.
+
+7
+00:00:14.085 --> 00:00:18.405
+Recall that what this will
+do is input a^l minus 1,
+
+8
+00:00:18.405 --> 00:00:21.900
+and outputs a^l and
+the cache, z^l.
+
+9
+00:00:21.900 --> 00:00:24.615
+We just said that, from
+implementational point of view,
+
+10
+00:00:24.615 --> 00:00:28.125
+maybe we'll cache
+w^l and b^l as well,
+
+11
+00:00:28.125 --> 00:00:29.670
+just to make the
+function's call a
+
+12
+00:00:29.670 --> 00:00:31.725
+bit easier in the
+program exercise.
+
+13
+00:00:31.725 --> 00:00:35.240
+The equations for this should
+already look familiar.
+
+14
+00:00:35.240 --> 00:00:38.900
+The way to implement a forward
+function is just this,
+
+15
+00:00:38.900 --> 00:00:46.030
+equals w^l times a^l
+minus 1 plus b^l,
+
+16
+00:00:46.030 --> 00:00:53.410
+and then a^l equals the
+activation function applied to z.
+
+17
+00:00:53.410 --> 00:00:57.225
+If you want a vectorized
+implementation,
+
+18
+00:00:57.225 --> 00:01:05.910
+then it's just that times
+a^l minus 1 plus b,
+
+19
+00:01:05.910 --> 00:01:09.944
+b being a Python broadcasting,
+
+20
+00:01:09.944 --> 00:01:12.420
+and a^l equals g,
+
+21
+00:01:12.420 --> 00:01:15.585
+applied element-wise to z.
+
+22
+00:01:15.585 --> 00:01:20.040
+You remember, on the
+diagram for the 4th step,
+
+23
+00:01:20.040 --> 00:01:22.470
+remember we had this chain
+of boxes going forward,
+
+24
+00:01:22.470 --> 00:01:25.240
+so you initialize
+that with feeding
+
+25
+00:01:25.240 --> 00:01:29.260
+in a^0, which is equal to x.
+
+26
+00:01:29.260 --> 00:01:31.615
+So you initialize this with,
+
+27
+00:01:31.615 --> 00:01:33.265
+what is the input
+to the first one?
+
+28
+00:01:33.265 --> 00:01:37.570
+It's really a^0,
+which is the input
+
+29
+00:01:37.570 --> 00:01:40.390
+features either for
+one training example
+
+30
+00:01:40.390 --> 00:01:42.250
+if you're doing one
+example at a time,
+
+31
+00:01:42.250 --> 00:01:48.160
+or a^0 if you're processing
+the entire training set.
+
+32
+00:01:48.160 --> 00:01:49.720
+That's the input to
+
+33
+00:01:49.720 --> 00:01:51.990
+the first forward
+function in the chain,
+
+34
+00:01:51.990 --> 00:01:54.370
+and then just repeating
+this allows you to compute
+
+35
+00:01:54.370 --> 00:01:56.890
+forward propagation
+from left to right.
+
+36
+00:01:56.890 --> 00:02:00.140
+Next, let's talk about the
+backward propagation step.
+
+37
+00:02:00.140 --> 00:02:03.575
+Here, your goal
+is to input da^l,
+
+38
+00:02:03.575 --> 00:02:07.800
+and output da^l minus
+1 and dw^l and db^l.
+
+39
+00:02:07.800 --> 00:02:09.080
+Let me just write out
+
+40
+00:02:09.080 --> 00:02:12.630
+the steps you need to
+compute these things.
+
+41
+00:02:12.960 --> 00:02:18.485
+Dz^l is equal to da^l
+element-wise product,
+
+42
+00:02:18.485 --> 00:02:22.070
+with g of l prime z of
+
+43
+00:02:22.070 --> 00:02:27.775
+l. Then to compute
+the derivatives,
+
+44
+00:02:27.775 --> 00:02:34.515
+dw^l equals dz^l
+times a of l minus 1.
+
+45
+00:02:34.515 --> 00:02:36.830
+I didn't explicitly
+put that in the cache,
+
+46
+00:02:36.830 --> 00:02:39.140
+but it turns out you
+need this as well.
+
+47
+00:02:39.140 --> 00:02:47.630
+Then db^l is equal to
+dz^l, and finally,
+
+48
+00:02:47.630 --> 00:02:52.745
+da of l minus 1 is equal to
+
+49
+00:02:52.745 --> 00:02:59.520
+w^l transpose times dz^l.
+
+50
+00:02:59.520 --> 00:03:00.770
+I don't want to go through
+
+51
+00:03:00.770 --> 00:03:02.330
+the detailed
+derivation for this,
+
+52
+00:03:02.330 --> 00:03:04.280
+but it turns out that if
+you take this definition
+
+53
+00:03:04.280 --> 00:03:06.455
+for da and plug it in here,
+
+54
+00:03:06.455 --> 00:03:08.465
+then you get the same formula
+
+55
+00:03:08.465 --> 00:03:10.310
+as we had in there previously,
+
+56
+00:03:10.310 --> 00:03:12.270
+for how you compute
+
+57
+00:03:12.270 --> 00:03:15.465
+dz^l as a function of
+the previous dz^l.
+
+58
+00:03:15.465 --> 00:03:18.140
+In fact, well, if I
+just plug that in here,
+
+59
+00:03:18.140 --> 00:03:21.410
+you end up that dz^l is equal
+
+60
+00:03:21.410 --> 00:03:27.070
+to w^l plus 1 transpose dz^l
+
+61
+00:03:27.070 --> 00:03:33.050
+plus 1 times g^l prime z
+
+62
+00:03:33.050 --> 00:03:36.170
+of l. I know this looks
+like a lot of algebra.
+
+63
+00:03:36.170 --> 00:03:37.730
+You could actually
+double-check for
+
+64
+00:03:37.730 --> 00:03:39.290
+yourself that this
+is the equation
+
+65
+00:03:39.290 --> 00:03:42.575
+we had written down for
+back propagation last week,
+
+66
+00:03:42.575 --> 00:03:44.180
+when we were doing
+a neural network
+
+67
+00:03:44.180 --> 00:03:45.815
+with just a single hidden layer.
+
+68
+00:03:45.815 --> 00:03:49.250
+As a reminder, this times
+is element-wise product,
+
+69
+00:03:49.250 --> 00:03:50.615
+so all you need is
+
+70
+00:03:50.615 --> 00:03:54.735
+those four equations to implement
+your backward function.
+
+71
+00:03:54.735 --> 00:03:58.510
+Then finally, I'll just write
+out a vectorized version.
+
+72
+00:03:58.510 --> 00:04:01.390
+So the first line becomes dz^l
+
+73
+00:04:01.390 --> 00:04:11.250
+equals da^l element-wise
+product with g^l prime of z^l,
+
+74
+00:04:11.250 --> 00:04:13.260
+maybe no surprise there.
+
+75
+00:04:13.260 --> 00:04:17.595
+Dw^l becomes 1 over m,
+
+76
+00:04:17.595 --> 00:04:22.905
+dz^l times a^l
+minus 1 transpose.
+
+77
+00:04:22.905 --> 00:04:32.630
+Then db^l becomes 1
+over m np.sum dz^l.
+
+78
+00:04:32.630 --> 00:04:37.975
+Then axis equals 1,
+keepdims equals true.
+
+79
+00:04:37.975 --> 00:04:39.760
+We talked about the use of
+
+80
+00:04:39.760 --> 00:04:44.185
+np.sum in the previous
+week, to compute db.
+
+81
+00:04:44.185 --> 00:04:51.475
+Then finally, da^l minus
+1 is w^l transpose times
+
+82
+00:04:51.475 --> 00:04:57.000
+dz of l. This
+
+83
+00:04:57.000 --> 00:05:02.590
+allows you to input this
+quantity, da, over here.
+
+84
+00:05:02.590 --> 00:05:10.065
+Output dW^l, dp^l, the
+derivatives you need,
+
+85
+00:05:10.065 --> 00:05:15.995
+as well as da^l
+minus 1 as follows.
+
+86
+00:05:15.995 --> 00:05:18.815
+That's how you implement
+the backward function.
+
+87
+00:05:18.815 --> 00:05:22.865
+Just to summarize,
+take the input x,
+
+88
+00:05:22.865 --> 00:05:25.495
+you may have the
+first layer maybe
+
+89
+00:05:25.495 --> 00:05:28.265
+has a ReLU activation function.
+
+90
+00:05:28.265 --> 00:05:30.680
+Then go to the second layer,
+
+91
+00:05:30.680 --> 00:05:33.290
+maybe uses another ReLU
+activation function,
+
+92
+00:05:33.290 --> 00:05:36.090
+goes to the third
+layer maybe has
+
+93
+00:05:36.090 --> 00:05:37.715
+a sigmoid activation function
+
+94
+00:05:37.715 --> 00:05:39.545
+if you're doing binary
+classification,
+
+95
+00:05:39.545 --> 00:05:41.930
+and this outputs y-hat.
+
+96
+00:05:41.930 --> 00:05:46.130
+Then using y-hat, you
+can compute the loss.
+
+97
+00:05:46.130 --> 00:05:49.940
+This allows you to start
+your backward iteration.
+
+98
+00:05:49.940 --> 00:05:51.770
+I'll draw the arrows first.
+
+99
+00:05:51.770 --> 00:05:54.125
+I guess I don't have to
+change pens too much.
+
+100
+00:05:54.125 --> 00:05:56.550
+Where you will then
+
+101
+00:05:57.280 --> 00:06:03.025
+have backprop compute
+the derivatives,
+
+102
+00:06:03.025 --> 00:06:07.020
+compute dW^3,
+
+103
+00:06:07.300 --> 00:06:16.385
+db^3, dW^2, db^2, dW^1, db^1.
+
+104
+00:06:16.385 --> 00:06:19.850
+Along the way you would be
+computing against the cash.
+
+105
+00:06:19.850 --> 00:06:25.580
+We'll transfer z^1, z^2, z^3.
+
+106
+00:06:25.580 --> 00:06:32.070
+Here you pass backwards
+da^2 and da^1.
+
+107
+00:06:32.200 --> 00:06:34.925
+This could compute da^0,
+
+108
+00:06:34.925 --> 00:06:37.790
+but we won't use that so
+you can just discard that.
+
+109
+00:06:37.790 --> 00:06:40.790
+This is how you implement
+forward prop and back prop for
+
+110
+00:06:40.790 --> 00:06:43.930
+a three-layer neural network.
+
+111
+00:06:43.930 --> 00:06:46.430
+There's this one last
+detail that I didn't talk
+
+112
+00:06:46.430 --> 00:06:48.744
+about which is for the
+forward recursion,
+
+113
+00:06:48.744 --> 00:06:52.415
+we will initialize it
+with the input data x.
+
+114
+00:06:52.415 --> 00:06:54.110
+How about the
+backward recursion?
+
+115
+00:06:54.110 --> 00:06:55.945
+Well it turns out that
+
+116
+00:06:55.945 --> 00:07:01.100
+da of l when you're using
+logistic regression,
+
+117
+00:07:01.100 --> 00:07:02.810
+when you're doing
+binary classification
+
+118
+00:07:02.810 --> 00:07:04.805
+is equal to y over
+
+119
+00:07:04.805 --> 00:07:09.905
+a plus 1 minus y over 1 minus a.
+
+120
+00:07:09.905 --> 00:07:11.690
+It turns out that the derivative
+
+121
+00:07:11.690 --> 00:07:13.220
+of the loss function respect to
+
+122
+00:07:13.220 --> 00:07:14.720
+the output with respect to
+
+123
+00:07:14.720 --> 00:07:17.570
+y-hat can be shown
+to be what it is.
+
+124
+00:07:17.570 --> 00:07:19.100
+If you're familiar
+with calculus,
+
+125
+00:07:19.100 --> 00:07:21.500
+if you look up the
+loss function l and
+
+126
+00:07:21.500 --> 00:07:24.220
+take derivatives with respect
+to y-hat with respect to a,
+
+127
+00:07:24.220 --> 00:07:26.425
+you can show that you
+get that formula.
+
+128
+00:07:26.425 --> 00:07:29.235
+This is the formula
+you should use for da,
+
+129
+00:07:29.235 --> 00:07:30.440
+for the final layer,
+
+130
+00:07:30.440 --> 00:07:33.030
+capital L. Of course if you
+
+131
+00:07:33.030 --> 00:07:35.725
+were to have a vectorized
+implementation,
+
+132
+00:07:35.725 --> 00:07:36.890
+then you initialize
+
+133
+00:07:36.890 --> 00:07:39.115
+the backward recursion,
+not with this,
+
+134
+00:07:39.115 --> 00:07:42.500
+but with da capital A for
+
+135
+00:07:42.500 --> 00:07:44.915
+the layer L which is going to be
+
+136
+00:07:44.915 --> 00:07:48.515
+the same thing for the
+different examples.
+
+137
+00:07:48.515 --> 00:07:53.330
+Over a for the first train
+example plus 1 minus
+
+138
+00:07:53.330 --> 00:07:55.670
+y for the first
+train example over
+
+139
+00:07:55.670 --> 00:07:58.475
+1 minus A for the
+first train example,
+
+140
+00:07:58.475 --> 00:08:02.975
+dot-dot-dot down to
+the nth train example.
+
+141
+00:08:02.975 --> 00:08:06.170
+So 1 minus a of M. That's how
+
+142
+00:08:06.170 --> 00:08:09.485
+you'd implement the
+vectorized version.
+
+143
+00:08:09.485 --> 00:08:10.939
+That's how you initialize
+
+144
+00:08:10.939 --> 00:08:13.110
+the vectorized version
+of back propagation.
+
+145
+00:08:13.110 --> 00:08:15.800
+We've now seen the basic
+building blocks of
+
+146
+00:08:15.800 --> 00:08:19.565
+both forward propagation as
+well as back propagation.
+
+147
+00:08:19.565 --> 00:08:22.340
+Now if you implement
+these equations,
+
+148
+00:08:22.340 --> 00:08:24.590
+you will get the correct
+implementation of
+
+149
+00:08:24.590 --> 00:08:25.910
+forward prop and backprop to
+
+150
+00:08:25.910 --> 00:08:27.440
+get you the
+derivatives you need.
+
+151
+00:08:27.440 --> 00:08:29.660
+You might be thinking, well
+those are a lot of equations.
+
+152
+00:08:29.660 --> 00:08:31.340
+I'm slightly confused.
+I'm not quite sure I see
+
+153
+00:08:31.340 --> 00:08:33.385
+how this works and if
+you're feeling that way,
+
+154
+00:08:33.385 --> 00:08:35.095
+my advice is when you
+
+155
+00:08:35.095 --> 00:08:37.225
+get to this week's
+programming assignment,
+
+156
+00:08:37.225 --> 00:08:39.650
+you will be able to
+implement these for
+
+157
+00:08:39.650 --> 00:08:42.079
+yourself and they will
+be much more concrete.
+
+158
+00:08:42.079 --> 00:08:43.820
+I know those are a
+lot of equations,
+
+159
+00:08:43.820 --> 00:08:45.090
+and maybe some of the equations
+
+160
+00:08:45.090 --> 00:08:46.310
+didn't make complete sense,
+
+161
+00:08:46.310 --> 00:08:48.330
+but if you work through
+
+162
+00:08:48.330 --> 00:08:50.940
+the calculus and the linear
+algebra which is not easy,
+
+163
+00:08:50.940 --> 00:08:52.410
+so feel free to try,
+
+164
+00:08:52.410 --> 00:08:53.770
+but that's actually
+one of the more
+
+165
+00:08:53.770 --> 00:08:56.200
+difficult derivations
+in machine learning.
+
+166
+00:08:56.200 --> 00:08:58.040
+It turns out the equations
+we wrote down are
+
+167
+00:08:58.040 --> 00:08:59.690
+just the calculus equations
+
+168
+00:08:59.690 --> 00:09:01.160
+for computing the derivatives,
+
+169
+00:09:01.160 --> 00:09:03.510
+especially in backprop,
+but once again,
+
+170
+00:09:03.510 --> 00:09:04.830
+if this feels a
+little bit abstract,
+
+171
+00:09:04.830 --> 00:09:06.215
+a little bit mysterious to you,
+
+172
+00:09:06.215 --> 00:09:09.115
+my advice is when you've done
+the programming exercise,
+
+173
+00:09:09.115 --> 00:09:11.495
+it will feel a bit
+more concrete to you.
+
+174
+00:09:11.495 --> 00:09:13.670
+Although I have to say, even
+
+175
+00:09:13.670 --> 00:09:15.910
+today when I implement
+a learning algorithm,
+
+176
+00:09:15.910 --> 00:09:17.970
+sometimes even I'm
+surprised when
+
+177
+00:09:17.970 --> 00:09:19.474
+my learning algorithm
+implementation
+
+178
+00:09:19.474 --> 00:09:20.430
+works and it's because
+
+179
+00:09:20.430 --> 00:09:22.130
+a lot of the complexity of
+
+180
+00:09:22.130 --> 00:09:23.520
+machine learning comes from
+
+181
+00:09:23.520 --> 00:09:25.700
+the data rather than
+from the lines of codes.
+
+182
+00:09:25.700 --> 00:09:27.095
+Sometimes you feel like
+
+183
+00:09:27.095 --> 00:09:28.710
+you implement a
+few lines of code,
+
+184
+00:09:28.710 --> 00:09:30.120
+not quite sure what it did,
+
+185
+00:09:30.120 --> 00:09:31.550
+but it almost magically works,
+
+186
+00:09:31.550 --> 00:09:33.800
+and it's because a lot of
+magic is actually not in
+
+187
+00:09:33.800 --> 00:09:37.090
+the piece of code you write
+which is often not too long.
+
+188
+00:09:37.090 --> 00:09:38.730
+It's not exactly simple,
+
+189
+00:09:38.730 --> 00:09:40.770
+but it's not 10,000,
+
+190
+00:09:40.770 --> 00:09:42.125
+100,000 lines of code,
+
+191
+00:09:42.125 --> 00:09:44.070
+but you feed it
+so much data that
+
+192
+00:09:44.070 --> 00:09:45.420
+sometimes even though I've
+
+193
+00:09:45.420 --> 00:09:46.835
+worked with machine
+learning for a long time,
+
+194
+00:09:46.835 --> 00:09:48.865
+sometimes it still surprises
+
+195
+00:09:48.865 --> 00:09:50.540
+me a bit when my learning
+algorithm works,
+
+196
+00:09:50.540 --> 00:09:52.430
+because a lot of
+the complexity of
+
+197
+00:09:52.430 --> 00:09:55.065
+your learning algorithm
+comes from the data
+
+198
+00:09:55.065 --> 00:09:57.440
+rather than necessarily from you
+
+199
+00:09:57.440 --> 00:10:01.150
+writing thousands and
+thousands of lines of code.
+
+200
+00:10:01.580 --> 00:10:05.930
+That's how you implement
+deep neural networks.
+
+201
+00:10:05.930 --> 00:10:07.260
+Again this will become more
+
+202
+00:10:07.260 --> 00:10:09.925
+concrete when you've done
+the programming exercising.
+
+203
+00:10:09.925 --> 00:10:14.210
+Before moving on,
+in the next video,
+
+204
+00:10:14.210 --> 00:10:17.465
+I want to discuss
+hyper-parameters and parameters.
+
+205
+00:10:17.465 --> 00:10:19.720
+It turns out that when
+you're training deep nets,
+
+206
+00:10:19.720 --> 00:10:22.225
+being able to organize
+your hyper-parameters well
+
+207
+00:10:22.225 --> 00:10:23.920
+will help you be more efficient
+
+208
+00:10:23.920 --> 00:10:25.400
+in developing your networks.
+
+209
+00:10:25.400 --> 00:10:26.780
+In the next video, let's talk
+
+210
+00:10:26.780 --> 00:10:29.130
+about exactly what that means.
