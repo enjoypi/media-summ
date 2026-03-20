@@ -9,7 +9,7 @@ import { join, basename, extname } from 'node:path';
 import type { CourseScanner } from '../usecases/ports.js';
 import type { ScannedCourse, ScannedLesson, ScannedWeek, SubCourse } from '../usecases/types.js';
 
-export interface CourseScannerOptions {
+interface CourseScannerOptions {
   weekPattern: string;
   subCoursePattern: string;
   subtitleExtension: string;

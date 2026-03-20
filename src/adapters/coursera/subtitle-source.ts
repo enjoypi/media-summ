@@ -9,18 +9,18 @@ import type { SubtitleMeta } from '../../usecases/types.js';
 
 interface VideoResponse {
   elements: unknown[];
-  linked?: {
-    'onDemandVideos.v1'?: {
-      subtitles?: Record<string, string>;
-      subtitlesVtt?: Record<string, string>;
-    }[];
-  };
+  linked?: Record<string, {
+    subtitles?: Record<string, string>;
+    subtitlesVtt?: Record<string, string>;
+  }[]>;
 }
 
 export interface SubtitleSourceOptions {
   baseUrl: string;
   formatVtt: string;
   formatSrt: string;
+  apiEndpointLectureVideos: string;
+  apiLinkedKeyVideos: string;
 }
 
 export class CourseraSubtitleSource implements SubtitleSource {
@@ -30,7 +30,7 @@ export class CourseraSubtitleSource implements SubtitleSource {
   ) {}
 
   async fetchForVideo(videoId: string): Promise<SubtitleMeta[]> {
-    const url = `${this.options.baseUrl}/api/onDemandLectureVideos.v1/${videoId}?includes=video&fields=subtitles,subtitlesVtt`;
+    const url = `${this.options.baseUrl}${this.options.apiEndpointLectureVideos}${videoId}?includes=video&fields=subtitles,subtitlesVtt`;
     const res = await this.httpClient.get(url);
     if (res.status !== 200) return [];
 
@@ -41,7 +41,7 @@ export class CourseraSubtitleSource implements SubtitleSource {
       return [];
     }
 
-    const video = data.linked?.['onDemandVideos.v1']?.[0];
+    const video = data.linked?.[this.options.apiLinkedKeyVideos]?.[0];
     if (!video) return [];
 
     const vttSubs = video.subtitlesVtt ?? {};

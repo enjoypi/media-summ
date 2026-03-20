@@ -9,7 +9,7 @@ import type { HttpClient } from '../usecases/ports.js';
 /** 秒转毫秒的转换因子 */
 const MS_PER_SECOND = 1000;
 
-export interface FetchHttpClientOptions {
+interface FetchHttpClientOptions {
   timeout: number;
   userAgent: string;
   cookieJar?: {

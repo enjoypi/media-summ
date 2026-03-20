@@ -76,6 +76,8 @@ export function createContainer(explicitConfigPath?: string): Container {
     baseUrl: config.base_url,
     formatVtt: config.coursera.format_vtt,
     formatSrt: config.coursera.format_srt,
+    apiEndpointLectureVideos: config.coursera.api_endpoints.lecture_videos,
+    apiLinkedKeyVideos: config.coursera.api_linked_keys.videos,
   });
   const fileSystem = new NodeFileSystem();
   const pathBuilder = new DefaultPathBuilder({
@@ -90,7 +92,12 @@ export function createContainer(explicitConfigPath?: string): Container {
     flatFilePattern: config.course_scanner.flat_file_pattern,
   });
   const vttParser = new LibVttParser({ emptyPlaceholder: config.empty_subtitle_placeholder });
-  const specializationFetcher = new CourseraSpecializationFetcher(httpClient, { baseUrl: config.base_url, specializationSlugPattern: config.url_patterns.specialization_slug });
+  const specializationFetcher = new CourseraSpecializationFetcher(httpClient, {
+    baseUrl: config.base_url,
+    specializationSlugPattern: config.url_patterns.specialization_slug,
+    apiEndpointSpecializations: config.coursera.api_endpoints.specializations,
+    apiEndpointCourses: config.coursera.api_endpoints.courses,
+  });
 
   const htmlCourseFetcher = new CourseraHtmlCourseFetcher(httpClient, courseraOpts);
   const parseCourseUseCase = new ParseCourseUseCase(

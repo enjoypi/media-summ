@@ -13,10 +13,10 @@
 - `sanitize` 必须处理所有特殊字符：`&@#$%^(){}[];',.!~\` 等
 
 ## Runtime
-- `download` 子命令：**不需要** LLM API key，只需要 `cookies.txt`
+- `download` 子命令：**不需要** LLM API key；`cookies.txt` 可选（部分公开课程无需认证）
 - `summarize` 子命令：需要配置 `llm.api_key`
 - `summarize` 自动分块：估算 token 数超过 `llm.context_window` 时按 Week 分块总结后合并
-- 字幕下载到 `./subtitles/<website-domain>/<specialization>/<course>/`
+- 字幕下载到 `./subtitles/<website-domain>/<specialization>/<course>/`（域名不含 `www.` 前缀，如 `coursera.org` 而非 `www.coursera.org`）
 
 ## Environment
 - `LLM_API_KEY` - LLM API 密钥（summarize 子命令必需）
@@ -64,11 +64,16 @@ subtitles/
 ```
 subtitles/
 └── coursera.org/
-    └── machine-learning-specialization/
-        ├── 01-supervised-machine-learning-regression-and-classification/
-        ├── 02-advanced-learning-algorithms/
-        └── 03-unsupervised-learning-recommenders-reinforcement-learning/
+    └── deep-learning/
+        ├── 01-neural-networks-and-deep-learning/
+        │   └── neural-networks-and-deep-learning/
+        │       ├── 01-01-welcome.vtt
+        │       └── ...
+        └── 05-sequence-models/
+            └── sequence-models/
+                └── 01-01-why-sequence-models.vtt
 ```
+- **summarize Specialization**：不能直接传 specialization 根目录，需传各子课程内层路径（含 .vtt 文件的目录）
 
 - **目录名**：`{sanitized-course-name}/` 或 `{sanitized-spec-name}/{index}-{sanitized-course-name}/`
 - **文件名**：`{week}-{index}-{sanitized-lesson-title}.{format}`

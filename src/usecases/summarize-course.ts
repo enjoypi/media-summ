@@ -8,7 +8,7 @@ import type { SubCourse } from './types.js';
 import type { LlmClient, Logger, FileSystem, VttParser } from './ports.js';
 import { estimateTokens } from '../entities/token-estimator.js';
 
-export interface SummarizeCourseInput {
+interface SummarizeCourseInput {
   subCourse: SubCourse;
   outputDir: string;
   systemPrompt: string;

@@ -71,6 +71,16 @@ coursera:
   vtt_extension: '.vtt'                      # VTT 字幕扩展名（用于格式检测）
   format_vtt: 'vtt'                          # VTT 格式标识
   format_srt: 'srt'                          # SRT 格式标识
+  api_endpoints:                             # Coursera API 端点路径
+    materials: '/api/onDemandCourseMaterials.v2/'
+    courses: '/api/courses.v1'
+    specializations: '/api/onDemandSpecializations.v1'
+    lecture_videos: '/api/onDemandLectureVideos.v1/'
+  api_linked_keys:                           # API 响应中 linked 字段名
+    modules: 'onDemandCourseMaterialModules.v1'
+    lessons: 'onDemandCourseMaterialLessons.v1'
+    items: 'onDemandCourseMaterialItems.v2'
+    videos: 'onDemandVideos.v1'
 
 # 重试配置
 retry:
@@ -118,6 +128,7 @@ llm:
   max_completion_tokens: 0               # 最大输出 token 数，0 表示不限制（gpt-5.2 上限 128000）
   context_window: 400000                 # 模型 context window 大小（token），超过此值走分块模式
   timeout: 600000                       # LLM 请求超时（毫秒），默认 10 分钟
+  stream: true                           # 是否使用流式响应
 
 # 总结配置
 summarize:

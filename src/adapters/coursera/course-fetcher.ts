@@ -14,11 +14,7 @@ interface LinkedItem { id: string; name: string; contentSummary: { typeName: str
 
 interface MaterialsResponse {
   elements: { id: string; moduleIds?: string[] }[];
-  linked?: {
-    'onDemandCourseMaterialModules.v1'?: LinkedModule[];
-    'onDemandCourseMaterialLessons.v1'?: LinkedLesson[];
-    'onDemandCourseMaterialItems.v2'?: LinkedItem[];
-  };
+  linked?: Record<string, unknown[]>;
 }
 
 export interface CourseFetcherOptions {
@@ -35,7 +31,7 @@ export class CourseraCourseFetcher implements CourseFetcher {
   async fetchBySlug(slug: string): Promise<Course | null> {
     const { coursera } = this.options;
     const url =
-      `${this.options.baseUrl}/api/onDemandCourseMaterials.v2/?q=slug&slug=${slug}` +
+      `${this.options.baseUrl}${coursera.api_endpoints.materials}?q=slug&slug=${slug}` +
       '&includes=modules,lessons,items' +
       '&fields=moduleIds,' +
       'onDemandCourseMaterialModules.v1(name,slug,lessonIds),' +
@@ -56,9 +52,9 @@ export class CourseraCourseFetcher implements CourseFetcher {
 
     const courseId = data.elements[0].id;
     const linked = data.linked ?? {};
-    const modules = linked['onDemandCourseMaterialModules.v1'] ?? [];
-    const lessons = linked['onDemandCourseMaterialLessons.v1'] ?? [];
-    const items = linked['onDemandCourseMaterialItems.v2'] ?? [];
+    const modules = (linked[coursera.api_linked_keys.modules] ?? []) as LinkedModule[];
+    const lessons = (linked[coursera.api_linked_keys.lessons] ?? []) as LinkedLesson[];
+    const items = (linked[coursera.api_linked_keys.items] ?? []) as LinkedItem[];
 
     const itemMap = new Map(
       items.filter((i) => i.contentSummary?.typeName === coursera.lecture_type_name).map((i) => [i.id, i]),
@@ -91,7 +87,8 @@ export class CourseraCourseFetcher implements CourseFetcher {
   }
 
   async fetchName(slug: string): Promise<string | null> {
-    const url = `${this.options.baseUrl}/api/courses.v1?q=slug&slug=${slug}&fields=name`;
+    const { coursera } = this.options;
+    const url = `${this.options.baseUrl}${coursera.api_endpoints.courses}?q=slug&slug=${slug}&fields=name`;
     try {
       const res = await this.httpClient.get(url);
       if (res.status === 200) {

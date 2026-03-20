@@ -9,7 +9,7 @@ import { ProxyAgent } from 'undici';
 import type { LlmClient } from '../usecases/ports.js';
 import type { LlmConfig } from '../usecases/types.js';
 
-export interface OpenAiLlmClientOptions {
+interface OpenAiLlmClientOptions {
   config: LlmConfig;
   proxyEnvVars: string[];
 }
@@ -38,9 +38,8 @@ export class OpenAiLlmClient implements LlmClient {
   }
 
   async complete(systemPrompt: string, userContent: string): Promise<string> {
-    const params = {
+    const baseParams = {
       model: this.config.model,
-      stream: true as const,
       messages: [
         { role: 'system' as const, content: systemPrompt },
         { role: 'user' as const, content: userContent },
@@ -53,15 +52,18 @@ export class OpenAiLlmClient implements LlmClient {
       }),
     };
 
-    const stream = await this.client.chat.completions.create(params);
-    const chunks: string[] = [];
-
-    for await (const chunk of stream) {
-      const delta = chunk.choices[0]?.delta?.content;
-      if (delta) chunks.push(delta);
+    if (this.config.stream) {
+      const stream = await this.client.chat.completions.create({ ...baseParams, stream: true as const });
+      const chunks: string[] = [];
+      for await (const chunk of stream) {
+        const delta = chunk.choices[0]?.delta?.content;
+        if (delta) chunks.push(delta);
+      }
+      return chunks.join('');
     }
 
-    return chunks.join('');
+    const response = await this.client.chat.completions.create({ ...baseParams, stream: false as const });
+    return response.choices[0]?.message?.content ?? '';
   }
 
   private resolveProxy(envVars: string[]): string | undefined {

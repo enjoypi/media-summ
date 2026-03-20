@@ -30,8 +30,8 @@ export class DefaultPathBuilder implements PathBuilder {
     lessonTitle: string,
     format: string,
   ): string {
-    const safeCourse = sanitize(courseName, this.options.maxFilenameLength, this.options.sanitizeConfig);
-    const safeLesson = sanitize(lessonTitle, this.options.maxFilenameLength, this.options.sanitizeConfig);
+    const safeCourse = this.sanitizeName(courseName);
+    const safeLesson = this.sanitizeName(lessonTitle);
     const { number_padding_width, pad_char, separator, extension_separator } = this.options.pathBuilderConfig;
     const filename = `${weekNumber.toString().padStart(number_padding_width, pad_char)}${separator}${lessonIndex.toString().padStart(number_padding_width, pad_char)}${separator}${safeLesson}${extension_separator}${format}`;
     return join(outputDir, safeCourse, filename);

@@ -11,11 +11,11 @@
 import type { Course } from './types.js';
 import type { CourseFetcher, SubtitleSource, Logger, RetryPolicy } from './ports.js';
 
-export interface ParseCourseInput {
+interface ParseCourseInput {
   courseUrl: string;
 }
 
-export interface ParseCourseOptions {
+interface ParseCourseOptions {
   courseSlugPattern: string;
 }
 

@@ -17,6 +17,8 @@ interface CoursesResponse {
 export interface SpecializationFetcherOptions {
   baseUrl: string;
   specializationSlugPattern: string;
+  apiEndpointSpecializations: string;
+  apiEndpointCourses: string;
 }
 
 export class CourseraSpecializationFetcher implements SpecializationFetcher {
@@ -31,7 +33,7 @@ export class CourseraSpecializationFetcher implements SpecializationFetcher {
   }
 
   async fetchBySlug(slug: string): Promise<{ name: string; courses: Array<{ index: number; slug: string; name: string }> } | null> {
-    const specUrl = `${this.options.baseUrl}/api/onDemandSpecializations.v1?q=slug&slug=${slug}&fields=courseIds,name`;
+    const specUrl = `${this.options.baseUrl}${this.options.apiEndpointSpecializations}?q=slug&slug=${slug}&fields=courseIds,name`;
     const specRes = await this.httpClient.get(specUrl);
     if (specRes.status !== 200) return null;
 
@@ -45,7 +47,7 @@ export class CourseraSpecializationFetcher implements SpecializationFetcher {
     const spec = specData.elements?.[0];
     if (!spec?.courseIds?.length) return null;
 
-    const coursesUrl = `${this.options.baseUrl}/api/courses.v1?ids=${spec.courseIds.join(',')}&fields=slug,name`;
+    const coursesUrl = `${this.options.baseUrl}${this.options.apiEndpointCourses}?ids=${spec.courseIds.join(',')}&fields=slug,name`;
     const coursesRes = await this.httpClient.get(coursesUrl);
     if (coursesRes.status !== 200) return null;
 

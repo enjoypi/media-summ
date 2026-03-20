@@ -8,7 +8,7 @@ import { readFileSync } from 'node:fs';
 import { parse } from '@plussub/srt-vtt-parser';
 import type { VttParser } from '../usecases/ports.js';
 
-export interface LibVttParserOptions {
+interface LibVttParserOptions {
   emptyPlaceholder: string;
 }
 

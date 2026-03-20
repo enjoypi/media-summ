@@ -9,7 +9,7 @@ import type { Course, SubtitleMeta, DownloadResult } from './types.js';
 import { DownloadStatus } from './types.js';
 import type { Logger, RetryPolicy, FileSystem, PathBuilder, HttpClient } from './ports.js';
 
-export interface DownloadSubtitlesInput {
+interface DownloadSubtitlesInput {
   course: Course;
   preferredLang: string;
   fallbackLang: string;
@@ -27,7 +27,7 @@ interface DownloadTask {
   total: number;
 }
 
-export interface RateLimiter {
+interface RateLimiter {
   acquire(url: string): Promise<() => void>;
 }
 

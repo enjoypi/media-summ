@@ -6,7 +6,7 @@
 
 import type { RetryPolicy, Logger } from '../usecases/ports.js';
 
-export interface ExponentialRetryOptions {
+interface ExponentialRetryOptions {
   maxRetries: number;
   baseDelayMs: number;
   exponentialBase: number;
