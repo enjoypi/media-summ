@@ -94,6 +94,11 @@ const courseraSchema = z.object({
   }),
 });
 
+const youtubeSchema = z.object({
+  url_pattern: z.string(),
+  sub_format: z.string(),
+});
+
 const retrySchema = z.object({
   exponential_base: z.number(),
 });
@@ -132,6 +137,7 @@ export const appConfigSchema = z.object({
   exit_codes: exitCodesSchema,
   download: downloadSchema,
   coursera: courseraSchema,
+  youtube: youtubeSchema,
   retry: retrySchema,
   proxy: proxySchema,
   error_messages: errorMessagesSchema,

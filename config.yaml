@@ -15,91 +15,96 @@ empty_subtitle_placeholder: "[字幕内容为空]"
 
 # 速率限制器配置
 rate_limiter:
-  rpm_to_ms_multiplier: 60000      # RPM 转换为毫秒的乘数
-  min_delay_factor: 0.5            # 最小延迟因子（相对于平均间隔）
-  max_delay_factor: 1.5            # 最大延迟因子（相对于平均间隔）
+  rpm_to_ms_multiplier: 60000 # RPM 转换为毫秒的乘数
+  min_delay_factor: 0.5 # 最小延迟因子（相对于平均间隔）
+  max_delay_factor: 1.5 # 最大延迟因子（相对于平均间隔）
 
 # 路径构建配置
 path_builder:
-  number_padding_width: 2          # 文件名中数字的零填充宽度
-  pad_char: '0'                    # 填充字符
-  separator: '-'                   # 文件名分隔符
-  extension_separator: '.'         # 扩展名分隔符
+  number_padding_width: 2 # 文件名中数字的零填充宽度
+  pad_char: "0" # 填充字符
+  separator: "-" # 文件名分隔符
+  extension_separator: "." # 扩展名分隔符
 
 # 课程扫描配置
 course_scanner:
-  week_pattern: '^Week\s+(\d+)$'   # Week 目录匹配正则
-  sub_course_pattern: '^(\d+)\s*-\s*'  # 子课程目录匹配正则
-  subtitle_extension: '.vtt'       # 字幕文件扩展名
-  flat_file_pattern: '^(\d+)-\d+-.+'  # 平铺文件名匹配正则（从前缀推断 week）
+  week_pattern: '^Week\s+(\d+)$' # Week 目录匹配正则
+  sub_course_pattern: '^(\d+)\s*-\s*' # 子课程目录匹配正则
+  subtitle_extension: ".vtt" # 字幕文件扩展名
+  flat_file_pattern: '^(\d+)-\d+-.+' # 平铺文件名匹配正则（从前缀推断 week）
 
 # 文件名清理配置
 sanitize:
-  invalid_chars_pattern: '[<>"\":"/\\|?*&@#$%^(){}[\];'',.!~`\x00-\x1f]'  # 需要替换的非法字符
-  whitespace_pattern: '\s+'        # 空白字符匹配
-  multiple_dash_pattern: '-+'      # 多个连字符匹配
-  leading_trailing_dash_pattern: '^-+|-+$'  # 首尾连字符匹配
-  replacement_char: '-'            # 替换字符
+  invalid_chars_pattern: '[<>"\":"/\\|?*&@#$%^(){}[\];'',.!~`\x00-\x1f]' # 需要替换的非法字符
+  whitespace_pattern: '\s+' # 空白字符匹配
+  multiple_dash_pattern: "-+" # 多个连字符匹配
+  leading_trailing_dash_pattern: "^-+|-+$" # 首尾连字符匹配
+  replacement_char: "-" # 替换字符
 
 # URL 匹配模式配置（用于提取课程信息）
 url_patterns:
-  course_slug: 'coursera\.org/learn/([^/?#]+)'           # 课程 slug 提取正则
-  specialization_slug: 'coursera\.org/specializations/([^/?#]+)'  # Specialization slug 提取正则
-  site_name_strip_www: '^www\.'    # 站点名清理正则
-  site_name_default: 'unknown'     # 默认站点名
-  url_detect_pattern: '^https?://' # URL 检测正则
+  course_slug: 'coursera\.org/learn/([^/?#]+)' # 课程 slug 提取正则
+  specialization_slug: 'coursera\.org/specializations/([^/?#]+)' # Specialization slug 提取正则
+  site_name_strip_www: '^www\.' # 站点名清理正则
+  site_name_default: "unknown" # 默认站点名
+  url_detect_pattern: "^https?://" # URL 检测正则
 
 # 退出码配置
 exit_codes:
-  success: 0                       # 成功
-  general_error: 1                 # 一般错误
-  auth_error: 2                    # 认证/授权错误
-  all_failed: 3                    # 全部下载失败
+  success: 0 # 成功
+  general_error: 1 # 一般错误
+  auth_error: 2 # 认证/授权错误
+  all_failed: 3 # 全部下载失败
 
 # 下载配置
 download:
-  prefix_padding_width: 2          # Specialization 课程序号填充宽度
-  fallback_lang: en                # 首选语言不可用时的回退语言
+  prefix_padding_width: 2 # Specialization 课程序号填充宽度
+  fallback_lang: en # 首选语言不可用时的回退语言
 
 # Coursera 平台配置
 coursera:
-  course_path_prefix: '/learn/'              # 课程页面路径前缀
-  next_data_selector: 'script#__NEXT_DATA__' # Next.js 数据脚本选择器
-  lecture_type_name: 'lecture'                # 视频课程类型名
-  default_week_number: 1                     # 空课程默认 Week 编号
-  default_week_title: 'Week 1'               # 空课程默认 Week 标题
-  vtt_extension: '.vtt'                      # VTT 字幕扩展名（用于格式检测）
-  format_vtt: 'vtt'                          # VTT 格式标识
-  format_srt: 'srt'                          # SRT 格式标识
-  api_endpoints:                             # Coursera API 端点路径
-    materials: '/api/onDemandCourseMaterials.v2/'
-    courses: '/api/courses.v1'
-    specializations: '/api/onDemandSpecializations.v1'
-    lecture_videos: '/api/onDemandLectureVideos.v1/'
-  api_linked_keys:                           # API 响应中 linked 字段名
-    modules: 'onDemandCourseMaterialModules.v1'
-    lessons: 'onDemandCourseMaterialLessons.v1'
-    items: 'onDemandCourseMaterialItems.v2'
-    videos: 'onDemandVideos.v1'
+  course_path_prefix: "/learn/" # 课程页面路径前缀
+  next_data_selector: "script#__NEXT_DATA__" # Next.js 数据脚本选择器
+  lecture_type_name: "lecture" # 视频课程类型名
+  default_week_number: 1 # 空课程默认 Week 编号
+  default_week_title: "Week 1" # 空课程默认 Week 标题
+  vtt_extension: ".vtt" # VTT 字幕扩展名（用于格式检测）
+  format_vtt: "vtt" # VTT 格式标识
+  format_srt: "srt" # SRT 格式标识
+  api_endpoints: # Coursera API 端点路径
+    materials: "/api/onDemandCourseMaterials.v2/"
+    courses: "/api/courses.v1"
+    specializations: "/api/onDemandSpecializations.v1"
+    lecture_videos: "/api/onDemandLectureVideos.v1/"
+  api_linked_keys: # API 响应中 linked 字段名
+    modules: "onDemandCourseMaterialModules.v1"
+    lessons: "onDemandCourseMaterialLessons.v1"
+    items: "onDemandCourseMaterialItems.v2"
+    videos: "onDemandVideos.v1"
+
+# YouTube 配置（通过 yt-dlp 下载字幕）
+youtube:
+  url_pattern: '(?:youtube\.com|youtu\.be)'
+  sub_format: vtt
 
 # 重试配置
 retry:
-  exponential_base: 2              # 指数退避的底数
+  exponential_base: 2 # 指数退避的底数
 
 # 代理配置
 proxy:
-  env_vars:                        # 代理环境变量名（按优先级排列）
+  env_vars: # 代理环境变量名（按优先级排列）
     - HTTPS_PROXY
     - https_proxy
 
 # 错误提示配置
 error_messages:
-  auth_error_patterns:             # 认证错误匹配模式
-    - '认证失败'
-    - '401'
-  access_error_patterns:           # 权限错误匹配模式
-    - '无权访问'
-    - '403'
+  auth_error_patterns: # 认证错误匹配模式
+    - "认证失败"
+    - "401"
+  access_error_patterns: # 权限错误匹配模式
+    - "无权访问"
+    - "403"
   auth_error_hint: |
     认证失败（Cookie 无效或已过期）。请重新导出 cookies.txt：
     1. 在浏览器中登录目标网站
@@ -121,19 +126,19 @@ rate_limit:
 # api_key 优先从环境变量 LLM_API_KEY 读取（支持 .env 文件）
 # 同理支持 LLM_BASE_URL、LLM_MODEL
 llm:
-  base_url: https://api.openai.com/v1  # 支持自定义 endpoint（如本地模型）
-  api_key: ""                           # 建议通过 .env 或环境变量设置
+  base_url: https://api.openai.com/v1 # 支持自定义 endpoint（如本地模型）
+  api_key: "" # 建议通过 .env 或环境变量设置
   model: gpt-5.4
-  reasoning_effort: low                  # none / low / medium / high / xhigh，留空不传
-  max_completion_tokens: 0               # 最大输出 token 数，0 表示不限制（gpt-5.2 上限 128000）
-  context_window: 400000                 # 模型 context window 大小（token），超过此值走分块模式
-  timeout: 600000                       # LLM 请求超时（毫秒），默认 10 分钟
-  stream: true                           # 是否使用流式响应
+  reasoning_effort: low # none / low / medium / high / xhigh，留空不传
+  max_completion_tokens: 0 # 最大输出 token 数，0 表示不限制（gpt-5.2 上限 128000）
+  context_window: 400000 # 模型 context window 大小（token），超过此值走分块模式
+  timeout: 600000 # LLM 请求超时（毫秒），默认 10 分钟
+  stream: true # 是否使用流式响应
 
 # 总结配置
 summarize:
-  output_filename: summary.md       # 输出文件名
-  chars_per_token: 3                # token 估算系数（中文~1.5, 英文~4, 混合~3）
+  output_filename: summary.md # 输出文件名
+  chars_per_token: 3 # token 估算系数（中文~1.5, 英文~4, 混合~3）
   merge_prompt: |
     请将以下多个章节的课程笔记合并为一份完整的学习笔记。
     要求：

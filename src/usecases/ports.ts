@@ -99,3 +99,8 @@ export interface RetryPolicy {
   execute<T>(operation: () => Promise<T>, label: string): Promise<T>;
 }
 
+export interface ExternalDownloader {
+  canHandle(url: string): boolean;
+  download(url: string, outputDir: string, options: { lang: string }): Promise<void>;
+}
+

@@ -7,6 +7,7 @@
  */
 
 import type { AppConfig } from '../usecases/types.js';
+import type { ExternalDownloader } from '../usecases/ports.js';
 import { ParseCourseUseCase } from '../usecases/parse-course.js';
 import { DownloadSubtitlesUseCase } from '../usecases/download-subtitles.js';
 import { SummarizeCourseUseCase } from '../usecases/summarize-course.js';
@@ -23,6 +24,7 @@ import { OpenAiLlmClient } from '../adapters/openai-llm-client.js';
 import { CourseraHtmlCourseFetcher } from '../adapters/coursera/html-course-fetcher.js';
 import { CourseraSpecializationFetcher } from '../adapters/coursera/specialization-fetcher.js';
 import { DomainRateLimiter } from '../adapters/domain-rate-limiter.js';
+import { YtDlpDownloader } from '../adapters/youtube/yt-dlp-downloader.js';
 import { loadConfig } from './config-loader.js';
 import { loadCookies } from '../adapters/cookie-loader.js';
 
@@ -35,6 +37,7 @@ export interface Container {
   httpClient: FetchHttpClient;
   config: AppConfig;
   logger: ConsoleLogger;
+  externalDownloaders: ExternalDownloader[];
   getSummarizeUseCase(): SummarizeCourseUseCase;
 }
 
@@ -90,6 +93,7 @@ export function createContainer(explicitConfigPath?: string): Container {
     subCoursePattern: config.course_scanner.sub_course_pattern,
     subtitleExtension: config.course_scanner.subtitle_extension,
     flatFilePattern: config.course_scanner.flat_file_pattern,
+    preferredLang: config.preferred_lang,
   });
   const vttParser = new LibVttParser({ emptyPlaceholder: config.empty_subtitle_placeholder });
   const specializationFetcher = new CourseraSpecializationFetcher(httpClient, {
@@ -126,6 +130,11 @@ export function createContainer(explicitConfigPath?: string): Container {
     return new SummarizeCourseUseCase(llmClient, vttParser, fileSystem, logger);
   };
 
+  const ytDlpDownloader = new YtDlpDownloader(logger, {
+    urlPattern: config.youtube.url_pattern,
+    subFormat: config.youtube.sub_format,
+  });
+
   return {
     parseCourseUseCase,
     downloadSubtitlesUseCase,
@@ -135,6 +144,7 @@ export function createContainer(explicitConfigPath?: string): Container {
     httpClient,
     config,
     logger,
+    externalDownloaders: [ytDlpDownloader],
     getSummarizeUseCase,
   };
 }

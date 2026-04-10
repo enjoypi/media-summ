@@ -5,7 +5,7 @@
  */
 
 import { readdirSync, statSync } from 'node:fs';
-import { join, basename, extname } from 'node:path';
+import { basename, extname, join } from 'node:path';
 import type { CourseScanner } from '../usecases/ports.js';
 import type { ScannedCourse, ScannedLesson, ScannedWeek, SubCourse } from '../usecases/types.js';
 
@@ -14,6 +14,7 @@ interface CourseScannerOptions {
   subCoursePattern: string;
   subtitleExtension: string;
   flatFilePattern: string;
+  preferredLang?: string;
 }
 
 export class FileSystemCourseScanner implements CourseScanner {
@@ -21,12 +22,14 @@ export class FileSystemCourseScanner implements CourseScanner {
   private subCoursePatternRegex: RegExp;
   private subtitleExtension: string;
   private flatFilePatternRegex: RegExp;
+  private preferredLang?: string;
 
   constructor(options: CourseScannerOptions) {
     this.weekPatternRegex = new RegExp(options.weekPattern, 'i');
     this.subCoursePatternRegex = new RegExp(options.subCoursePattern);
     this.subtitleExtension = options.subtitleExtension;
     this.flatFilePatternRegex = new RegExp(options.flatFilePattern);
+    this.preferredLang = options.preferredLang;
   }
 
   scan(coursePath: string): ScannedCourse {
@@ -43,6 +46,9 @@ export class FileSystemCourseScanner implements CourseScanner {
     let weeks = this.scanWeeks(coursePath);
     if (weeks.length === 0) {
       weeks = this.scanFlatFiles(coursePath);
+    }
+    if (weeks.length === 0) {
+      weeks = this.scanUnstructuredFiles(coursePath);
     }
     if (weeks.length === 0) {
       throw new Error(`扫描失败: 课程 "${name}" 中未找到包含 VTT 文件的 Week 目录`);
@@ -79,11 +85,14 @@ export class FileSystemCourseScanner implements CourseScanner {
       .sort((a, b) => a.number - b.number);
   }
 
-  private scanFlatFiles(coursePath: string): ScannedWeek[] {
-    const files = readdirSync(coursePath)
-      .filter((f) => extname(f).toLowerCase() === this.subtitleExtension && !statSync(join(coursePath, f)).isDirectory())
+  private listSubtitleFiles(dir: string): string[] {
+    return readdirSync(dir)
+      .filter((f) => extname(f).toLowerCase() === this.subtitleExtension)
       .sort();
+  }
 
+  private scanFlatFiles(coursePath: string): ScannedWeek[] {
+    const files = this.listSubtitleFiles(coursePath);
     const weekMap = new Map<number, ScannedLesson[]>();
     for (const f of files) {
       const match = this.flatFilePatternRegex.exec(f);
@@ -97,6 +106,24 @@ export class FileSystemCourseScanner implements CourseScanner {
     return Array.from(weekMap.entries())
       .map(([number, lessons]) => ({ number, path: coursePath, lessons }))
       .sort((a, b) => a.number - b.number);
+  }
+
+  private scanUnstructuredFiles(coursePath: string): ScannedWeek[] {
+    let files = this.listSubtitleFiles(coursePath);
+    if (files.length === 0) return [];
+
+    if (this.preferredLang && files.length > 1) {
+      const suffix = `.${this.preferredLang}${this.subtitleExtension}`;
+      const filtered = files.filter((f) => f.endsWith(suffix));
+      if (filtered.length > 0) files = filtered;
+    }
+
+    const lessons: ScannedLesson[] = files.map((f) => ({
+      title: basename(f, extname(f)),
+      vttPath: join(coursePath, f),
+    }));
+
+    return [{ number: 1, path: coursePath, lessons }];
   }
 
   private scanLessons(weekPath: string): ScannedLesson[] {

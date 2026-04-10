@@ -12,9 +12,11 @@
 - Adapter 接收外部配置通过 options 对象（如 `{ baseUrl: config.base_url }`）
 - 只 export 被其他文件引用的符号；内部 Options/Input 接口不 export
 - `sanitize` 必须处理所有特殊字符：`&@#$%^(){}[];',.!~\` 等
+- 新平台通过 `ExternalDownloader` port 扩展（strategy 模式），在 `container.externalDownloaders` 注册，`download` 命令自动分派
 
 ## Runtime
 - `download` 子命令：**不需要** LLM API key；`cookies.txt` 可选（部分公开课程无需认证）
+- `download` 支持 YouTube URL（通过 yt-dlp），需系统安装 `yt-dlp`
 - `summarize` 子命令：需要配置 `llm.api_key`
 - `summarize` 自动分块：估算 token 数超过 `llm.context_window` 时按 Week 分块总结后合并
 - 字幕下载到 `./subtitles/<website-domain>/<specialization>/<course>/`（域名不含 `www.` 前缀，如 `coursera.org` 而非 `www.coursera.org`）
@@ -40,7 +42,7 @@
 ## Configuration
 - 本地配置：`./config.yaml`
 - 全局配置：`~/.media-summ/config.yaml`
-- 可配置项：`base_url`, `empty_subtitle_placeholder`, `rate_limit.*`, `llm.*`, `summarize.*`, `coursera.api_endpoints.*`, `coursera.api_linked_keys.*`
+- 可配置项：`base_url`, `empty_subtitle_placeholder`, `rate_limit.*`, `llm.*`, `summarize.*`, `coursera.api_endpoints.*`, `coursera.api_linked_keys.*`, `youtube.*`
 - 流控配置：`rate_limit.default_concurrency`, `rate_limit.domain_concurrency`, `rate_limit.default_requests_per_minute`, `rate_limit.domain_requests_per_minute`
 
 ## Prerequisites
@@ -49,7 +51,7 @@
 
 ## Output Structure
 字幕下载到 `./subtitles/<website-domain>/<course-name>/`，所有名称经过 sanitize 处理（小写、特殊字符转连字符）。
-课程扫描器（`FsCourseScanner`）支持两种结构：Week 子目录（`Week 1/`）和平铺文件（从 `{week}-{index}-title.vtt` 前缀推断 week）。
+课程扫描器（`FsCourseScanner`）三级回退：Week 子目录（`Week 1/`）→ 平铺文件（从 `{week}-{index}-title.vtt` 前缀推断 week）→ 无结构文件（按 `preferredLang` 过滤后全归 Week 1）。
 
 **单课程结构**：
 ```

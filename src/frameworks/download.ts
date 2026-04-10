@@ -41,6 +41,13 @@ export function registerDownload(program: Command): void {
       try {
         const siteName = extractSiteName(url, config.url_patterns.site_name_strip_www, config.url_patterns.site_name_default);
         const baseOutputDir = join(config.output_dir, siteName);
+
+        const extDownloader = container.externalDownloaders.find((d) => d.canHandle(url));
+        if (extDownloader) {
+          await extDownloader.download(url, baseOutputDir, { lang: config.preferred_lang });
+          process.exit(config.exit_codes.success);
+        }
+
         const specSlug = container.specializationFetcher.extractSlug(url);
         if (specSlug) {
           await handleSpecialization(specSlug, container, baseOutputDir);

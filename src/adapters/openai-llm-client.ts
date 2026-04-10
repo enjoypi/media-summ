@@ -52,18 +52,32 @@ export class OpenAiLlmClient implements LlmClient {
       }),
     };
 
-    if (this.config.stream) {
-      const stream = await this.client.chat.completions.create({ ...baseParams, stream: true as const });
-      const chunks: string[] = [];
-      for await (const chunk of stream) {
-        const delta = chunk.choices[0]?.delta?.content;
-        if (delta) chunks.push(delta);
+    try {
+      if (this.config.stream) {
+        const stream = await this.client.chat.completions.create({ ...baseParams, stream: true as const });
+        const chunks: string[] = [];
+        for await (const chunk of stream) {
+          const delta = chunk.choices[0]?.delta?.content;
+          if (delta) chunks.push(delta);
+        }
+        return chunks.join('');
       }
-      return chunks.join('');
-    }
 
-    const response = await this.client.chat.completions.create({ ...baseParams, stream: false as const });
-    return response.choices[0]?.message?.content ?? '';
+      const response = await this.client.chat.completions.create({ ...baseParams, stream: false as const });
+      return response.choices[0]?.message?.content ?? '';
+    } catch (err) {
+      const apiErr = err as { status?: number; error?: unknown; headers?: Record<string, string> };
+      const context = [
+        `base_url: ${this.config.base_url}`,
+        `model: ${this.config.model}`,
+        `stream: ${this.config.stream}`,
+        `system_prompt_len: ${systemPrompt.length}`,
+        `user_content_len: ${userContent.length}`,
+        ...(apiErr.status ? [`status: ${apiErr.status}`] : []),
+        ...(apiErr.error ? [`error_body: ${JSON.stringify(apiErr.error)}`] : []),
+      ];
+      throw new Error(`${(err as Error).message}\n--- LLM 请求上下文 ---\n${context.join('\n')}`);
+    }
   }
 
   private resolveProxy(envVars: string[]): string | undefined {
