@@ -54,7 +54,8 @@ export class CourseraHtmlCourseFetcher implements CourseFetcher {
       return null;
     }
 
-    const pageProps = (nextData as { props?: { pageProps?: Record<string, unknown> } })?.props?.pageProps;
+    const pageProps = (nextData as { props?: { pageProps?: Record<string, unknown> } })?.props
+      ?.pageProps;
     if (!pageProps) return null;
 
     const courseName = (pageProps.courseMetadata as { name?: string })?.name ?? slug;
@@ -69,7 +70,9 @@ export class CourseraHtmlCourseFetcher implements CourseFetcher {
           subtitles: item.content?.subtitles
             ? Object.entries(item.content.subtitles).map(([lang, subtitleUrl]) => ({
                 lang,
-                format: subtitleUrl.endsWith(coursera.vtt_extension) ? coursera.format_vtt : coursera.format_srt,
+                format: subtitleUrl.endsWith(coursera.vtt_extension)
+                  ? coursera.format_vtt
+                  : coursera.format_srt,
                 url: subtitleUrl,
               }))
             : [],
@@ -79,7 +82,11 @@ export class CourseraHtmlCourseFetcher implements CourseFetcher {
     });
 
     if (weeks.length === 0) {
-      weeks.push({ number: coursera.default_week_number, title: coursera.default_week_title, lessons: [] });
+      weeks.push({
+        number: coursera.default_week_number,
+        title: coursera.default_week_title,
+        lessons: [],
+      });
     }
 
     return { slug, name: courseName, url, weeks };

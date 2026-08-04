@@ -3,9 +3,9 @@
  * @description download 命令单元测试
  */
 
-import { describe, it, expect } from 'vitest';
-import { sanitize } from '../entities/sanitize.js';
-import { loadConfig } from './config-loader.js';
+import { describe, it, expect } from 'bun:test';
+import { sanitize } from '../../src/entities/sanitize.js';
+import { loadConfig } from '../../src/frameworks/config-loader.js';
 
 const sanitizeConfig = loadConfig().sanitize;
 
@@ -29,7 +29,9 @@ describe('sanitize', () => {
 
   it('should handle course names with numbers and special chars', () => {
     const courseName = 'Supervised Machine Learning: Regression & Classification';
-    expect(sanitize(courseName, 200, sanitizeConfig)).toBe('supervised-machine-learning-regression-classification');
+    expect(sanitize(courseName, 200, sanitizeConfig)).toBe(
+      'supervised-machine-learning-regression-classification',
+    );
   });
 
   it('should respect max length', () => {

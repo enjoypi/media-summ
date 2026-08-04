@@ -32,7 +32,10 @@ export class CourseraSpecializationFetcher implements SpecializationFetcher {
     return match ? match[1] : null;
   }
 
-  async fetchBySlug(slug: string): Promise<{ name: string; courses: Array<{ index: number; slug: string; name: string }> } | null> {
+  async fetchBySlug(slug: string): Promise<{
+    name: string;
+    courses: Array<{ index: number; slug: string; name: string }>;
+  } | null> {
     const specUrl = `${this.options.baseUrl}${this.options.apiEndpointSpecializations}?q=slug&slug=${slug}&fields=courseIds,name`;
     const specRes = await this.httpClient.get(specUrl);
     if (specRes.status !== 200) return null;
@@ -72,4 +75,3 @@ export class CourseraSpecializationFetcher implements SpecializationFetcher {
     return { name: spec.name.trim(), courses };
   }
 }
-

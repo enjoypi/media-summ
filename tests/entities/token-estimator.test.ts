@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { estimateTokens } from './token-estimator.js';
+import { describe, it, expect } from 'bun:test';
+import { estimateTokens } from '../../src/entities/token-estimator.js';
 
 describe('estimateTokens', () => {
   it('should estimate tokens with default chars_per_token', () => {

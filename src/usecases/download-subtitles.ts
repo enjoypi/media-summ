@@ -51,7 +51,7 @@ export class DownloadSubtitlesUseCase {
 
     const limit = pLimit(input.concurrency);
     const results = await Promise.all(
-      tasks.map((task) => limit(() => this.downloadOne(task, input)))
+      tasks.map((task) => limit(() => this.downloadOne(task, input))),
     );
 
     const counts = results.reduce(
@@ -61,7 +61,7 @@ export class DownloadSubtitlesUseCase {
         else acc.failed++;
         return acc;
       },
-      { success: 0, skipped: 0, failed: 0 }
+      { success: 0, skipped: 0, failed: 0 },
     );
 
     this.logger.info(`完成: ${counts.success} 成功, ${counts.skipped} 跳过, ${counts.failed} 失败`);
@@ -92,7 +92,11 @@ export class DownloadSubtitlesUseCase {
     return tasks;
   }
 
-  private pickSubtitle(subtitles: SubtitleMeta[], preferredLang: string, fallbackLang: string): Pick<SubtitleMeta, 'format' | 'url'> | null {
+  private pickSubtitle(
+    subtitles: SubtitleMeta[],
+    preferredLang: string,
+    fallbackLang: string,
+  ): Pick<SubtitleMeta, 'format' | 'url'> | null {
     return (
       subtitles.find((s) => s.lang === preferredLang) ??
       subtitles.find((s) => s.lang.startsWith(fallbackLang)) ??
@@ -100,7 +104,10 @@ export class DownloadSubtitlesUseCase {
     );
   }
 
-  private async downloadOne(task: DownloadTask, input: DownloadSubtitlesInput): Promise<DownloadResult> {
+  private async downloadOne(
+    task: DownloadTask,
+    input: DownloadSubtitlesInput,
+  ): Promise<DownloadResult> {
     const filePath = this.pathBuilder.build(
       input.outputDir,
       input.course.name,
@@ -114,7 +121,12 @@ export class DownloadSubtitlesUseCase {
 
     if (this.fileSystem.exists(filePath)) {
       this.logger.info(`${label} ... skipped (已存在)`);
-      return { lesson: task.lessonTitle, status: DownloadStatus.Skipped, reason: '已存在', filePath };
+      return {
+        lesson: task.lessonTitle,
+        status: DownloadStatus.Skipped,
+        reason: '已存在',
+        filePath,
+      };
     }
 
     // 获取域名限流锁
@@ -132,7 +144,11 @@ export class DownloadSubtitlesUseCase {
       return { lesson: task.lessonTitle, status: DownloadStatus.Success, filePath };
     } catch (err) {
       this.logger.error(`${label} ... failed (${(err as Error).message})`);
-      return { lesson: task.lessonTitle, status: DownloadStatus.Failed, reason: (err as Error).message };
+      return {
+        lesson: task.lessonTitle,
+        status: DownloadStatus.Failed,
+        reason: (err as Error).message,
+      };
     } finally {
       release();
     }

@@ -35,7 +35,7 @@ export class DomainRateLimiter {
   }
 
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   private async applyRandomDelay(rpm: number, domain: string): Promise<void> {

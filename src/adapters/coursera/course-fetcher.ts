@@ -8,9 +8,20 @@ import type { CourseFetcher, HttpClient } from '../../usecases/ports.js';
 import type { Course, Week, Lesson } from '../../usecases/types.js';
 import type { CourseraConfig } from '../../entities/config.js';
 
-interface LinkedModule { id: string; name: string; }
-interface LinkedLesson { id: string; itemIds: string[]; moduleId: string; }
-interface LinkedItem { id: string; name: string; contentSummary: { typeName: string }; }
+interface LinkedModule {
+  id: string;
+  name: string;
+}
+interface LinkedLesson {
+  id: string;
+  itemIds: string[];
+  moduleId: string;
+}
+interface LinkedItem {
+  id: string;
+  name: string;
+  contentSummary: { typeName: string };
+}
 
 interface MaterialsResponse {
   elements: { id: string; moduleIds?: string[] }[];
@@ -57,7 +68,9 @@ export class CourseraCourseFetcher implements CourseFetcher {
     const items = (linked[coursera.api_linked_keys.items] ?? []) as LinkedItem[];
 
     const itemMap = new Map(
-      items.filter((i) => i.contentSummary?.typeName === coursera.lecture_type_name).map((i) => [i.id, i]),
+      items
+        .filter((i) => i.contentSummary?.typeName === coursera.lecture_type_name)
+        .map((i) => [i.id, i]),
     );
 
     const weeks: Week[] = modules.map((mod, idx) => {
@@ -79,11 +92,20 @@ export class CourseraCourseFetcher implements CourseFetcher {
     });
 
     if (weeks.length === 0) {
-      weeks.push({ number: coursera.default_week_number, title: coursera.default_week_title, lessons: [] });
+      weeks.push({
+        number: coursera.default_week_number,
+        title: coursera.default_week_title,
+        lessons: [],
+      });
     }
 
     const courseName = await this.fetchName(slug);
-    return { slug, name: courseName || slug, url: `${this.options.baseUrl}${coursera.course_path_prefix}${slug}`, weeks };
+    return {
+      slug,
+      name: courseName || slug,
+      url: `${this.options.baseUrl}${coursera.course_path_prefix}${slug}`,
+      weeks,
+    };
   }
 
   async fetchName(slug: string): Promise<string | null> {

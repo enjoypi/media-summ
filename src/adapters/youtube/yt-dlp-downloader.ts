@@ -27,12 +27,16 @@ export class YtDlpDownloader implements ExternalDownloader {
     const args = [
       '--write-sub',
       '--write-auto-sub',
-      '--sub-lang', options.lang,
-      '--sub-format', this.options.subFormat,
+      '--sub-lang',
+      options.lang,
+      '--sub-format',
+      this.options.subFormat,
       '--skip-download',
       '--restrict-filenames',
-      '-P', outputDir,
-      '-o', '%(title)s.%(ext)s',
+      '-P',
+      outputDir,
+      '-o',
+      '%(title)s.%(ext)s',
       url,
     ];
 

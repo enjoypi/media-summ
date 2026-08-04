@@ -1,0 +1,61 @@
+# node2bun 的项目级覆盖：只写与用户级配置不同的键（见 node2bun help）。
+build:
+  entry: bin/media-summ.ts
+  binaryName: media-summ
+  tag: media-summ:latest
+
+  # .dockerignore 是白名单（首行 * 排除一切，再逐条放行）：
+  # 新增构建期需要的文件 MUST 同步加到这里，否则镜像构建会缺文件。
+  # config/ 必须在列 —— default.yaml 以 text import 内嵌进产物。
+  contextIncludes:
+    - package.json
+    - bun.lock
+    - bunfig.toml
+    - tsconfig.json
+    - bin
+    - src
+    - config
+
+migration:
+  # 覆盖脚手架模板：本仓库既有源码一律单引号，用默认的双引号模板会让
+  # `bun run fmt` 把每个文件都改一遍。
+  scaffold:
+    - path: bunfig.toml
+      contents: |
+        [test]
+        root = "tests"
+        coverageSkipTestFiles = true
+        coverageReporter = ["text", "lcov"]
+    - path: biome.json
+      contents: |
+        {
+          "$schema": "https://biomejs.dev/schemas/2.5.6/schema.json",
+          "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
+          "files": {
+            "includes": [
+              "bin/**/*.ts",
+              "src/**/*.ts",
+              "scripts/**/*.ts",
+              "tests/**/*.ts",
+              "*.json",
+              "npm/*/package.json"
+            ]
+          },
+          "formatter": {
+            "enabled": true,
+            "indentStyle": "space",
+            "indentWidth": 2,
+            "lineWidth": 100
+          },
+          "javascript": {
+            "formatter": { "quoteStyle": "single", "semicolons": "always", "trailingCommas": "all" }
+          },
+          "linter": {
+            "enabled": true,
+            "rules": {
+              "recommended": true,
+              "complexity": { "useLiteralKeys": "off" },
+              "style": { "useBlockStatements": "off" }
+            }
+          }
+        }

@@ -3,6 +3,9 @@
 ## Architecture
 - Clean Architecture 四层：entities → usecases → adapters → frameworks
 - **无 lib/ 目录** - 按功能分到四层：领域工具→entities，配置加载→frameworks
+- `bin/media-summ.ts` 是唯一入口（薄壳），组装逻辑在 `src/frameworks/main.ts`
+- 测试全在 `tests/` 且镜像 `src/` 分层；`tests/scripts/`、`tests/npm/` 对应 src 外的脚本与 npm 包装器
+- 无 tsc 转译步骤：bun 直接跑源码，`tsc` 仅 `--noEmit` 做类型检查；`dist/` 只存编译产物
 
 ## Key Patterns
 - Container 使用懒加载 getter（如 `getSummarizeUseCase()`），避免强制初始化未使用的依赖
@@ -28,20 +31,26 @@
 - `HTTPS_PROXY` - 可选，代理设置
 
 ## Commands
-- `pnpm build` - 编译 TypeScript
-- `pnpm build:sea -- --all` - 构建所有平台 SEA 二进制
-- `pnpm publish-packages` - 发布到 npm（含 dry-run 验证）
-- `pnpm publish-packages --yes` - 跳过 dry-run 直接发布
-- 修改 zod schema 后需 `rm -rf dist && pnpm build`，旧 dist 产物会导致 config 测试失败
-- `pnpm start` - 运行 CLI（等效于 `node dist/frameworks/index.js`）
-- `pnpm start download <url>` - 下载字幕（推荐用法）
-- `pnpm start summarize <path>` - 总结课程（推荐用法）
-- `pnpm test` - vitest（测试在 `src/**/*.test.ts`）
-- `pnpm lint` - 类型检查（不输出 JS）
+纯 Bun 工具链，MUST NOT 引入 node/npm/pnpm/yarn。构建与镜像由 node2bun 驱动
+（`bun link` 过 node2bun 仓库后可用）。
+- `bun run check` - fmt → lint → compile → test → cov 全链
+- `bun start download <url>` / `bun start summarize <path>` - 从源码跑 CLI
+- `bun run build` - 本机单文件可执行 → `dist/media-summ`
+- `bun run build:all` - 全平台产物 → `dist/<binaryName>-<platform>`（windows 带 .exe）；
+  publish.ts 只取其中 linux-x64 / darwin-arm64 / win32-x64 三个
+- `bun run docker` - distroless 镜像 `media-summ:latest`（arm64 daemon 实测 181MB）
+- `bun run publish-packages` - 发布到 npm（含 dry-run 验证）；`--yes` 跳过 dry-run
 
 ## Configuration
-- 本地配置：`./config.yaml`
-- 全局配置：`~/.media-summ/config.yaml`
+- 默认值：`config/default.yaml`，经 `with { type: 'text' }` 内嵌进产物
+  （见 `src/frameworks/embedded-default.ts`），单文件可执行因此无需随身携带配置
+- 查找顺序：`-c` 显式路径 → `./config.yaml` → `$XDG_CONFIG_HOME/media-summ/config.yaml`
+  （缺省 `~/.config/media-summ/`）；都不存在时自动生成后者
+- MUST NOT 用 `~/.media-summ` —— 不在 home 根目录留应用私有目录
+- 用户配置是增量覆盖，deep merge 到内嵌默认值之上，只需写出要改的键
+- **数组是整体替换而非合并** —— 改 `config/default.yaml` 里的数组（如 `proxy.env_vars`）时，
+  已有用户配置里的同名数组会永久盖住新值
+- 新增配置项 MUST 同时更新 `config/default.yaml` 与 `src/entities/config.ts` 的 zod schema
 - 可配置项：`base_url`, `empty_subtitle_placeholder`, `rate_limit.*`, `llm.*`, `summarize.*`, `coursera.api_endpoints.*`, `coursera.api_linked_keys.*`, `youtube.*`
 - 流控配置：`rate_limit.default_concurrency`, `rate_limit.domain_concurrency`, `rate_limit.default_requests_per_minute`, `rate_limit.domain_requests_per_minute`
 
@@ -82,12 +91,12 @@ subtitles/
 - **文件名**：`{week}-{index}-{sanitized-lesson-title}.{format}`
 
 ## Code Quality
-- 检查未使用代码：`npx tsc --noEmit --noUnusedLocals --noUnusedParameters`
+- 检查未使用代码：`bun x tsc --noEmit --noUnusedLocals --noUnusedParameters`
 - 并发控制使用 `p-limit`（已在依赖中）
 
 ## Common Patterns
 - Adapters 常注入 `logger` 但未使用，优化时需检查实际调用
-- 测试文件与源码同目录：`src/**/*.test.ts`
+- 测试镜像源码分层：`src/usecases/x.ts` → `tests/usecases/x.test.ts`；`bunfig.toml` 把测试根锁定在 `tests/`
 - OpenAI SDK `stream` 参数必须用 `true as const` / `false as const` 分支，`boolean` 类型无法推断返回类型
 
 ## Publishing

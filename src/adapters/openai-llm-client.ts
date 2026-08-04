@@ -31,7 +31,9 @@ export class OpenAiLlmClient implements LlmClient {
 
     const proxy = this.resolveProxy(options.proxyEnvVars);
     if (proxy) {
-      opts.fetchOptions = { dispatcher: new ProxyAgent({ uri: proxy, connectTimeout: this.config.timeout }) };
+      opts.fetchOptions = {
+        dispatcher: new ProxyAgent({ uri: proxy, connectTimeout: this.config.timeout }),
+      };
     }
 
     this.client = new OpenAI(opts);
@@ -54,7 +56,10 @@ export class OpenAiLlmClient implements LlmClient {
 
     try {
       if (this.config.stream) {
-        const stream = await this.client.chat.completions.create({ ...baseParams, stream: true as const });
+        const stream = await this.client.chat.completions.create({
+          ...baseParams,
+          stream: true as const,
+        });
         const chunks: string[] = [];
         for await (const chunk of stream) {
           const delta = chunk.choices[0]?.delta?.content;
@@ -63,7 +68,10 @@ export class OpenAiLlmClient implements LlmClient {
         return chunks.join('');
       }
 
-      const response = await this.client.chat.completions.create({ ...baseParams, stream: false as const });
+      const response = await this.client.chat.completions.create({
+        ...baseParams,
+        stream: false as const,
+      });
       return response.choices[0]?.message?.content ?? '';
     } catch (err) {
       const apiErr = err as { status?: number; error?: unknown; headers?: Record<string, string> };

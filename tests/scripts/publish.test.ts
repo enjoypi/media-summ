@@ -1,8 +1,10 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-const FIXTURES = join(import.meta.dirname, '__test_fixtures__');
+// 放到系统临时目录：测试文件已移入 tests/，用 import.meta.dirname 会在仓库里留目录。
+const FIXTURES = join(tmpdir(), 'media-summ-publish-fixtures');
 
 describe('publish script', () => {
   beforeEach(() => {
@@ -14,21 +16,21 @@ describe('publish script', () => {
   });
 
   describe('PLATFORM_MAP', () => {
-    it('maps SEA output names to npm package directories', async () => {
-      const { PLATFORM_MAP } = await import('./publish.ts');
+    it('maps compiled binary names to npm package directories', async () => {
+      const { PLATFORM_MAP } = await import('../../scripts/publish.ts');
       expect(PLATFORM_MAP).toEqual([
         {
-          seaOutput: 'media-summ-linux-x64',
+          binaryOutput: 'media-summ-linux-x64',
           npmDir: 'media-summ-linux-x64',
           binName: 'media-summ',
         },
         {
-          seaOutput: 'media-summ-darwin-arm64',
+          binaryOutput: 'media-summ-darwin-arm64',
           npmDir: 'media-summ-darwin-arm64',
           binName: 'media-summ',
         },
         {
-          seaOutput: 'media-summ-win-x64.exe',
+          binaryOutput: 'media-summ-win32-x64.exe',
           npmDir: 'media-summ-win32-x64',
           binName: 'media-summ.exe',
         },
@@ -38,7 +40,7 @@ describe('publish script', () => {
 
   describe('syncVersions', () => {
     it('writes version to all npm package.json files', async () => {
-      const { syncVersions } = await import('./publish.ts');
+      const { syncVersions } = await import('../../scripts/publish.ts');
 
       const npmDir = join(FIXTURES, 'npm');
       const pkgDir = join(npmDir, 'test-pkg');
@@ -55,7 +57,7 @@ describe('publish script', () => {
     });
 
     it('updates optionalDependencies versions in main package', async () => {
-      const { syncVersions } = await import('./publish.ts');
+      const { syncVersions } = await import('../../scripts/publish.ts');
 
       const npmDir = join(FIXTURES, 'npm');
       const mainDir = join(npmDir, 'media-summ');

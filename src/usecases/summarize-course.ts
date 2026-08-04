@@ -29,15 +29,18 @@ export class SummarizeCourseUseCase {
   async execute(input: SummarizeCourseInput): Promise<string> {
     const outPath = this.resolveOutputPath(input);
 
-    this.logger.info(`开始总结: ${input.subCourse.name}（${input.subCourse.weeks.length} 个 Week）`);
+    this.logger.info(
+      `开始总结: ${input.subCourse.name}（${input.subCourse.weeks.length} 个 Week）`,
+    );
 
     const content = this.buildFullContent(input.subCourse);
     const tokens = estimateTokens(content, input.charsPerToken);
     this.logger.info(`字幕合并完成，估算 token 数: ${tokens}`);
 
-    const summary = tokens <= input.contextWindow
-      ? await this.summarizeSingle(input.systemPrompt, input.subCourse.name, content)
-      : await this.summarizeChunked(input);
+    const summary =
+      tokens <= input.contextWindow
+        ? await this.summarizeSingle(input.systemPrompt, input.subCourse.name, content)
+        : await this.summarizeChunked(input);
 
     const doc = `# ${input.subCourse.name}\n\n${summary}\n`;
     this.fileSystem.write(outPath, doc);
@@ -46,7 +49,11 @@ export class SummarizeCourseUseCase {
     return outPath;
   }
 
-  private async summarizeSingle(systemPrompt: string, name: string, content: string): Promise<string> {
+  private async summarizeSingle(
+    systemPrompt: string,
+    name: string,
+    content: string,
+  ): Promise<string> {
     this.logger.info('使用单次调用模式');
     return this.llmClient.complete(systemPrompt, `# ${name}\n\n${content}`);
   }
@@ -84,9 +91,7 @@ export class SummarizeCourseUseCase {
   }
 
   private buildFullContent(subCourse: SubCourse): string {
-    return subCourse.weeks
-      .map((week) => this.buildWeekContent(week))
-      .join('\n\n');
+    return subCourse.weeks.map((week) => this.buildWeekContent(week)).join('\n\n');
   }
 
   private buildWeekContent(week: SubCourse['weeks'][number]): string {

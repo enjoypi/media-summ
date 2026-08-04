@@ -38,7 +38,16 @@ Supports multiple course paths. Long transcripts are automatically chunked by we
 
 ## Configuration
 
-Create `config.yaml` in the current directory or `~/.media-summ/config.yaml`:
+Defaults are compiled into the binary, so no config file is required to run. On
+first launch a complete config is written to `$XDG_CONFIG_HOME/media-summ/config.yaml`
+(`~/.config/media-summ/config.yaml` when `XDG_CONFIG_HOME` is unset) for you to edit.
+
+Resolution order — the first file found wins, and its keys are merged over the
+built-in defaults, so a config only needs to state what differs:
+
+1. `-c, --config <path>`
+2. `./config.yaml`
+3. `$XDG_CONFIG_HOME/media-summ/config.yaml`
 
 ```yaml
 output_dir: ./subtitles
@@ -65,6 +74,30 @@ rate_limit:
 | `LLM_BASE_URL` | Custom LLM endpoint |
 | `LLM_MODEL` | Override default model |
 | `HTTPS_PROXY` | Proxy settings |
+
+Bun loads `.env` from the working directory automatically, for both `bun run`
+and the compiled binary.
+
+## Development
+
+Requires [Bun](https://bun.sh) only — no Node, npm or pnpm, and no transpile
+step: Bun runs the TypeScript sources directly.
+
+```bash
+bun install
+bun start download <url>   # run the CLI from source
+bun run check              # fmt -> lint -> typecheck -> test -> coverage
+```
+
+Build and packaging are driven by [node2bun](https://github.com/enjoypi/node2bun);
+run `bun link` in its repo once to put it on `PATH`.
+
+```bash
+bun run build              # single-file executable for this machine -> dist/media-summ
+bun run build:all          # every platform -> dist/media-summ-<platform>
+bun run docker             # distroless image -> media-summ:latest
+bun run publish-packages   # sync versions, copy binaries, publish to npm
+```
 
 ## License
 

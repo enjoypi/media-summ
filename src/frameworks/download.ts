@@ -39,7 +39,11 @@ export function registerDownload(program: Command): void {
       if (opts.output) config.output_dir = opts.output;
 
       try {
-        const siteName = extractSiteName(url, config.url_patterns.site_name_strip_www, config.url_patterns.site_name_default);
+        const siteName = extractSiteName(
+          url,
+          config.url_patterns.site_name_strip_www,
+          config.url_patterns.site_name_default,
+        );
         const baseOutputDir = join(config.output_dir, siteName);
 
         const extDownloader = container.externalDownloaders.find((d) => d.canHandle(url));
@@ -60,7 +64,9 @@ export function registerDownload(program: Command): void {
             outputDir: baseOutputDir,
             concurrency: config.concurrency,
           });
-          process.exit(hasAllFailed(results) ? config.exit_codes.all_failed : config.exit_codes.success);
+          process.exit(
+            hasAllFailed(results) ? config.exit_codes.all_failed : config.exit_codes.success,
+          );
         }
       } catch (err) {
         const error = err as Error;
@@ -96,10 +102,17 @@ async function handleSpecialization(
   let totalFailed = 0;
 
   for (const c of spec.courses) {
-    const prefix = String(c.index).padStart(config.download.prefix_padding_width, config.path_builder.pad_char);
+    const prefix = String(c.index).padStart(
+      config.download.prefix_padding_width,
+      config.path_builder.pad_char,
+    );
     const safeSpecName = container.pathBuilder.sanitizeName(spec.name);
     const safeCourseName = container.pathBuilder.sanitizeName(c.name);
-    const courseOutputDir = join(baseOutputDir, safeSpecName, `${prefix}${config.path_builder.separator}${safeCourseName}`);
+    const courseOutputDir = join(
+      baseOutputDir,
+      safeSpecName,
+      `${prefix}${config.path_builder.separator}${safeCourseName}`,
+    );
     container.logger.info(`\n[${c.index}/${spec.courses.length}] ${c.name}`);
 
     try {
@@ -115,7 +128,12 @@ async function handleSpecialization(
       });
       if (hasAllFailed(results)) totalFailed++;
     } catch (err) {
-      if (matchesPatterns((err as Error).message, [...config.error_messages.auth_error_patterns, ...config.error_messages.access_error_patterns])) {
+      if (
+        matchesPatterns((err as Error).message, [
+          ...config.error_messages.auth_error_patterns,
+          ...config.error_messages.access_error_patterns,
+        ])
+      ) {
         container.logger.error(`跳过 ${c.name}: 需要认证或付费`);
         totalFailed++;
       } else {
@@ -124,6 +142,10 @@ async function handleSpecialization(
     }
   }
 
-  container.logger.info(`\nSpecialization 下载完成: ${spec.courses.length - totalFailed} 成功, ${totalFailed} 失败`);
-  process.exit(totalFailed === spec.courses.length ? config.exit_codes.all_failed : config.exit_codes.success);
+  container.logger.info(
+    `\nSpecialization 下载完成: ${spec.courses.length - totalFailed} 成功, ${totalFailed} 失败`,
+  );
+  process.exit(
+    totalFailed === spec.courses.length ? config.exit_codes.all_failed : config.exit_codes.success,
+  );
 }

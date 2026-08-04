@@ -53,17 +53,26 @@ export class FileSystemCourseScanner implements CourseScanner {
     if (weeks.length === 0) {
       throw new Error(`扫描失败: 课程 "${name}" 中未找到包含 VTT 文件的 Week 目录`);
     }
-    return { name, path: coursePath, type: 'single', subCourses: [{ name, path: coursePath, weeks }] };
+    return {
+      name,
+      path: coursePath,
+      type: 'single',
+      subCourses: [{ name, path: coursePath, weeks }],
+    };
   }
 
   private isSpecialization(coursePath: string): boolean {
     const entries = readdirSync(coursePath);
-    return entries.some((e) => this.subCoursePatternRegex.test(e) && statSync(join(coursePath, e)).isDirectory());
+    return entries.some(
+      (e) => this.subCoursePatternRegex.test(e) && statSync(join(coursePath, e)).isDirectory(),
+    );
   }
 
   private scanSubCourses(specPath: string): SubCourse[] {
     return readdirSync(specPath)
-      .filter((d) => this.subCoursePatternRegex.test(d) && statSync(join(specPath, d)).isDirectory())
+      .filter(
+        (d) => this.subCoursePatternRegex.test(d) && statSync(join(specPath, d)).isDirectory(),
+      )
       .sort()
       .map((d) => {
         const scPath = join(specPath, d);

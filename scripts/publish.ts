@@ -3,28 +3,29 @@ import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 
 const ROOT = join(import.meta.dirname, '..');
-const DIST_BIN = join(ROOT, 'dist', 'bin');
+// node2bun build --all 把每个平台产物写成 dist/<binaryName>-<platform>（windows 带 .exe）
+const DIST_BIN = join(ROOT, 'dist');
 const NPM_DIR = join(ROOT, 'npm');
 
 interface PlatformEntry {
-  seaOutput: string;
+  binaryOutput: string;
   npmDir: string;
   binName: string;
 }
 
 export const PLATFORM_MAP: PlatformEntry[] = [
   {
-    seaOutput: 'media-summ-linux-x64',
+    binaryOutput: 'media-summ-linux-x64',
     npmDir: 'media-summ-linux-x64',
     binName: 'media-summ',
   },
   {
-    seaOutput: 'media-summ-darwin-arm64',
+    binaryOutput: 'media-summ-darwin-arm64',
     npmDir: 'media-summ-darwin-arm64',
     binName: 'media-summ',
   },
   {
-    seaOutput: 'media-summ-win-x64.exe',
+    binaryOutput: 'media-summ-win32-x64.exe',
     npmDir: 'media-summ-win32-x64',
     binName: 'media-summ.exe',
   },
@@ -61,26 +62,26 @@ export function syncVersions(
 function checkBinaries(): void {
   const missing: string[] = [];
   for (const entry of PLATFORM_MAP) {
-    const binPath = join(DIST_BIN, entry.seaOutput);
+    const binPath = join(DIST_BIN, entry.binaryOutput);
     if (!existsSync(binPath)) {
-      missing.push(entry.seaOutput);
+      missing.push(entry.binaryOutput);
     }
   }
   if (missing.length > 0) {
     console.error(`[error] missing binaries in dist/bin/:\n  ${missing.join('\n  ')}`);
-    console.error(`\nRun: pnpm build:sea -- --all`);
+    console.error(`\nRun: bun run build:all`);
     process.exit(1);
   }
 }
 
 function copyBinaries(): void {
   for (const entry of PLATFORM_MAP) {
-    const src = join(DIST_BIN, entry.seaOutput);
+    const src = join(DIST_BIN, entry.binaryOutput);
     const destDir = join(NPM_DIR, entry.npmDir, 'bin');
     mkdirSync(destDir, { recursive: true });
     const dest = join(destDir, entry.binName);
     copyFileSync(src, dest);
-    console.log(`[copy] ${entry.seaOutput} → npm/${entry.npmDir}/bin/${entry.binName}`);
+    console.log(`[copy] ${entry.binaryOutput} → npm/${entry.npmDir}/bin/${entry.binName}`);
   }
 }
 
@@ -89,14 +90,11 @@ function publishPackages(dryRun: boolean): void {
   const published: string[] = [];
   const failed: string[] = [];
 
-  const order = [
-    ...PLATFORM_MAP.map((e) => e.npmDir),
-    MAIN_PKG_DIR,
-  ];
+  const order = [...PLATFORM_MAP.map((e) => e.npmDir), MAIN_PKG_DIR];
 
   for (const dir of order) {
     const cwd = join(NPM_DIR, dir);
-    const cmd = `npm publish --access public${flag}`;
+    const cmd = `bun publish --access public${flag}`;
     console.log(`\n[publish] ${dir}: ${cmd}`);
     try {
       execSync(cmd, { cwd, stdio: 'inherit' });
@@ -107,7 +105,9 @@ function publishPackages(dryRun: boolean): void {
       if (!dryRun) {
         console.error(`[status] published: ${published.join(', ') || 'none'}`);
         console.error(`[status] failed: ${failed.join(', ')}`);
-        console.error(`[status] remaining: ${order.slice(published.length + failed.length).join(', ') || 'none'}`);
+        console.error(
+          `[status] remaining: ${order.slice(published.length + failed.length).join(', ') || 'none'}`,
+        );
       }
       process.exit(1);
     }

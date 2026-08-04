@@ -90,6 +90,8 @@ export class ParseCourseUseCase {
 
   private logCourseInfo(course: Course): void {
     const totalLessons = course.weeks.reduce((sum, w) => sum + w.lessons.length, 0);
-    this.logger.info(`课程: ${course.name} (${course.weeks.length} weeks, ${totalLessons} lessons)`);
+    this.logger.info(
+      `课程: ${course.name} (${course.weeks.length} weeks, ${totalLessons} lessons)`,
+    );
   }
 }

@@ -33,7 +33,10 @@ export interface SubtitleSource {
  * Specialization 数据源
  */
 export interface SpecializationFetcher {
-  fetchBySlug(slug: string): Promise<{ name: string; courses: Array<{ index: number; slug: string; name: string }> } | null>;
+  fetchBySlug(slug: string): Promise<{
+    name: string;
+    courses: Array<{ index: number; slug: string; name: string }>;
+  } | null>;
   extractSlug(url: string): string | null;
 }
 
@@ -67,7 +70,14 @@ export interface FileSystem {
  * 路径构建器
  */
 export interface PathBuilder {
-  build(outputDir: string, courseName: string, weekNumber: number, lessonIndex: number, lessonTitle: string, format: string): string;
+  build(
+    outputDir: string,
+    courseName: string,
+    weekNumber: number,
+    lessonIndex: number,
+    lessonTitle: string,
+    format: string,
+  ): string;
   sanitizeName(name: string): string;
 }
 
@@ -103,4 +113,3 @@ export interface ExternalDownloader {
   canHandle(url: string): boolean;
   download(url: string, outputDir: string, options: { lang: string }): Promise<void>;
 }
-

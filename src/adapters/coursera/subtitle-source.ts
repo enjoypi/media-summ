@@ -9,10 +9,13 @@ import type { SubtitleMeta } from '../../usecases/types.js';
 
 interface VideoResponse {
   elements: unknown[];
-  linked?: Record<string, {
-    subtitles?: Record<string, string>;
-    subtitlesVtt?: Record<string, string>;
-  }[]>;
+  linked?: Record<
+    string,
+    {
+      subtitles?: Record<string, string>;
+      subtitlesVtt?: Record<string, string>;
+    }[]
+  >;
 }
 
 export interface SubtitleSourceOptions {
@@ -50,9 +53,17 @@ export class CourseraSubtitleSource implements SubtitleSource {
 
     for (const lang of new Set([...Object.keys(srtSubs), ...Object.keys(vttSubs)])) {
       if (vttSubs[lang]) {
-        result.push({ lang, format: this.options.formatVtt, url: this.toAbsoluteUrl(vttSubs[lang]) });
+        result.push({
+          lang,
+          format: this.options.formatVtt,
+          url: this.toAbsoluteUrl(vttSubs[lang]),
+        });
       } else if (srtSubs[lang]) {
-        result.push({ lang, format: this.options.formatSrt, url: this.toAbsoluteUrl(srtSubs[lang]) });
+        result.push({
+          lang,
+          format: this.options.formatSrt,
+          url: this.toAbsoluteUrl(srtSubs[lang]),
+        });
       }
     }
 

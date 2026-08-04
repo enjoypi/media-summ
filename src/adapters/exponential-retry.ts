@@ -36,7 +36,9 @@ export class ExponentialRetryPolicy implements RetryPolicy {
         }
 
         const delay = this.options.baseDelayMs * Math.pow(this.options.exponentialBase, attempt);
-        this.logger.warn(`${label} 失败 (尝试 ${attempt + 1}/${this.options.maxRetries + 1})，${delay}ms 后重试: ${lastError.message}`);
+        this.logger.warn(
+          `${label} 失败 (尝试 ${attempt + 1}/${this.options.maxRetries + 1})，${delay}ms 后重试: ${lastError.message}`,
+        );
         await sleep(delay);
       }
     }

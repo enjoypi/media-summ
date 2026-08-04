@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { SummarizeCourseUseCase } from './summarize-course.js';
-import type { LlmClient, VttParser, FileSystem, Logger } from './ports.js';
-import type { SubCourse } from './types.js';
+import { describe, it, expect, vi, beforeEach } from 'bun:test';
+import { SummarizeCourseUseCase } from '../../src/usecases/summarize-course.js';
+import type { LlmClient, VttParser, FileSystem, Logger } from '../../src/usecases/ports.js';
+import type { SubCourse } from '../../src/usecases/types.js';
 
 function createMocks() {
   const llmClient: LlmClient = { complete: vi.fn().mockResolvedValue('summary text') };
@@ -12,7 +12,10 @@ function createMocks() {
     read: vi.fn().mockReturnValue(''),
   };
   const logger: Logger = {
-    debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
   };
   return { llmClient, vttParser, fileSystem, logger };
 }
@@ -48,7 +51,10 @@ describe('SummarizeCourseUseCase', () => {
   beforeEach(() => {
     mocks = createMocks();
     useCase = new SummarizeCourseUseCase(
-      mocks.llmClient, mocks.vttParser, mocks.fileSystem, mocks.logger,
+      mocks.llmClient,
+      mocks.vttParser,
+      mocks.fileSystem,
+      mocks.logger,
     );
   });
 
@@ -103,8 +109,6 @@ describe('SummarizeCourseUseCase', () => {
     const subCourse = makeSubCourse(2, 1);
     await useCase.execute({ ...baseInput, subCourse, contextWindow: 1 });
 
-    expect(mocks.logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining('单独超出阈值'),
-    );
+    expect(mocks.logger.warn).toHaveBeenCalledWith(expect.stringContaining('单独超出阈值'));
   });
 });
